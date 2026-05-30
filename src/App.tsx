@@ -19,6 +19,7 @@ import BookingPage from './pages/Booking';
 import CustomCursor from './components/CustomCursor';
 import MobileNavbar from './components/MobileNavbar';
 import { LightboxProvider } from './context/LightboxContext';
+import { WorldCupCampaignPanel } from './components/WorldCupCampaignPanel';
 
 const Navbar = () => {
   const location = useLocation();
@@ -38,7 +39,7 @@ const Navbar = () => {
   ];
 
   return (
-    <header className="fixed top-0 left-0 z-50 w-full flex items-center justify-between px-8 py-7 bg-transparent">
+    <header className="fixed top-0 left-0 lg:left-[420px] lg:w-[calc(100%-420px)] z-50 w-full flex items-center justify-between px-8 py-7 bg-transparent transition-all duration-300">
       <div className="flex flex-col leading-tight opacity-100 transition-opacity">
         <span className="text-white text-sm md:text-base font-bold tracking-widest uppercase">
           Aşkın Şerbetçi
@@ -75,7 +76,7 @@ const Navbar = () => {
 
 const Footer = () => {
   return (
-    <footer className="w-full flex flex-col items-center justify-center py-16 mt-40 border-t border-white/5">
+    <footer className="w-full flex flex-col items-center justify-center py-16 mt-40 border-t border-white/5 lg:pl-[420px] transition-all duration-300">
       <span className="text-white text-2xl md:text-3xl font-semibold tracking-wide">
         Aşkın Şerbetçi
       </span>
@@ -154,11 +155,12 @@ function App() {
   return (
     <Router>
       <LightboxProvider>
-        <div className="min-h-screen bg-transparent text-paper font-sans selection:bg-gold/30 selection:text-gold">
+        <div className="min-h-screen bg-transparent text-paper font-sans selection:bg-gold/30 selection:text-gold relative">
+          <WorldCupCampaignPanel />
           <CustomCursor />
           <Navbar />
           <MobileNavbar />
-          <main>
+          <main className="relative z-10 lg:pl-[420px] transition-all duration-300">
             <AnimatedRoutes />
           </main>
           <Footer />
