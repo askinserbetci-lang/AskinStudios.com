@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Helmet } from 'react-helmet-async';
 import { Download, Youtube, Music, Sparkles, Share2, Check, TrendingUp, BookOpen, Globe, Play } from 'lucide-react';
@@ -10,6 +10,120 @@ const Anthem = () => {
   const [videoId, setVideoId] = useState("BiAViHwWBk4"); 
   const [lang, setLang] = useState<'TR' | 'EN'>('TR');
   const [isPlayingVideo, setIsPlayingVideo] = useState(false);
+  const [liveViews, setLiveViews] = useState<number>(105000);
+
+  useEffect(() => {
+    let active = true;
+    const fetchViews = async () => {
+      // 1. Try shields.io first, as it has wildcard CORS and digests stats beautifully
+      try {
+        const response = await fetch('https://img.shields.io/youtube/views/BiAViHwWBk4.json');
+        if (response.ok) {
+          const data = await response.json();
+          if (data && data.message) {
+            const cleanMsg = data.message.toLowerCase().replace(/[^0-9k.m]/g, '');
+            if (cleanMsg.includes('k')) {
+              const num = Math.round(parseFloat(cleanMsg.replace('k', '')) * 1000);
+              if (num > 10000) {
+                if (active) {
+                  setLiveViews(num);
+                  return;
+                }
+              }
+            } else if (cleanMsg.includes('m')) {
+              const num = Math.round(parseFloat(cleanMsg.replace('m', '')) * 1000000);
+              if (num > 10000) {
+                if (active) {
+                  setLiveViews(num);
+                  return;
+                }
+              }
+            } else {
+              const num = parseInt(cleanMsg, 10);
+              if (num > 10000) {
+                if (active) {
+                  setLiveViews(num);
+                  return;
+                }
+              }
+            }
+          }
+        }
+      } catch (err) {
+        console.warn("Shields.io fetch failed", err);
+      }
+
+      // 2. Try Invidious instances
+      const instances = [
+        'https://yewtu.be/api/v1/videos/BiAViHwWBk4',
+        'https://invidious.nerdvpn.de/api/v1/videos/BiAViHwWBk4',
+        'https://inv.vern.cc/api/v1/videos/BiAViHwWBk4',
+        'https://vid.konst.fish/api/v1/videos/BiAViHwWBk4',
+        'https://invidious.no-logs.com/api/v1/videos/BiAViHwWBk4'
+      ];
+
+      for (const endpoint of instances) {
+        try {
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 3500);
+          const res = await fetch(endpoint, { signal: controller.signal });
+          clearTimeout(timeoutId);
+          if (res.ok) {
+            const data = await res.json();
+            if (data && typeof data.viewCount === 'number' && data.viewCount > 10000) {
+              if (active) {
+                setLiveViews(data.viewCount);
+                return;
+              }
+            }
+          }
+        } catch (e) {
+          console.warn(`Invidious instance failed: ${endpoint}`, e);
+        }
+      }
+
+      // 3. Try AllOrigins as final resort
+      try {
+        const url = `https://www.youtube.com/watch?v=BiAViHwWBk4`;
+        const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
+        const response = await fetch(proxyUrl);
+        if (response.ok) {
+          const data = await response.json();
+          const html = data.contents;
+          let views: number | null = null;
+          
+          const metaMatch = html.match(/itemprop="interactionCount"\s+content="(\d+)"/i) || 
+                            html.match(/content="(\d+)"\s+itemprop="interactionCount"/i);
+          if (metaMatch && metaMatch[1]) {
+            views = parseInt(metaMatch[1], 10);
+          } else {
+            const jsonMatch = html.match(/"viewCount"\s*:\s*"(\d+)"/i) || 
+                              html.match(/"viewCount"\s*:\s*(\d+)/i);
+            if (jsonMatch && jsonMatch[1]) {
+              views = parseInt(jsonMatch[1], 10);
+            }
+          }
+          
+          if (active && views && views > 10000) {
+            setLiveViews(views);
+          }
+        }
+      } catch (err) {
+        console.warn("AllOrigins fallback failed", err);
+      }
+    };
+    
+    fetchViews();
+    const interval = setInterval(fetchViews, 5 * 60 * 1000);
+    return () => {
+      active = false;
+      clearInterval(interval);
+    };
+  }, []);
+
+  const formatViews = (count: number) => {
+    return count.toLocaleString(lang === 'TR' ? 'tr-TR' : 'en-US');
+  };
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(window.location.href);
@@ -20,10 +134,10 @@ const Anthem = () => {
   return (
     <div className="bg-transparent min-h-screen text-paper relative">
       <Helmet>
-        <title>Biz Demeden Bitmez | Aşkın Studios</title>
-        <meta name="description" content="Türkiye 2026 Dünya Kupası Marşı | Produced by Aşkın Studios. Discover the official cinematic soccer anthem blending traditional rhythms and epic orchestration." />
+        <title>Biz Demeden Bitmez | Studio Askin</title>
+        <meta name="description" content="Türkiye 2026 Dünya Kupası Marşı | Produced by Studio Askin. Discover the official cinematic soccer anthem blending traditional rhythms and epic orchestration." />
         <meta property="og:title" content="Biz Demeden Bitmez – Türkiye 2026 Dünya Kupası Marşı" />
-        <meta property="og:description" content="Produced by Aşkın Studios. Feel the spirit of unity and victory with our epic cinematic anthem." />
+        <meta property="og:description" content="Produced by Studio Askin. Feel the spirit of unity and victory with our epic cinematic anthem." />
         <meta property="og:type" content="music.song" />
         <script type="application/ld+json">
           {JSON.stringify({
@@ -87,7 +201,7 @@ const Anthem = () => {
                   {/* SCRIPT TITLE: Biz Demeden Bitmez! */}
                   <div className="py-1">
                     <h2 
-                      className="text-2xl md:text-3.5xl font-serif italic text-transparent bg-clip-text"
+                      className="text-2xl md:text-4xl font-serif italic text-transparent bg-clip-text"
                       style={{
                         backgroundImage: 'linear-gradient(to bottom, #ffffff 30%, #e6e6e6 70%, #999999 100%)',
                         textShadow: '0 2px 10px rgba(0,0,0,0.5)'
@@ -209,15 +323,15 @@ const Anthem = () => {
                 </h1>
                 <p className="text-[#dfba6b] uppercase tracking-[0.25em] text-[10px] md:text-xs font-semibold block pt-1">
                   {lang === 'TR' 
-                    ? 'TÜRKİYE 2026 DÜNYA KUPASI RESMİ OLMAYAN MARŞI • PRODUCED BY AŞKIN STUDIOS' 
-                    : 'TURKEY 2026 WORLD CUP UNOFFICIAL ANTHEM • PRODUCED BY AŞKIN STUDIOS'}
+                    ? 'TÜRKİYE 2026 DÜNYA KUPASI RESMİ OLMAYAN MARŞI • PRODUCED BY STUDIO ASKIN' 
+                    : 'TURKEY 2026 WORLD CUP UNOFFICIAL ANTHEM • PRODUCED BY STUDIO ASKIN'}
                 </p>
               </div>
 
               <p className="text-paper/85 font-light text-sm md:text-base leading-relaxed text-justify max-w-2xl">
                 {lang === 'TR'
-                  ? 'Türkiye’nin sarsılmaz birlik ruhunu ve coşkusunu, geleneksel Türk ritimleri ve modern sinematik orkestrasyonla harmanlayan muhteşem bir zafer marşı. Studio Aşkın gururla sunar.'
-                  : 'A magnificent victory anthem blending Turkey’s unwavering spirit of unity and sports excitement with traditional Turkish rhythms and grand cinematic orchestration. Proudly presented by Studio Aşkın.'}
+                  ? 'Türkiye’nin sarsılmaz birlik ruhunu ve coşkusunu, geleneksel Türk ritimleri ve modern sinematik orkestrasyonla harmanlayan muhteşem bir zafer marşı. Studio Askin gururla sunar.'
+                  : 'A magnificent victory anthem blending Turkey’s unwavering spirit of unity and sports excitement with traditional Turkish rhythms and grand cinematic orchestration. Proudly presented by Studio Askin.'}
               </p>
 
               {/* REAL EXTREME HIGH-QUALITY VIDEO CARD PREVIEW / THUMBNAIL */}
@@ -434,8 +548,8 @@ const Anthem = () => {
                 </h4>
                 <ul className="space-y-4 text-sm font-light text-paper/80">
                   <li className="flex justify-between border-b border-white/5 pb-2">
-                    <span className="text-paper/40">{lang === 'TR' ? 'Yapım / Prodüksiyon' : 'Production'}</span>
-                    <strong className="text-white font-medium">Aşkın Studios</strong>
+                    <span className="text-paper/40">{lang === 'TR' ? 'Yapımcı' : 'Produced By'}</span>
+                    <strong className="text-white font-medium">Studio Askin</strong>
                   </li>
                   <li className="flex justify-between border-b border-white/5 pb-2">
                     <span className="text-paper/40">{lang === 'TR' ? 'Besteci / Aranjör' : 'Composer / Arranger'}</span>
@@ -459,12 +573,12 @@ const Anthem = () => {
               </div>
 
               {/* Dynamic Stats Banner */}
-              <div className="p-6 bg-[#0B1222]/80 border border-gold/20 rounded-sm flex flex-col items-center justify-center text-center">
-                <span className="text-gold font-serif text-3xl font-bold tracking-tight mb-1">
-                  60,000+
+              <div className="p-8 bg-gradient-to-b from-[#111a2e]/90 to-[#060a12]/95 border-2 border-[#dfba6b] rounded-md flex flex-col items-center justify-center text-center shadow-[0_0_35px_rgba(223,186,107,0.2)]">
+                <span className="text-[#dfba6b] font-serif text-5xl md:text-6xl font-black tracking-tight mb-2 drop-shadow-[0_2px_10px_rgba(0,0,0,0.6)] animate-fade-in">
+                  {formatViews(liveViews)}+
                 </span>
-                <span className="text-[10px] text-paper/40 uppercase tracking-[0.2em]">
-                  {lang === 'TR' ? 'İlk Günlerde İzlenme' : 'Views in the Opening Days'}
+                <span className="text-xs text-white uppercase tracking-[0.25em] font-extrabold animate-pulse">
+                  {lang === 'TR' ? 'İlk 3 Günde İzlenme' : 'Views in the First 3 Days'}
                 </span>
               </div>
 
@@ -637,12 +751,12 @@ const Anthem = () => {
                 </h4>
                 <ul className="space-y-3">
                   <li className="flex justify-between items-center text-sm border-b border-white/5 pb-2">
-                    <span className="text-paper/60 font-light">{lang === 'TR' ? 'İlk Günlerde' : 'Early Days'}</span>
-                    <strong className="text-white font-medium">{lang === 'TR' ? '60.000+ izlenme' : '60,000+ Views'}</strong>
+                    <span className="text-paper/60 font-light">{lang === 'TR' ? 'İlk 3 Günde' : 'First 3 Days'}</span>
+                    <strong className="text-white font-medium">{formatViews(liveViews)}+ {lang === 'TR' ? 'izlenme' : 'Views'}</strong>
                   </li>
                   <li className="flex justify-between items-center text-sm border-b border-white/5 pb-2">
                     <span className="text-paper/60 font-light">{lang === 'TR' ? 'İzlenme Süresi' : 'Watch Time'}</span>
-                    <strong className="text-white font-medium">{lang === 'TR' ? '1.300+ saat' : '1,300+ Hours'}</strong>
+                    <strong className="text-white font-medium">{lang === 'TR' ? '2.200+ saat' : '2,200+ Hours'}</strong>
                   </li>
                   <li className="flex justify-between items-center text-sm">
                     <span className="text-paper/60 font-light">{lang === 'TR' ? 'Beğeni Oranı' : 'Appreciation Ratio'}</span>

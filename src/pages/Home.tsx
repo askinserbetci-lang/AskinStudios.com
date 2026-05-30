@@ -185,15 +185,15 @@ const Home = () => {
                   Türkiye 2026 Dünya Kupası Marşı
                 </h3>
                 <p className="text-paper/70 font-light text-base md:text-lg leading-relaxed text-justify">
-                  Sarsılmaz inancı, milli heyecanı ve zafere olan sönmez tutkuyu simgeleyen yeni Dünya Kupası Marşımız. Aşkın Studios'un büyük orkestrasyonu, davulları ve geleneksel motiflerle bezeli görkemli yapımıyla sahaya iniyor.
+                  Sarsılmaz inancı, milli heyecanı ve zafere olan sönmez tutkuyu simgeleyen yeni Dünya Kupası Marşımız. Studio Askin'in büyük orkestrasyonu, davulları ve geleneksel motiflerle bezeli görkemli yapımıyla sahaya iniyor.
                 </p>
               </div>
 
               {/* Specs */}
               <div className="border-t border-white/10 pt-6 space-y-4">
                 <div className="flex justify-between items-center text-sm">
-                  <span className="text-paper/40 font-light">Prodüksiyon / Yapım</span>
-                  <span className="text-white font-medium">Aşkın Studios</span>
+                  <span className="text-paper/40 font-light">Yapımcı</span>
+                  <span className="text-white font-medium">Studio Askin</span>
                 </div>
                 <div className="flex justify-between items-center text-sm">
                   <span className="text-paper/40 font-light">Makam / Melodi</span>
@@ -201,7 +201,7 @@ const Home = () => {
                 </div>
                 <div className="flex justify-between items-center text-sm">
                   <span className="text-paper/40 font-light">Viral Büyüme Sonucu</span>
-                  <span className="text-gold font-medium">60,000+ İzlenme</span>
+                  <span className="text-gold font-medium">105.000+ İzlenme (İlk 3 Günde)</span>
                 </div>
               </div>
 
@@ -402,7 +402,7 @@ const Home = () => {
             {[
               { title: "Music Production", desc: "Original composition and cinematic scoring." },
               { title: "Live Performance", desc: "Solo, ensemble, and full band events." },
-              { title: "Aşkın Studios", desc: "Full-service recording and production." }
+              { title: "Studio Askin", desc: "Full-service recording and production." }
             ].map((service, i) => (
               <motion.div
                 key={i}

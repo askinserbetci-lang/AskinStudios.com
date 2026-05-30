@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Award, Music, Sparkles, Youtube, ExternalLink } from 'lucide-react';
@@ -6,6 +6,120 @@ import { Award, Music, Sparkles, Youtube, ExternalLink } from 'lucide-react';
 export const WorldCupCampaignPanel = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const [liveViews, setLiveViews] = useState<number>(105000);
+
+  useEffect(() => {
+    let active = true;
+    const fetchViews = async () => {
+      // 1. Try shields.io first, as it has wildcard CORS and digests stats beautifully
+      try {
+        const response = await fetch('https://img.shields.io/youtube/views/BiAViHwWBk4.json');
+        if (response.ok) {
+          const data = await response.json();
+          if (data && data.message) {
+            const cleanMsg = data.message.toLowerCase().replace(/[^0-9k.m]/g, '');
+            if (cleanMsg.includes('k')) {
+              const num = Math.round(parseFloat(cleanMsg.replace('k', '')) * 1000);
+              if (num > 10000) {
+                if (active) {
+                  setLiveViews(num);
+                  return;
+                }
+              }
+            } else if (cleanMsg.includes('m')) {
+              const num = Math.round(parseFloat(cleanMsg.replace('m', '')) * 1000000);
+              if (num > 10000) {
+                if (active) {
+                  setLiveViews(num);
+                  return;
+                }
+              }
+            } else {
+              const num = parseInt(cleanMsg, 10);
+              if (num > 10000) {
+                if (active) {
+                  setLiveViews(num);
+                  return;
+                }
+              }
+            }
+          }
+        }
+      } catch (err) {
+        console.warn("Shields.io fetch failed", err);
+      }
+
+      // 2. Try Invidious instances
+      const instances = [
+        'https://yewtu.be/api/v1/videos/BiAViHwWBk4',
+        'https://invidious.nerdvpn.de/api/v1/videos/BiAViHwWBk4',
+        'https://inv.vern.cc/api/v1/videos/BiAViHwWBk4',
+        'https://vid.konst.fish/api/v1/videos/BiAViHwWBk4',
+        'https://invidious.no-logs.com/api/v1/videos/BiAViHwWBk4'
+      ];
+
+      for (const endpoint of instances) {
+        try {
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 3500);
+          const res = await fetch(endpoint, { signal: controller.signal });
+          clearTimeout(timeoutId);
+          if (res.ok) {
+            const data = await res.json();
+            if (data && typeof data.viewCount === 'number' && data.viewCount > 10000) {
+              if (active) {
+                setLiveViews(data.viewCount);
+                return;
+              }
+            }
+          }
+        } catch (e) {
+          console.warn(`Invidious instance failed: ${endpoint}`, e);
+        }
+      }
+
+      // 3. Try AllOrigins as final resort
+      try {
+        const url = `https://www.youtube.com/watch?v=BiAViHwWBk4`;
+        const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
+        const response = await fetch(proxyUrl);
+        if (response.ok) {
+          const data = await response.json();
+          const html = data.contents;
+          let views: number | null = null;
+          
+          const metaMatch = html.match(/itemprop="interactionCount"\s+content="(\d+)"/i) || 
+                            html.match(/content="(\d+)"\s+itemprop="interactionCount"/i);
+          if (metaMatch && metaMatch[1]) {
+            views = parseInt(metaMatch[1], 10);
+          } else {
+            const jsonMatch = html.match(/"viewCount"\s*:\s*"(\d+)"/i) || 
+                              html.match(/"viewCount"\s*:\s*(\d+)/i);
+            if (jsonMatch && jsonMatch[1]) {
+              views = parseInt(jsonMatch[1], 10);
+            }
+          }
+          
+          if (active && views && views > 10000) {
+            setLiveViews(views);
+          }
+        }
+      } catch (err) {
+        console.warn("AllOrigins fallback failed", err);
+      }
+    };
+    
+    fetchViews();
+    const interval = setInterval(fetchViews, 5 * 60 * 1000);
+    return () => {
+      active = false;
+      clearInterval(interval);
+    };
+  }, []);
+
+  const formatViews = (count: number) => {
+    return count.toLocaleString('tr-TR');
+  };
 
   // Custom golden trophy SVG representation
   const renderTrophySVG = (className = "w-full h-full text-gold") => (
@@ -88,6 +202,22 @@ export const WorldCupCampaignPanel = () => {
 
         {/* Centerpiece "2 [Trophy] 6" Silhouette composition */}
         <div className="relative py-4 flex flex-col items-center justify-center">
+          
+          {/* Real-time Youtube Views Badge - Beautifully Styled Cinematic Badge */}
+          <div 
+            className="w-[85%] mx-auto mb-4 p-4 px-6 bg-gradient-to-b from-[#111a2e]/90 to-[#050811]/95 border-2 border-[#dfba6b]/45 rounded-lg flex flex-col items-center justify-center text-center shadow-[0_0_25px_rgba(223,186,107,0.2)] pointer-events-auto"
+            style={{ minHeight: '84px' }}
+          >
+            <span className="text-[#dfba6b] font-serif text-3xl md:text-3.5xl font-black tracking-tight mb-1 drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]">
+              {formatViews(liveViews)}+
+            </span>
+            <span className="text-[10px] text-white/95 uppercase tracking-[0.22em] font-extrabold leading-none pt-0.5">
+              İLK 3 GÜNDE İZLENME
+            </span>
+            <span className="text-[8px] text-paper/40 uppercase tracking-[0.15em] font-light mt-1">
+              Views in the First 3 Days
+            </span>
+          </div>
           
           <div className="flex items-center justify-center relative w-full h-52">
             {/* Massive Metallic "2" */}
