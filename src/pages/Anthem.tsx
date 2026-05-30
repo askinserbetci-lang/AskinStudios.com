@@ -53,7 +53,7 @@ const Anthem = () => {
             <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gold/10 border border-gold/30 text-gold text-[10px] uppercase tracking-[0.2em] mb-6">
               <Sparkles size={12} /> Special Release • 2026 Dünya Kupası Özel
             </span>
-            <h1 className="text-4xl md:text-7xl lg:text-8xl font-serif italic mb-6 leading-tight text-white">
+            <h1 className="text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-serif italic mb-6 leading-tight text-white">
               Biz Demeden <span className="text-gold">Bitmez</span>
             </h1>
             <p className="text-gold uppercase tracking-[0.3em] text-[10px] md:text-xs mb-10 block leading-relaxed font-medium">
@@ -67,7 +67,7 @@ const Anthem = () => {
       </section>
 
       {/* Main Content (Branded Anthem Area) */}
-      <section className="py-20 px-6 relative z-10">
+      <section className="py-12 md:py-20 px-4 md:px-8 relative z-10">
         <div className="max-w-6xl mx-auto">
           <div className="grid lg:grid-cols-12 gap-12 items-start">
             
@@ -254,7 +254,7 @@ const Anthem = () => {
       </section>
 
       {/* Viral Growth & Project Info Section */}
-      <section id="anthem-info" className="py-20 px-6 border-t border-white/5 bg-black/20 backdrop-blur-[2px] relative z-10">
+      <section id="anthem-info" className="py-12 md:py-20 px-4 md:px-8 border-t border-white/5 bg-black/20 backdrop-blur-[2px] relative z-10">
         <div className="max-w-4xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
