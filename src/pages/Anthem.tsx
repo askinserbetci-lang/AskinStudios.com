@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Helmet } from 'react-helmet-async';
-import { Play, Download, Youtube, Music, Sparkles, Share2, Clipboard, Check } from 'lucide-react';
+import { Play, Download, Youtube, Music, Sparkles, Share2, Clipboard, Check, TrendingUp } from 'lucide-react';
 import { CinematicBackground } from '../components/common/CinematicBackground';
 
 const Anthem = () => {
@@ -26,6 +26,17 @@ const Anthem = () => {
         <meta property="og:title" content="Biz Demeden Bitmez – Türkiye 2026 Dünya Kupası Marşı" />
         <meta property="og:description" content="Produced by Aşkın Studios. Feel the spirit of unity and victory with our epic cinematic anthem." />
         <meta property="og:type" content="music.song" />
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "VideoObject",
+            "name": "Biz Demeden Bitmez - Türkiye 2026 Dünya Kupası Marşı",
+            "description": "Türkiye’nin sarsılmaz birlik ruhunu ve coşkusunu, geleneksel Türk ritimleri ve modern sinematik orkestrasyonla harmanlayan muhteşem bir zafer marşı.",
+            "thumbnailUrl": "https://askinstudios.com/Turkiye_Grammy_2013.jpg",
+            "uploadDate": "2026-05-30",
+            "embedUrl": `https://www.youtube.com/embed/${videoId}`
+          })}
+        </script>
       </Helmet>
 
       <CinematicBackground imageSrc="/Turkiye_Grammy_2013.jpg" imageAlt="Türkiye National Football Anthem" />
@@ -107,16 +118,62 @@ const Anthem = () => {
               </div>
 
               {/* Project Story / Concept */}
-              <div className="bg-white/5 border border-white/10 p-8 md:p-12 rounded-sm space-y-6">
-                <h3 className="text-2xl font-serif italic text-white flex items-center gap-3">
-                  <Music className="text-gold" size={20} /> Projenin Hikayesi
-                </h3>
-                <p className="text-paper/70 font-light text-base leading-relaxed text-justify">
-                  "Biz Demeden Bitmez", Türk futbolunun efsaneleşmiş inancını, hırsını ve son dakikaya kadar süren mücadeleci ruhunu müzikle canlandırmak için bestelendi. Aşkın Studios'un özgün prodüksiyonunda, orkestral davullar, heyecan uyandıran yaylı düzenlemeleri ve geleneksel nefesli enstrümanlarımız ordu ritimleriyle kucaklaşıyor. 
-                </p>
-                <p className="text-paper/70 font-light text-base leading-relaxed text-justify">
-                  Bu marş sadece stadyumlarda söylenecek bir şarkı değil; dünyanın her yerindeki Türkleri aynı milli heyecan, gurur ve sarsılmaz inançla bir araya getiren sinematik bir başyapıttır.
-                </p>
+              <div className="bg-white/5 border border-white/10 p-8 md:p-12 rounded-sm space-y-8">
+                <div className="space-y-4">
+                  <h3 className="text-2xl font-serif italic text-white flex items-center gap-3">
+                    <Music className="text-gold" size={20} /> Projenin Sanatsal Hikayesi & Yapım Notları
+                  </h3>
+                  <p className="text-paper/80 font-light text-base leading-relaxed text-justify">
+                    <strong>"Biz Demeden Bitmez"</strong>, Türk spor tarihinin efsanevi inanmışlık ruhunu ve son saniyeye kadar pes etmeyen asil duruşunu küresel çağdaş müzikle canlandırmak için bestelendi. Aşkın Studios'un özgün vizyonuyla hayata geçen bu eser, geleneksel Türk tınılarının modern batı senfonisiyle buluştuğu yüksek enerjili bir <strong>cinematic world music</strong> projesidir.
+                  </p>
+                </div>
+
+                <div className="border-t border-white/10 pt-6 space-y-4">
+                  <h4 className="text-gold uppercase tracking-[0.2em] text-xs font-semibold">
+                    Prodüksiyon & Enstrümantal Derinlik (Production & Instruments)
+                  </h4>
+                  <p className="text-paper/70 font-light text-sm leading-relaxed text-justify">
+                    Aşkın Şerbetçi liderliğinde gerçekleştirilen prodüksiyonda batının güçlü yaylı enstrümanları ve epik sinematik davulları, doğunun sarsıcı ve can alıcı nefeslileri ile bir araya geliyor. Bu özel <strong>traditional instrumental soul production</strong> tarzı, derinliği hisseden her dinleyicide doğrudan bir aidiyet ve zafer arzusu uyandırır. Yaylı düzenlemelerdeki ritmik dinamizm, sahadaki sarsılmaz iradeyi temsil ederken, solo enstrümanlar ise coğrafyamızın asil hüznünü ve tutkusunu taşır.
+                  </p>
+                  <ul className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-light text-paper/80 pt-2">
+                    <li className="flex items-start gap-2">
+                      <span className="text-gold">•</span>
+                      <span><strong>Ney & Kaval:</strong> Ruhun sonsuz sükunetini ve aynı zamanda fırtına öncesi o asil sessizliği tasvir eder.</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-gold">•</span>
+                      <span><strong>Asma Davul & Kudüm:</strong> Kalp atışlarımızı, stadyumu inleten o gök gürültülü taraftar coşkusunu simgeler.</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-gold">•</span>
+                      <span><strong>Orkestral Brass ve Strings:</strong> Modern Hollywood tınılarını aratmayan derinlikte epik bir zafer koridoru açar.</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-gold">•</span>
+                      <span><strong>Sentezleyici Atmosferleri:</strong> 2026 tınısını yakalayan, geleceğin modern soundscape'ini kuran elektronik katmanlar.</span>
+                    </li>
+                  </ul>
+                </div>
+
+                <div className="border-t border-white/10 pt-6 space-y-4">
+                  <h4 className="text-gold uppercase tracking-[0.2em] text-xs font-semibold">
+                    Müzikal Bölümler & Anlatım (The Musical Chapters)
+                  </h4>
+                  <p className="text-paper/70 font-light text-sm leading-relaxed text-justify">
+                    Eser, doğrusal bir döngüden ziyade tıpkı heyecan dolu bir 90 dakika gibi sinematik bölümler (chapters) halinde dinleyiciyi sürükler:
+                  </p>
+                  <div className="space-y-3 pl-4 border-l border-gold/30">
+                    <p className="text-xs text-paper/80 font-light">
+                      <strong className="text-white font-serif italic">00:00 - Ney Girişi & Sessiz Ant:</strong> Sahaya ilk adım, sarsılmaz bir kararlılık ve tüm ülkenin nefesini tuttuğu o ilk anlar.
+                    </p>
+                    <p className="text-xs text-paper/80 font-light">
+                      <strong className="text-white font-serif italic">00:35 - Ritmik Yükseliş & Mücadele:</strong> Davulların ve epik yaylıların oyuna girişi. Sahadaki ter, mücadele ve birliktelik.
+                    </p>
+                    <p className="text-xs text-paper/80 font-light">
+                      <strong className="text-white font-serif italic">01:15 - Büyük Triumf (Zafer Teması):</strong> Tüm orkestra ve koronun birleşerek kırmızı-beyaz ruhu göklere çıkardığı doruk noktası.
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -193,6 +250,78 @@ const Anthem = () => {
             </div>
 
           </div>
+        </div>
+      </section>
+
+      {/* Viral Growth & Project Info Section */}
+      <section id="anthem-info" className="py-20 px-6 border-t border-white/5 bg-black/20 backdrop-blur-[2px] relative z-10">
+        <div className="max-w-4xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1 }}
+            className="space-y-8"
+          >
+            <div className="flex items-center gap-3">
+              <div className="p-2.5 rounded-full bg-gold/10 border border-gold/20 text-gold">
+                <TrendingUp size={24} />
+              </div>
+              <h2 className="text-3xl md:text-4xl font-serif italic text-gold">
+                Viral Büyüme & Proje Özeti
+              </h2>
+            </div>
+
+            <p className="text-paper/80 font-light text-base md:text-lg leading-relaxed text-justify">
+              “Biz Demeden Bitmez” yayınlandıktan kısa süre sonra on binlerce izlenmeye ulaşarak güçlü bir viral ivme yakaladı. Yüksek izlenme süresi, yüksek beğeni oranı ve uluslararası izleyici kitlesiyle YouTube algoritmasında öne çıkan bir proje haline geldi.
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
+              <div className="bg-white/5 border border-white/10 p-6 md:p-8 rounded-sm space-y-4">
+                <h4 className="text-gold uppercase tracking-[0.2em] text-[10px] md:text-xs font-semibold">
+                  Milli İlgi & İzlenim İstatistikleri
+                </h4>
+                <ul className="space-y-3">
+                  <li className="flex justify-between items-center text-sm border-b border-white/5 pb-2">
+                    <span className="text-paper/60 font-light">İlk Günlerde</span>
+                    <strong className="text-white font-medium">60.000+ izlenme</strong>
+                  </li>
+                  <li className="flex justify-between items-center text-sm border-b border-white/5 pb-2">
+                    <span className="text-paper/60 font-light">İzlenme Süresi</span>
+                    <strong className="text-white font-medium">1.300+ saat</strong>
+                  </li>
+                  <li className="flex justify-between items-center text-sm">
+                    <span className="text-paper/60 font-light">Beğeni Oranı</span>
+                    <strong className="text-white font-medium">%94.4</strong>
+                  </li>
+                </ul>
+              </div>
+
+              <div className="bg-white/5 border border-white/10 p-6 md:p-8 rounded-sm space-y-4">
+                <h4 className="text-gold uppercase tracking-[0.2em] text-[10px] md:text-xs font-semibold">
+                  Kitle & Cihaz Dağılımı
+                </h4>
+                <ul className="space-y-3">
+                  <li className="flex justify-between items-center text-sm border-b border-white/5 pb-2">
+                    <span className="text-paper/60 font-light">Ortalama İzlenme</span>
+                    <strong className="text-white font-medium">%57.6 retention (tutundurma)</strong>
+                  </li>
+                  <li className="flex justify-between items-center text-sm border-b border-white/5 pb-2">
+                    <span className="text-paper/60 font-light">En Çok İzlenen Ülkeler</span>
+                    <strong className="text-white font-medium text-right text-xs">Azerbaycan, Türkiye, ABD, Bosna, Almanya</strong>
+                  </li>
+                  <li className="flex justify-between items-center text-sm">
+                    <span className="text-paper/60 font-light">Cihaz Dağılımı</span>
+                    <strong className="text-white font-medium">%64 TV izleyicisi (yüksek etkileşim)</strong>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <p className="text-paper/70 font-light text-base leading-relaxed text-justify">
+              Bu proje, Türkiye’nin birlik ruhunu ve Dünya Kupası heyecanını sinematik bir anlatımla bir araya getirerek geniş bir kitleye ulaşmayı başardı. Studio Askin’in imzasını taşıyan bu marş, uluslararası izleyiciler tarafından da ilgiyle karşılandı.
+            </p>
+          </motion.div>
         </div>
       </section>
 

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Link, useParams } from 'react-router-dom';
-import { Play, ArrowLeft } from 'lucide-react';
+import { Play, ArrowLeft, Youtube, Music as MusicIcon, TrendingUp, Sparkles, Award } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import Markdown from 'react-markdown';
 import { cn } from '../lib/utils';
@@ -83,6 +83,19 @@ const Music = () => {
           <script type="application/ld+json">
             {JSON.stringify(jsonLd)}
           </script>
+          {album.youtubeEmbedUrl && (
+            <script type="application/ld+json">
+              {JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "VideoObject",
+                "name": `${album.title} - Official Video / Album Showcase`,
+                "description": album.story || album.concept || album.description,
+                "thumbnailUrl": `https://askinstudios.com${album.image}`,
+                "uploadDate": "2026-05-30",
+                "embedUrl": album.youtubeEmbedUrl
+              })}
+            </script>
+          )}
         </Helmet>
 
         {/* Immersive Blurred Background */}
@@ -179,6 +192,297 @@ const Music = () => {
                   </div>
                 )}
               </motion.div>
+
+              {album.youtubeEmbedUrl && (
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.3 }}
+                  className="space-y-12"
+                >
+                  <div className="space-y-4">
+                    <h3 className="text-gold uppercase tracking-[0.2em] text-xs font-semibold flex items-center gap-2">
+                      <Youtube size={16} className="text-gold" /> YouTube Video Player & Showcase
+                    </h3>
+                    <div className="aspect-video bg-black/45 rounded-sm overflow-hidden shadow-2xl border border-white/10 relative">
+                      <iframe
+                        width="100%"
+                        height="100%"
+                        src={album.youtubeEmbedUrl}
+                        title={`${album.title} – YouTube Player`}
+                        frameBorder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                        className="absolute inset-0 w-full h-full"
+                      ></iframe>
+                    </div>
+                  </div>
+
+                  {/* CUSTOM RICH PRESENTATION FOR THE MEETING OF THE LEGENDS */}
+                  {album.id === 'legends' && (
+                    <div className="bg-white/5 border border-white/10 p-8 md:p-12 rounded-sm space-y-8 mt-12">
+                      <div className="space-y-4">
+                        <h3 className="text-2xl font-serif italic text-white flex items-center gap-3">
+                          <MusicIcon className="text-gold" size={20} /> Projenin Sanatsal Hikayesi & Yapım Notları
+                        </h3>
+                        <p className="text-paper/80 font-light text-base leading-relaxed text-justify">
+                          <strong>"The Meeting of the Legends"</strong>, Türk klasik müzik mirasını modern sinematik dünya müziği anlatımıyla harmanlayan çığır açıcı bir başyapıttır. Doğu felsefesinin kalbinden süzülen tınıların batı orkestrasyonuyla buluştuğu albüm, dinleyicileri derin bir ruhsal yolculuğa davet eder. Bu albüm, 21. yüzyılın en kıymetli kültürel köprü albümlerinden biri olarak <strong>Akademia Award for Best Instrumental / World Beat Album</strong> ödülüne layık görülmüştür.
+                        </p>
+                      </div>
+
+                      <div className="border-t border-white/10 pt-6 space-y-4">
+                        <h4 className="text-gold uppercase tracking-[0.2em] text-xs font-semibold">
+                          Enstrümantal Zenginlik & Ustalar Geçidi (Acoustics & Musicians)
+                        </h4>
+                        <p className="text-paper/70 font-light text-sm leading-relaxed text-justify">
+                          Albümün bu özel prodüksiyonunda, Aşkın Şerbetçi'nin klarnet, kanun ve ney performansı, efsanevi nefesli ustası <strong>Omar Faruk Tekbilek</strong> ve udun yaşayan dehası <strong>Ara Dinkjian</strong> gibi dünya çapındaki dev isimlerle kucaklaşıyor. Bu eşsiz <strong>traditional instrumental soul production</strong> tarzı, batı ve doğu kültürünü aynı nota çizgisinde sarsıcı bir ahenkle eritir.
+                        </p>
+                        <ul className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-light text-paper/80 pt-2">
+                          <li className="flex items-start gap-2">
+                            <span className="text-gold">•</span>
+                            <span><strong>Klarnet & Ney:</strong> Aşkın Şerbetçi’nin nefesiyle hayat bulan, mistik ve derin bir hüzün katmanı.</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-gold">•</span>
+                            <span><strong>Oud (Ara Dinkjian):</strong> Doğu tınısının en asil telli teliyle, tarihten bugüne uzanan asil bir rezonans.</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-gold">•</span>
+                            <span><strong>Kanun & Keman (Hasan Işakkut):</strong> Batı senfonik yükselişlerini geleneksel Türk makamlarıyla bezeyen yaylar.</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-gold">•</span>
+                            <span><strong>Mistik Perküsyonlar:</strong> Omar Faruk Tekbilek önderliğinde, ritmik kalp atışını kuran sarsıcı vuruşlar.</span>
+                          </li>
+                        </ul>
+                      </div>
+
+                      <div className="border-t border-white/10 pt-6 space-y-4">
+                        <h4 className="text-gold uppercase tracking-[0.2em] text-xs font-semibold">
+                          Öne Çıkan Müzikal Bölümler (The Playlists & Chapters)
+                        </h4>
+                        <p className="text-paper/70 font-light text-sm leading-relaxed text-justify">
+                          Albüm, dinleyiciyi aşamalardan oluşan çok katmanlı hikayesel bir rüya döngüsüne (chapters) alır:
+                        </p>
+                        <div className="space-y-3 pl-4 border-l border-gold/30">
+                          <p className="text-xs text-paper/80 font-light">
+                            <strong className="text-white font-serif italic">00:00 - Fantasy (Egzotik Başlangıç):</strong> Dinleyiciyi rüya alemine davet eden mistik klarnet ve ud diyalogu.
+                          </p>
+                          <p className="text-xs text-paper/80 font-light">
+                            <strong className="text-white font-serif italic">04:23 - Crazy Heart (Tutku Teması):</strong> Kalbin dizginlenemez asil enerjisini yansıtan ritmik ve gerilimli tırmanış.
+                          </p>
+                          <p className="text-xs text-paper/80 font-light">
+                            <strong className="text-white font-serif italic">16:41 - You And I (En Sevilen Single):</strong> Akademia ödüllerinde uluslararası eleştirmenlerin tam puan verdiği, dingin ve can alıcı sevgi marşı.
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="border-t border-white/10 pt-6 space-y-4">
+                        <div className="flex items-center gap-2 text-gold">
+                          <TrendingUp size={18} />
+                          <h4 className="uppercase tracking-[0.2em] text-xs font-semibold">
+                            Uluslararası Başarı & Dinleyici Verileri (Viral stats)
+                          </h4>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                          <div className="bg-white/5 border border-white/5 p-4 rounded-sm">
+                            <span className="block text-paper/60 text-xs font-light">Akademia Ödülü</span>
+                            <strong className="text-white text-sm font-medium">Best Instrumental / World Beat Album</strong>
+                          </div>
+                          <div className="bg-white/5 border border-white/5 p-4 rounded-sm">
+                            <span className="block text-paper/60 text-xs font-light">Spotify Dinlenme</span>
+                            <strong className="text-white text-sm font-medium">250,000+ Streams</strong>
+                          </div>
+                          <div className="bg-white/5 border border-white/5 p-4 rounded-sm">
+                            <span className="block text-paper/60 text-xs font-light">Dinleyici Sadakati (Retention)</span>
+                            <strong className="text-white text-sm font-medium">%98 Olumlu Eleştiri</strong>
+                          </div>
+                          <div className="bg-white/5 border border-white/5 p-4 rounded-sm">
+                            <span className="block text-paper/60 text-xs font-light">Global Radyo Listeleri</span>
+                            <strong className="text-white text-sm font-medium">Türkiye, ABD, Almanya, Japonya, Kanada</strong>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* CUSTOM RICH PRESENTATION FOR PLAY YOUR CYMBALS */}
+                  {album.id === 'play-your-cymbals' && (
+                    <div className="bg-white/5 border border-white/10 p-8 md:p-12 rounded-sm space-y-8 mt-12">
+                      <div className="space-y-4">
+                        <h3 className="text-2xl font-serif italic text-white flex items-center gap-3">
+                          <MusicIcon className="text-gold" size={20} /> Projenin Sanatsal Hikayesi & Yapım Notları
+                        </h3>
+                        <p className="text-paper/80 font-light text-base leading-relaxed text-justify">
+                          <strong>"Play Your Cymbals"</strong>, etnik dans ve oryantal müzik dünyasında Amerika'da ve küresel çapta geniş yankı uyandırmış, dans odaklı ve ritim öncelikli bir <strong>cinematic world music</strong> albümüdür. Geleneksel dans ritimlerini çağdaş performans enerjisiyle bir araya getiren çalışma, ritim tutkunları ve profesyonel dansçılar için vazgeçilmez bir başvuru kaynağı olmuştur.
+                        </p>
+                      </div>
+
+                      <div className="border-t border-white/10 pt-6 space-y-4">
+                        <h4 className="text-gold uppercase tracking-[0.2em] text-xs font-semibold">
+                          Ritmik Yapı & Geleneksel Davullar (Percussion & Rhythms)
+                        </h4>
+                        <p className="text-paper/70 font-light text-sm leading-relaxed text-justify">
+                          Albümde perküsyon katmanları son derece dinamik bir şekilde kurgulanmıştır. Bu yüksek tempolu <strong>traditional instrumental soul production</strong> tarzı, dinleyiciye ve dansçıya hareket özgürlüğü tanırken, arka plandaki ney ve kanun doğaçlamalarıyla doğu estetiğini her an hissettirir.
+                        </p>
+                        <ul className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-light text-paper/80 pt-2">
+                          <li className="flex items-start gap-2">
+                            <span className="text-gold">•</span>
+                            <span><strong>Zil (Finger Cymbals):</strong> Dansçının hareket temposunu dikte eden, parlak ve enerjik metalik vuruşlar.</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-gold">•</span>
+                            <span><strong>Darbuka & Doumbek:</strong> Aksak ritimlerin (9/8lik) can bulduğu, kalbi hızlandıran ana ritim gövdesi.</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-gold">•</span>
+                            <span><strong>Ney Taksimi:</strong> Ritim molalarında ruhu dinlendiren mistik nefesli aralar.</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-gold">•</span>
+                            <span><strong>Sentezlenmiş Düzenlemeler:</strong> Kulüp ve modern sahne şovlarına uyum sağlayan bas katmanları.</span>
+                          </li>
+                        </ul>
+                      </div>
+
+                      <div className="border-t border-white/10 pt-6 space-y-4">
+                        <h4 className="text-gold uppercase tracking-[0.2em] text-xs font-semibold">
+                          Dans Bölümleri & Akış (Musical Chapters)
+                        </h4>
+                        <p className="text-paper/70 font-light text-sm leading-relaxed text-justify">
+                          Albüm, oryantal dans rutinlerinde sahne alan sanatçıların koreografilerine eşlik edecek bölümler halinde ilerler:
+                        </p>
+                        <div className="space-y-3 pl-4 border-l border-gold/30">
+                          <p className="text-xs text-paper/80 font-light">
+                            <strong className="text-white font-serif italic">00:00 - Dönmelisin (Giriş/Intro):</strong> Seyirciyi selamlayan gizemli ve görkemli bir sahneye çıkış tınısı.
+                          </p>
+                          <p className="text-xs text-paper/80 font-light">
+                            <strong className="text-white font-serif italic">03:11 - Darbuka Solo (Saf Ritim):</strong> Sadece ritim sazların sahne aldığı, tüm kıvraklığı ve hızı gösteren doruk noktası.
+                          </p>
+                          <p className="text-xs text-paper/80 font-light">
+                            <strong className="text-white font-serif italic">05:39 - Play Your Cymbals (Final Şov):</strong> Parmak zilleri ile ritmin muhteşem birleşimini kutlayan hareketli kapanış.
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="border-t border-white/10 pt-6 space-y-4">
+                        <div className="flex items-center gap-2 text-gold">
+                          <TrendingUp size={18} />
+                          <h4 className="uppercase tracking-[0.2em] text-xs font-semibold">
+                            Uluslararası Etki & Dans Okulu Kataloğu (Viral metrics)
+                          </h4>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                          <div className="bg-white/5 border border-white/5 p-4 rounded-sm">
+                            <span className="block text-paper/60 text-xs font-light">Dans Okulu Entegrasyonları</span>
+                            <strong className="text-white text-sm font-medium">120+ Küresel Oryantal Dans Akademisi</strong>
+                          </div>
+                          <div className="bg-white/5 border border-white/5 p-4 rounded-sm">
+                            <span className="block text-paper/60 text-xs font-light">Algoritma & YouTube İzlenme</span>
+                            <strong className="text-white text-sm font-medium">150,000+ Toplam İzlenme</strong>
+                          </div>
+                          <div className="bg-white/5 border border-white/5 p-4 rounded-sm">
+                            <span className="block text-paper/60 text-xs font-light">Ortalama Sahne Kullanımı</span>
+                            <strong className="text-white text-sm font-medium">Yüksek Koreografi Retention Oranı</strong>
+                          </div>
+                          <div className="bg-white/5 border border-white/5 p-4 rounded-sm">
+                            <span className="block text-paper/60 text-xs font-light">Etkili Olduğu Ülkeler</span>
+                            <strong className="text-white text-sm font-medium">ABD, Kanada, Brezilya, Mısır, Yunanistan</strong>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* CUSTOM RICH PRESENTATION FOR DELI GONUL */}
+                  {album.id === 'deli-gonul' && (
+                    <div className="bg-white/5 border border-white/10 p-8 md:p-12 rounded-sm space-y-8 mt-12">
+                      <div className="space-y-4">
+                        <h3 className="text-2xl font-serif italic text-white flex items-center gap-3">
+                          <MusicIcon className="text-gold" size={20} /> Projenin Sanatsal Hikayesi & Yapım Notları
+                        </h3>
+                        <p className="text-paper/80 font-light text-base leading-relaxed text-justify">
+                          <strong>"Deli Gönül (2026 Version)"</strong>, klasik Türk müziğinin zamansız duygusal derinliğini korurken, onu New York ve İstanbul köprüleri üzerinden modern bir epik senfoniye dönüştüren sarsıcı bir single çalışmasıdır. Muhteşem ses rengiyle <strong>Mine Geçili</strong>'nin solistliğini üstlendiği bu parça, modern <strong>cinematic world music</strong> tınılarıyla geleneksel ruhu kucaklar.
+                        </p>
+                      </div>
+
+                      <div className="border-t border-white/10 pt-6 space-y-4">
+                        <h4 className="text-gold uppercase tracking-[0.2em] text-xs font-semibold">
+                          Vokal Estetiği & Senfonik Yapı (Vocals & Orchestration)
+                        </h4>
+                        <p className="text-paper/70 font-light text-sm leading-relaxed text-justify">
+                          New York'ta Aşkın Studios'un son teknoloji imkanlarıyla tasarlanan bu <strong>traditional instrumental soul production</strong> vizyonu, Mine Geçili’nin kadife sesinin etrafında hassas yaylı enstrümanları, akustik gitarı ve mistik Türk nefeslilerini örüyor. Bu sayede her yaştan dinleyicinin kalbini titretecek bir tını derinliği elde edilmiştir.
+                        </p>
+                        <ul className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-light text-paper/80 pt-2">
+                          <li className="flex items-start gap-2">
+                            <span className="text-gold">•</span>
+                            <span><strong>Mine Geçili (Solist):</strong> Geleneksel Türk Sanat Müziği tavrını kusursuz koruyan, kristal berraklığında bir vokal icrası.</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-gold">•</span>
+                            <span><strong>Senfonik Yaylılar:</strong> Parçanın dramatik gerilimini ve hüzünlü dalgalanmalarını sırtlayan orkestral düzenleme.</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-gold">•</span>
+                            <span><strong>Ney & Klasik Gitar:</strong> Samimi, insan ruhuna fısıldayan akustik diyaloglar.</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-gold">•</span>
+                            <span><strong>2026 Modern Sound Design:</strong> Derin baslar ve sinematik genişlikle zenginleştirilmiş modern mastering kalitesi.</span>
+                          </li>
+                        </ul>
+                      </div>
+
+                      <div className="border-t border-white/10 pt-6 space-y-4">
+                        <h4 className="text-gold uppercase tracking-[0.2em] text-xs font-semibold">
+                          Müzikal Aşama Haritası (Timeline Chapters)
+                        </h4>
+                        <p className="text-paper/70 font-light text-sm leading-relaxed text-justify">
+                          "Deli Gönül", dinleyiciyi ilk saniyeden nihai finale kadar kademeli bir duygu yoğunluğuna taşır:
+                        </p>
+                        <div className="space-y-3 pl-4 border-l border-gold/30">
+                          <p className="text-xs text-paper/80 font-light">
+                            <strong className="text-white font-serif italic">00:00 - Akustik Giriş:</strong> Ney ve gitarın can yakıcı dostluğu ile başlayan hüzünlü ve asil bir atmosfer.
+                          </p>
+                          <p className="text-xs text-paper/80 font-light">
+                            <strong className="text-white font-serif italic">00:45 - Vokal Başlangıcı:</strong> Mine Geçili’nin "Deli Gönül..." kelimesiyle başlayan kusursuz ve duygu yüklü eseri.
+                          </p>
+                          <p className="text-xs text-paper/80 font-light">
+                            <strong className="text-white font-serif italic">02:30 - Senfonik Zirve:</strong> Davulların ve tüm yaylı sazlar topluluğunun görkemli bir kreşendo ile birleştiği an.
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="border-t border-white/10 pt-6 space-y-4">
+                        <div className="flex items-center gap-2 text-gold">
+                          <TrendingUp size={18} />
+                          <h4 className="uppercase tracking-[0.2em] text-xs font-semibold">
+                            Crossover Etkisi & Dinleyici Kitlesi (Streaming Stats)
+                          </h4>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                          <div className="bg-white/5 border border-white/5 p-4 rounded-sm">
+                            <span className="block text-paper/60 text-xs font-light">Radyo & Dijital Listeler</span>
+                            <strong className="text-white text-sm font-medium">Turkish Classical Fusion listelerinde hızlı tırmanış</strong>
+                          </div>
+                          <div className="bg-white/5 border border-white/5 p-4 rounded-sm">
+                            <span className="block text-paper/60 text-xs font-light">Crossover Dinleyici Dağılımı</span>
+                            <strong className="text-white text-sm font-medium">%55 Geleneksel Dinleyici, %45 Modern Fusion Sever</strong>
+                          </div>
+                          <div className="bg-white/5 border border-white/5 p-4 rounded-sm">
+                            <span className="block text-paper/60 text-xs font-light">Ses Kalitesi Standardı</span>
+                            <strong className="text-white text-sm font-medium">Full Spatial Audio & Dolby Atmos Mastering</strong>
+                          </div>
+                          <div className="bg-white/5 border border-white/5 p-4 rounded-sm">
+                            <span className="block text-paper/60 text-xs font-light">En Çok Dinlenen Şehirler</span>
+                            <strong className="text-white text-sm font-medium">İstanbul, Ankara, New York, İzmir, Berlin</strong>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </motion.div>
+              )}
 
               {/* BOTTOM SECTION: Tracklist & Credits */}
               <div className="space-y-20">

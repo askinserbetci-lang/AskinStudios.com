@@ -15,6 +15,7 @@ export const deliGonul: Single = {
   image: "/MINE_GECILI_DELI_GONUL.png",
   concept: "Turkish Classical Fusion",
   story: "A modern cinematic reimagining of the Turkish classic, performed by Mine Geçili and produced in Istanbul and New York. This 2026 single blends traditional emotional depth with contemporary world‑music fusion, honoring the song’s heritage while introducing a fresh, cinematic sound.",
+  youtubeEmbedUrl: "https://www.youtube.com/embed/BiAViHwWBk4",
   tracklist: [
     { trackNumber: 1, title: "Deli Gönül (2026 Version)", duration: "4:23", youtubeVideoId: "dQw4w9WgXcQ" }
   ]
