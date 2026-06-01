@@ -701,6 +701,235 @@ const Anthem = () => {
         </div>
       </section>
 
+      {/* Viral Growth & Project Info Section */}
+      <section id="anthem-info" className="py-12 md:py-20 px-4 md:px-8 border-t border-white/5 bg-black/20 backdrop-blur-[2px] relative z-10">
+        <div className="max-w-4xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1 }}
+            className="space-y-8"
+          >
+            <div className="flex items-center gap-3">
+              <div className="p-2.5 rounded-full bg-gold/10 border border-gold/20 text-gold">
+                <TrendingUp size={24} />
+              </div>
+              <h2 className="text-3xl md:text-4xl font-serif italic text-gold">
+                {lang === 'TR' ? 'Viral Büyüme & Proje Özeti' : 'Viral Growth & Project Summary'}
+              </h2>
+            </div>
+
+            <p className="text-paper/80 font-light text-base md:text-lg leading-relaxed text-justify">
+              {lang === 'TR' 
+                ? '“Biz Demeden Bitmez” yayınlandıktan kısa süre sonra on binlerce izlenmeye ulaşarak güçlü bir viral ivme yakaladı. Yüksek izlenme süresi, yüksek beğeni oranı ve uluslararası izleyici kitlesiyle YouTube algoritmasında öne çıkan bir proje haline geldi.'
+                : 'Shortly after its release, "Biz Demeden Bitmez" swept digital spaces, generating tens of thousands of video views and a powerful viral momentum. Its stellar audience retention and overwhelmingly high appreciation rate have made it a standout performance on the YouTube algorithm.'}
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
+              <div className="bg-white/5 border border-white/10 p-6 md:p-8 rounded-sm space-y-4">
+                <h4 className="text-gold uppercase tracking-[0.2em] text-[10px] md:text-xs font-semibold">
+                  {lang === 'TR' ? 'Milli İlgi & İzlenim İstatistikleri' : 'National Resonance & Watch Metrics'}
+                </h4>
+                <ul className="space-y-3">
+                  <li className="flex justify-between items-center text-sm border-b border-white/5 pb-2">
+                    <span className="text-paper/60 font-light">{lang === 'TR' ? `İlk ${elapsedDays} Günde` : `First ${elapsedDays} Days`}</span>
+                    <strong className="text-white font-medium">{formatViews(liveViews)}+ {lang === 'TR' ? 'izlenme' : 'Views'}</strong>
+                  </li>
+                  <li className="flex justify-between items-center text-sm border-b border-white/5 pb-2">
+                    <span className="text-paper/60 font-light">{lang === 'TR' ? 'İzlenme Süresi' : 'Watch Time'}</span>
+                    <strong className="text-white font-medium">{lang === 'TR' ? '2.200+ saat' : '2,200+ Hours'}</strong>
+                  </li>
+                  <li className="flex justify-between items-center text-sm">
+                    <span className="text-paper/60 font-light">{lang === 'TR' ? 'Beğeni Oranı' : 'Appreciation Ratio'}</span>
+                    <strong className="text-white font-medium">{lang === 'TR' ? '%94.4' : '94.4% Positive'}</strong>
+                  </li>
+                </ul>
+              </div>
+
+              <div className="bg-white/5 border border-white/10 p-6 md:p-8 rounded-sm space-y-4">
+                <h4 className="text-gold uppercase tracking-[0.2em] text-[10px] md:text-xs font-semibold">
+                  {lang === 'TR' ? 'Kitle & Cihaz Dağılımı' : 'Demographics & Device Metrics'}
+                </h4>
+                <ul className="space-y-3">
+                  <li className="flex justify-between items-center text-sm border-b border-white/5 pb-2">
+                    <span className="text-paper/60 font-light">{lang === 'TR' ? 'Ortalama İzlenme' : 'Average Retention'}</span>
+                    <strong className="text-white font-medium">{lang === 'TR' ? '%57.6 retention (tutundurma)' : '57.6% (Exceptional)'}</strong>
+                  </li>
+                  <li className="flex justify-between text-sm border-b border-white/5 pb-2">
+                    <span className="text-paper/60 font-light">{lang === 'TR' ? 'En Çok İzlenen Ülkeler' : 'Top Geographies'}</span>
+                    <strong className="text-white font-medium text-right text-xs">
+                      {lang === 'TR' ? 'Azerbaycan, Türkiye, ABD, Bosna, Almanya' : 'Azerbaijan, Turkey, USA, Bosnia, Germany'}
+                    </strong>
+                  </li>
+                  <li className="flex justify-between items-center text-sm">
+                    <span className="text-paper/60 font-light">{lang === 'TR' ? 'Cihaz Dağılımı' : 'Device Split'}</span>
+                    <strong className="text-white font-medium">{lang === 'TR' ? '%64 TV izleyicisi (yüksek etkileşim)' : '64% Connected TV (High Engagement)'}</strong>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <p className="text-paper/70 font-light text-base leading-relaxed text-justify">
+              {lang === 'TR'
+                ? 'Bu proje, Türkiye’nin birlik ruhunu ve Dünya Kupası heyecanını sinematik bir anlatımla bir araya getirerek geniş bir kitleye ulaşmayı başardı. Studio Askin’in imzasını taşıyan bu marş, uluslararası izleyiciler tarafından da ilgiyle karşılandı.'
+                : 'By blending the unwavering spirit of Turkey’s national team with standard world-class cinematic orchestrations, this unofficial anthem succeeds in gathering a broad demographic under one rhythmic pulse. Released independently under Studio Aşkın, it has captured the attention of dynamic global audiences.'}
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Behind the Anthem - Brand Aligned Section */}
+      <section id="behind-anthem" className="py-16 md:py-24 px-4 md:px-8 border-t border-white/5 bg-[#0a0f1c]/40 relative z-10">
+        <div className="max-w-4xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1 }}
+            className="space-y-12"
+          >
+            <div className="flex items-center gap-3">
+              <div className="p-2.5 rounded-full bg-gold/10 border border-gold/20 text-gold bg-[#0a0f1c]">
+                <BookOpen size={24} />
+              </div>
+              <h2 className="text-3xl md:text-4xl font-serif italic text-gold">
+                {lang === 'TR' ? 'Marşın Ardındaki Hikâye' : 'Story Behind the Anthem'}
+              </h2>
+            </div>
+
+            <p className="text-paper/80 font-light text-base md:text-lg leading-relaxed text-justify">
+              {lang === 'TR'
+                ? '“Biz Demeden Bitmez”, Türkiye’nin birlik, güç ve dayanışma ruhunu yansıtmak için sinematik bir yaklaşımla tasarlandı. Bu proje, sadece bir marş değil; milyonların aynı anda hissettiği ortak bir enerji fikri üzerine inşa edildi.'
+                : '"Biz Demeden Bitmez" was envisioned to encapsulate Turkey\'s deep-rooted solidarity, raw power, and passion on the grandest stages. It represents more than a song; it\'s a dynamic acoustic frequency uniting millions under one colossal pulse.'}
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4">
+              <div className="space-y-3">
+                <h3 className="text-gold uppercase tracking-[0.2em] text-xs font-semibold">
+                  {lang === 'TR' ? 'Vizyon' : 'The Vision'}
+                </h3>
+                <p className="text-paper/70 font-light text-sm leading-relaxed text-justify">
+                  {lang === 'TR'
+                    ? 'Amaç, modern prodüksiyon tekniklerini geleneksel Türk ritimleriyle birleştirerek uluslararası arenada yankı uyandıracak bir marş yaratmaktı. Büyük davullar, koro katmanları, darbuka dokunuşları ve epik sinematik unsurlar bu vizyonun temelini oluşturdu.'
+                    : 'The primary objective was to align cutting-edge modern pop-orchestral production with authentic Turkish rhythms, achieving a world-class hybrid sound. Massive stadium drums, epic choral walls, responsive darbuka rolls, and brass stabs form the pillars of this release.'}
+                </p>
+              </div>
+
+              <div className="space-y-3">
+                <h3 className="text-gold uppercase tracking-[0.2em] text-xs font-semibold">
+                  {lang === 'TR' ? 'Prodüksiyon Süreci' : 'Production Process'}
+                </h3>
+                <p className="text-paper/70 font-light text-sm leading-relaxed text-justify">
+                  {lang === 'TR'
+                    ? 'Stüdyo aşamasında yüzlerce vokal katmanı, geniş stereo davul kayıtları ve orkestral elementler bir araya getirildi. Her bölüm, stadyum atmosferini hissettirecek şekilde tasarlandı. Sessizlikten sonra gelen toplu “Biz Demeden Bitmez” çıkışı, marşın imza anı olarak planlandı.'
+                    : 'Engineered at Studio Aşkın over extensive tracking sessions, the arrangement weaves together hundreds of backing vocal layers, wide acoustic drum room recordings, and custom orchestral patches. Every dynamic crescendo was curated to echo standard stadium atmospheres.'}
+                </p>
+              </div>
+
+              <div className="space-y-3">
+                <h3 className="text-gold uppercase tracking-[0.2em] text-xs font-semibold">
+                  {lang === 'TR' ? 'Duygusal Çekirdek' : 'Emotional Core'}
+                </h3>
+                <div className="text-paper/70 font-light text-sm leading-relaxed text-justify">
+                  {lang === 'TR'
+                    ? <>Marşın merkezinde tek bir fikir var: <strong className="text-white font-medium">“Birlik olmadan zafer olmaz.”</strong> Bu duygu, hem müzikal yapıda hem de sözlerin ritminde kendini gösteriyor.</>
+                    : <>At the absolute focus is a singular, humble message: <strong className="text-white font-medium font-sans">"Without unity, there can be no victory."</strong> This emotional core is felt in the heavy, pacing of the lyrics and instrumentation.</>}
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <h3 className="text-gold uppercase tracking-[0.2em] text-xs font-semibold">
+                  {lang === 'TR' ? 'Küresel Etki' : 'Global Reach'}
+                </h3>
+                <p className="text-paper/70 font-light text-sm leading-relaxed text-justify">
+                  {lang === 'TR'
+                    ? 'Yayınlandıktan sonra marş, Türkiye’nin ötesine geçerek Azerbaycan, ABD, Almanya ve Balkan ülkelerinde hızla yayılmaya başladı. Yüksek izlenme süresi ve güçlü izleyici tutma oranı, marşın uluslararası izleyiciler tarafından benimsendiğini gösteriyor.'
+                    : 'Immediately following its debut, the anthem crossed borders and captured listeners across Azerbaijan, the United States, Germany, and the Balkans. High playback rates and dynamic audience retention demonstrate its cross-cultural appeal.'}
+                </p>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* International Reach - Brand Aligned Section */}
+      <section id="international-reach" className="py-16 md:py-24 px-4 md:px-8 border-t border-white/5 bg-black/10 backdrop-blur-[2px] relative z-10">
+        <div className="max-w-4xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1 }}
+            className="space-y-12"
+          >
+            <div className="flex items-center gap-3">
+              <div className="p-2.5 rounded-full bg-gold/10 border border-gold/20 text-gold bg-[#0a0f1c]">
+                <Globe size={24} />
+              </div>
+              <h2 className="text-3xl md:text-4xl font-serif italic text-gold">
+                {lang === 'TR' ? 'Uluslararası Erişim' : 'International Reach'}
+              </h2>
+            </div>
+
+            <p className="text-paper/80 font-light text-base md:text-lg leading-relaxed text-justify">
+              {lang === 'TR'
+                ? '“Biz Demeden Bitmez”, yayınlandıktan kısa süre sonra yalnızca Türkiye’de değil, dünya genelinde de güçlü bir izleyici kitlesine ulaştı. Marş, diaspora toplulukları, spor kültürü ve uluslararası müzik dinleyicileri arasında hızla yayılıyor.'
+                : 'After its release, “Biz Demeden Bitmez” quickly expanded beyond Turkey and began resonating with audiences worldwide. The anthem is spreading rapidly among diaspora communities, sports culture, and international music listeners.'}
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
+              <div className="bg-white/5 border border-white/10 p-6 md:p-8 rounded-sm space-y-4">
+                <h4 className="text-gold uppercase tracking-[0.2em] text-[10px] md:text-xs font-semibold">
+                  {lang === 'TR' ? 'Küresel Yayılım' : 'Global Distribution'}
+                </h4>
+                <ul className="space-y-3 font-light text-sm text-paper/80">
+                  <li className="flex justify-between items-start border-b border-white/5 pb-2">
+                    <strong className="text-gold font-medium">{lang === 'TR' ? 'Azerbaycan:' : 'Azerbaijan:'}</strong>
+                    <span className="text-right pl-4">{lang === 'TR' ? 'Güçlü kültürel bağlar ve yüksek izlenme oranı.' : 'Strong cultural ties and high engagement.'}</span>
+                  </li>
+                  <li className="flex justify-between items-start border-b border-white/5 pb-2">
+                    <strong className="text-gold font-medium">{lang === 'TR' ? 'Türkiye:' : 'Turkey:'}</strong>
+                    <span className="text-right pl-4">{lang === 'TR' ? 'Ana izleyici kitlesi ve yoğun etkileşim.' : 'Primary audience with intense interaction.'}</span>
+                  </li>
+                  <li className="flex justify-between items-start border-b border-white/5 pb-2">
+                    <strong className="text-gold font-medium">{lang === 'TR' ? 'Amerika Birleşik Devletleri:' : 'United States:'}</strong>
+                    <span className="text-right pl-4">{lang === 'TR' ? 'Türk diasporası ve spor toplulukları.' : 'Turkish diaspora and sports communities.'}</span>
+                  </li>
+                  <li className="flex justify-between items-start border-b border-white/5 pb-2">
+                    <strong className="text-gold font-medium">{lang === 'TR' ? 'Almanya:' : 'Germany:'}</strong>
+                    <span className="text-right pl-4">{lang === 'TR' ? 'Avrupa’daki en büyük Türk topluluklarından biri.' : 'One of Europe’s largest Turkish populations.'}</span>
+                  </li>
+                  <li className="flex justify-between items-start">
+                    <strong className="text-gold font-medium">{lang === 'TR' ? 'Balkanlar:' : 'The Balkans:'}</strong>
+                    <span className="text-right pl-4">{lang === 'TR' ? 'Ritmik yapı ve kültürel yakınlık nedeniyle güçlü ilgi.' : 'Strong interest due to rhythmic and cultural familiarity.'}</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div className="bg-white/5 border border-white/10 p-6 md:p-8 rounded-sm flex flex-col justify-between">
+                <div className="space-y-4">
+                  <h4 className="text-gold uppercase tracking-[0.2em] text-[10px] md:text-xs font-semibold">
+                    {lang === 'TR' ? 'Küresel Birlik Mesajı' : 'Global Message of Unity'}
+                  </h4>
+                  <p className="text-paper/70 font-light text-sm leading-relaxed text-justify">
+                    {lang === 'TR'
+                      ? 'Bu uluslararası dağılım, marşın yalnızca bir şarkı değil, ortak bir duygu ve birlik çağrısı olarak benimsendiğini gösteriyor. Sınırları aşan melodilerimiz, taraftarları nerede olurlarsa olsunlar tek bir yürek halinde birleştiriyor.'
+                      : 'This global distribution shows that the anthem is embraced not just as a song, but as a shared emotion and a call for unity. Our border-crossing melodies unite fans into a single heartbeat, wherever they may be.'}
+                  </p>
+                </div>
+                <div className="pt-6 border-t border-white/5 flex justify-between items-center text-xs font-medium text-gold">
+                  <span>{lang === 'TR' ? 'Küresel Hedef Kitle' : 'Global Reach Target'}</span>
+                  <span className="px-2 py-0.5 rounded-sm bg-gold/10 border border-gold/20 text-[10px] uppercase tracking-wider">
+                    WORLDWIDE
+                  </span>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
       {/* Download Alert Modal */}
       <AnimatePresence>
         {downloadModal && (
