@@ -7,6 +7,15 @@ export const WorldCupCampaignPanel = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [liveViews, setLiveViews] = useState<number>(105000);
+  const [elapsedDays, setElapsedDays] = useState<number>(3);
+
+  useEffect(() => {
+    const launch = new Date('2026-05-28T00:00:00');
+    const now = new Date();
+    const diffMs = now.getTime() - launch.getTime();
+    const calculatedDays = Math.floor(diffMs / (1000 * 60 * 60 * 24)) + 1;
+    setElapsedDays(Math.max(3, calculatedDays));
+  }, []);
 
   useEffect(() => {
     let active = true;
@@ -212,10 +221,10 @@ export const WorldCupCampaignPanel = () => {
               {formatViews(liveViews)}+
             </span>
             <span className="text-[10px] text-white/95 uppercase tracking-[0.22em] font-extrabold leading-none pt-0.5">
-              İLK 3 GÜNDE İZLENME
+              İLK {elapsedDays} GÜNDE İZLENME
             </span>
             <span className="text-[8px] text-paper/40 uppercase tracking-[0.15em] font-light mt-1">
-              Views in the First 3 Days
+              Views in the First {elapsedDays} Days
             </span>
           </div>
           

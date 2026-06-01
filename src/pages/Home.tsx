@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Link } from 'react-router-dom';
 import { Play, ArrowRight, X } from 'lucide-react';
@@ -13,6 +13,48 @@ const Home = () => {
   const featuredAlbum = ALBUMS[0];
   const { showImage } = useLightbox();
   const [activeVideo, setActiveVideo] = useState<string | null>(null);
+  const [elapsedDays, setElapsedDays] = useState<number>(3);
+  const [liveViews, setLiveViews] = useState<number>(144000);
+
+  useEffect(() => {
+    const launch = new Date('2026-05-28T00:00:00');
+    const now = new Date();
+    const diffMs = now.getTime() - launch.getTime();
+    const calculatedDays = Math.floor(diffMs / (1000 * 60 * 60 * 24)) + 1;
+    setElapsedDays(Math.max(3, calculatedDays));
+  }, []);
+
+  useEffect(() => {
+    let active = true;
+    const fetchViews = async () => {
+      try {
+        const response = await fetch('https://img.shields.io/youtube/views/BiAViHwWBk4.json');
+        if (response.ok) {
+          const data = await response.json();
+          if (data && data.message) {
+            const cleanMsg = data.message.toLowerCase().replace(/[^0-9k.m]/g, '');
+            let num = 144000;
+            if (cleanMsg.includes('k')) {
+              num = Math.round(parseFloat(cleanMsg.replace('k', '')) * 1000);
+            } else if (cleanMsg.includes('m')) {
+              num = Math.round(parseFloat(cleanMsg.replace('m', '')) * 1000000);
+            } else {
+              num = parseInt(cleanMsg, 10);
+            }
+            if (active && num > 10000) {
+              setLiveViews(num);
+            }
+          }
+        }
+      } catch (err) {
+        console.warn("Shields.io fetch failed", err);
+      }
+    };
+    fetchViews();
+    return () => {
+      active = false;
+    };
+  }, []);
 
   return (
     <div className="bg-transparent min-h-screen text-paper relative">
@@ -201,7 +243,7 @@ const Home = () => {
                 </div>
                 <div className="flex justify-between items-center text-sm">
                   <span className="text-paper/40 font-light">Viral Büyüme Sonucu</span>
-                  <span className="text-gold font-medium">105.000+ İzlenme (İlk 3 Günde)</span>
+                  <span className="text-gold font-medium">{liveViews.toLocaleString('tr-TR')}+ İzlenme (İlk {elapsedDays} Günde)</span>
                 </div>
               </div>
 

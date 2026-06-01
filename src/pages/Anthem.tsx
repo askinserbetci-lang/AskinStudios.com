@@ -11,6 +11,15 @@ const Anthem = () => {
   const [lang, setLang] = useState<'TR' | 'EN'>('TR');
   const [isPlayingVideo, setIsPlayingVideo] = useState(false);
   const [liveViews, setLiveViews] = useState<number>(105000);
+  const [elapsedDays, setElapsedDays] = useState<number>(3);
+
+  useEffect(() => {
+    const launch = new Date('2026-05-28T00:00:00');
+    const now = new Date();
+    const diffMs = now.getTime() - launch.getTime();
+    const calculatedDays = Math.floor(diffMs / (1000 * 60 * 60 * 24)) + 1;
+    setElapsedDays(Math.max(3, calculatedDays));
+  }, []);
 
   useEffect(() => {
     let active = true;
@@ -578,7 +587,7 @@ const Anthem = () => {
                   {formatViews(liveViews)}+
                 </span>
                 <span className="text-xs text-white uppercase tracking-[0.25em] font-extrabold animate-pulse">
-                  {lang === 'TR' ? 'İlk 3 Günde İzlenme' : 'Views in the First 3 Days'}
+                  {lang === 'TR' ? `İlk ${elapsedDays} Günde İzlenme` : `Views in the First ${elapsedDays} Days`}
                 </span>
               </div>
 
@@ -751,7 +760,7 @@ const Anthem = () => {
                 </h4>
                 <ul className="space-y-3">
                   <li className="flex justify-between items-center text-sm border-b border-white/5 pb-2">
-                    <span className="text-paper/60 font-light">{lang === 'TR' ? 'İlk 3 Günde' : 'First 3 Days'}</span>
+                    <span className="text-paper/60 font-light">{lang === 'TR' ? `İlk ${elapsedDays} Günde` : `First ${elapsedDays} Days`}</span>
                     <strong className="text-white font-medium">{formatViews(liveViews)}+ {lang === 'TR' ? 'izlenme' : 'Views'}</strong>
                   </li>
                   <li className="flex justify-between items-center text-sm border-b border-white/5 pb-2">
