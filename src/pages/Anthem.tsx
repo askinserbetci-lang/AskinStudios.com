@@ -164,138 +164,82 @@ const Anthem = () => {
       <CinematicBackground imageSrc="/Turkiye_Grammy_2013.jpg" imageAlt="Türkiye National Football Anthem" />
 
       {/* Hero Section & Campaign Poster Showcase */}
-      <section className="relative overflow-hidden pt-12 pb-16 md:pb-24 px-4 md:px-8 z-10 border-b border-white/5">
+      <section className="relative overflow-hidden pt-12 pb-16 md:pb-20 px-4 md:px-8 z-10 border-b border-white/5">
         <div className="absolute inset-0 pointer-events-none bg-radial-at-t from-[#dfba6b]/5 via-transparent to-transparent" />
         
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
             
-            {/* Left Column: Official World Cup 2026 Campaign Poster Replica */}
-            <div className="lg:col-span-5 relative z-10">
+            {/* Left Column: Official World Cup 2026 Campaign Poster Artwork */}
+            <div className="lg:col-span-5 relative z-10 flex justify-center">
               <motion.div
-                initial={{ opacity: 0, x: -40 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 1.2, ease: "easeOut" }}
-                className="w-full relative rounded-md overflow-hidden bg-gradient-to-br from-[#120a06] via-[#1a1209] to-[#040812] border-2 border-[#dfba6b]/40 shadow-[0_20px_50px_rgba(0,0,0,0.8)] p-6 md:p-8 select-none"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+                className="w-full max-w-sm aspect-[4/5] relative rounded-lg overflow-hidden bg-gradient-to-b from-[#0a0c14] to-[#121522] border border-gold/30 shadow-[0_25px_60px_rgba(0,0,0,0.85)] p-8 select-none flex flex-col justify-between"
                 style={{
-                  boxShadow: 'inset 0 0 40px rgba(223,186,107,0.15), 0 25px 60px rgba(0,0,0,0.85)'
+                  boxShadow: 'inset 0 0 30px rgba(223,186,107,0.05), 0 25px 60px rgba(0,0,0,0.85)'
                 }}
               >
-                {/* Riveted Iron Corner Brackets */}
-                <span className="absolute top-2 left-2 w-3 h-3 border-t-2 border-l-2 border-[#dfba6b]/40 rounded-tl-sm" />
-                <span className="absolute top-2 right-2 w-3 h-3 border-t-2 border-r-2 border-[#dfba6b]/40 rounded-tr-sm" />
-                <span className="absolute bottom-2 left-2 w-3 h-3 border-b-2 border-l-2 border-[#dfba6b]/40 rounded-bl-sm" />
-                <span className="absolute bottom-2 right-2 w-3 h-3 border-b-2 border-r-2 border-[#dfba6b]/40 rounded-br-sm" />
+                {/* Elegant subtle double border outline */}
+                <div className="absolute inset-2 border border-white/5 pointer-events-none rounded-md" />
+                <div className="absolute inset-3 border border-gold/10 pointer-events-none rounded-sm" />
                 
-                {/* Subtle simulated studs / screw heads */}
-                <span className="absolute top-3 left-3 w-1.5 h-1.5 bg-[#dfba6b]/30 rounded-full border border-black/50" />
-                <span className="absolute top-3 right-3 w-1.5 h-1.5 bg-[#dfba6b]/30 rounded-full border border-black/50" />
-                <span className="absolute bottom-3 left-3 w-1.5 h-1.5 bg-[#dfba6b]/30 rounded-full border border-black/50" />
-                <span className="absolute bottom-3 right-3 w-1.5 h-1.5 bg-[#dfba6b]/30 rounded-full border border-black/50" />
+                {/* Delicate corner markers */}
+                <span className="absolute top-4 left-4 w-2.5 h-2.5 border-t border-l border-gold/40" />
+                <span className="absolute top-4 right-4 w-2.5 h-2.5 border-t border-r border-gold/40" />
+                <span className="absolute bottom-4 left-4 w-2.5 h-2.5 border-b border-l border-gold/40" />
+                <span className="absolute bottom-4 right-4 w-2.5 h-2.5 border-b border-r border-gold/40" />
 
-                {/* Back sparks lighting */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full bg-amber-500/10 blur-[45px] pointer-events-none" />
+                {/* Header branding */}
+                <div className="text-center space-y-1.5 z-10 relative">
+                  <span className="text-[9px] font-mono tracking-[0.35em] text-gold uppercase block">
+                    STUDIO AŞKIN
+                  </span>
+                  <span className="text-[7px] tracking-[0.25em] text-paper/40 uppercase block font-semibold">
+                    TURKEY 2026 CAMPAIGN MASTER
+                  </span>
+                </div>
 
-                <div className="relative text-center space-y-4">
-                  {/* STUDIO ASKIN logo label */}
-                  <h5 className="text-[#dfba6b] uppercase text-[10px] md:text-xs tracking-[0.35em] font-extrabold">
-                    STUDIO ASKIN
-                  </h5>
+                {/* Elegant central physical lockup - minimalist wireframe gold trophy */}
+                <div className="relative flex flex-col items-center justify-center py-6">
+                  {/* Subtle radial gold aura */}
+                  <div className="absolute inset-0 bg-gold/5 blur-3xl rounded-full" />
                   
-                  {/* WORLD CUP ANTHEM label */}
-                  <h6 className="text-white uppercase text-[8px] md:text-[9px] tracking-[0.2em] font-light opacity-60">
-                    WORLD CUP ANTHEM
-                  </h6>
+                  {/* Minimal gold outline trophy SVG */}
+                  <div className="w-24 h-24 relative z-10 filter drop-shadow-[0_4px_10px_rgba(223,186,107,0.2)]">
+                    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full text-gold/80">
+                      <path d="M30 20 H70 V40 C70 52 60 62 48 64 C44 64.5 40 64.5 36 63 M64 63.5 C59 62 50 63 50 63" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                      <path d="M50 64 V80 M40 80 H60" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                      <circle cx="50" cy="35" r="12" stroke="currentColor" strokeWidth="1" strokeDasharray="2 2" />
+                      <path d="M22 28 C16 30 16 38 20 42 C23 45 30 43 30 40" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
+                      <path d="M78 28 C84 30 84 38 80 42 C77 45 70 43 70 40" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
+                    </svg>
+                  </div>
 
-                  {/* SCRIPT TITLE: Biz Demeden Bitmez! */}
-                  <div className="py-1">
-                    <h2 
-                      className="text-2xl md:text-4xl font-serif italic text-transparent bg-clip-text"
-                      style={{
-                        backgroundImage: 'linear-gradient(to bottom, #ffffff 30%, #e6e6e6 70%, #999999 100%)',
-                        textShadow: '0 2px 10px rgba(0,0,0,0.5)'
-                      }}
-                    >
+                  {/* Red/White graphic banner details with vertical letters */}
+                  <div className="mt-4 text-center">
+                    <span className="text-[50px] font-serif italic text-transparent bg-clip-text bg-gradient-to-b from-white via-white/90 to-white/40 tracking-normal block leading-tight font-black filter drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]">
+                      2026
+                    </span>
+                    <span className="text-[8px] font-mono tracking-[0.25em] text-red-500 uppercase font-black block mt-1">
+                      TÜRKİYE MILLI TAKIMI
+                    </span>
+                  </div>
+                </div>
+
+                {/* Footer and Slogan typography in Artwork */}
+                <div className="text-center space-y-3 z-10 relative">
+                  <div className="border-t border-white/5 pt-2">
+                    <span className="text-[10px] tracking-[0.2em] font-serif italic text-white font-bold block">
                       “Biz Demeden Bitmez!”
-                    </h2>
-                    <span className="text-white/40 text-[7px] uppercase tracking-[0.25em] block mt-1">
-                      2026 TÜRKİYE DÜNYA KUPASI MARŞI
+                    </span>
+                    <span className="text-[7px] tracking-[0.3em] font-mono text-gold uppercase block mt-1.5 font-bold">
+                      BİRLİKTE KAZANIRIZ
                     </span>
                   </div>
-
-                  {/* Slogan Banner Block - "Birlikte Kazanırız!" */}
-                  <div className="my-2 py-2 px-4 bg-gradient-to-r from-transparent via-[#dfba6b]/15 to-transparent border-y border-[#dfba6b]/20">
-                    <h3 className="text-[#dfba6b] text-sm md:text-base tracking-[0.16em] uppercase font-serif font-black">
-                      BİRLİKTE KAZANIRIZ!
-                    </h3>
-                  </div>
-
-                  {/* Gigantic "2 [Trophy] 6" composition inside Poster */}
-                  <div className="relative h-44 flex items-center justify-center">
-                    <span 
-                      className="text-[10rem] md:text-[11rem] font-serif font-extrabold select-none z-10 translate-x-2 text-transparent bg-clip-text"
-                      style={{
-                        backgroundImage: 'linear-gradient(180deg, #FFF2CC 0%, #D4AF37 40%, #AA7C11 85%, #DFBA6B 100%)',
-                        filter: 'drop-shadow(0 4px 10px rgba(212,175,55,0.2))',
-                        lineHeight: '1'
-                      }}
-                    >
-                      2
-                    </span>
-
-                    {/* Glowing Trophy */}
-                    <div className="absolute left-1/2 top-4 -translate-x-1/2 z-20 w-32 h-32 flex items-center justify-center filter drop-shadow-[0_4px_12px_rgba(212,175,55,0.45)]">
-                      <svg 
-                        className="w-full h-full text-[#F2D37D]" 
-                        viewBox="0 0 100 200" 
-                        fill="none" 
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <defs>
-                          <radialGradient id="poster-gold" cx="50%" cy="40%" r="60%">
-                            <stop offset="0%" stopColor="#FFF2CC" />
-                            <stop offset="30%" stopColor="#F2D37D" />
-                            <stop offset="70%" stopColor="#D4AF37" />
-                            <stop offset="100%" stopColor="#AA7C11" />
-                          </radialGradient>
-                        </defs>
-                        <circle cx="50" cy="46" r="30" fill="url(#poster-gold)" opacity="0.1" filter="blur(10px)" />
-                        <circle cx="50" cy="46" r="22" stroke="url(#poster-gold)" strokeWidth="1" strokeDasharray="3 3" />
-                        <circle cx="50" cy="46" r="22" fill="none" stroke="url(#poster-gold)" strokeWidth="1" />
-                        <path d="M28 46 C35 28 65 28 72 46 C65 64 35 64 28 46 Z" stroke="url(#poster-gold)" strokeWidth="0.75" />
-                        <path d="M50 24 C42 31 42 61 50 68 C58 61 58 31 50 24 Z" stroke="url(#poster-gold)" strokeWidth="0.75" />
-                        <path d="M50 156 C53 136 58 126 58 111 C58 94 48 81 40 72 C37 68 38 66 41 67 C45 69 50 77 52 86 C54 94 55 102 50 111 C46 119 44 131 47 156 Z" fill="url(#poster-gold)" opacity="0.9" />
-                        <path d="M50 156 C47 136 42 126 42 111 C42 94 52 81 60 72 C63 68 62 66 59 67 C55 69 50 77 48 86 C46 94 45 102 50 111 C54 119 56 131 53 156 Z" fill="url(#poster-gold)" opacity="0.9" />
-                        <path d="M35 121 C45 116 55 116 65 121" stroke="url(#poster-gold)" strokeWidth="2.5" strokeLinecap="round" />
-                        <path d="M38 136 C46 131 54 131 62 136" stroke="url(#poster-gold)" strokeWidth="2.5" strokeLinecap="round" />
-                        <circle cx="43" cy="76" r="3" fill="url(#poster-gold)" />
-                        <circle cx="57" cy="76" r="3" fill="url(#poster-gold)" />
-                        <path d="M30 156 H70 V176 H30 Z" fill="none" stroke="url(#poster-gold)" strokeWidth="1.5" />
-                        <rect x="33" y="161" width="34" height="2" fill="url(#poster-gold)" />
-                        <rect x="33" y="168" width="34" height="2" fill="url(#poster-gold)" />
-                      </svg>
-                    </div>
-
-                    <span 
-                      className="text-[10rem] md:text-[11rem] font-serif font-extrabold select-none z-10 -translate-x-2 text-transparent bg-clip-text"
-                      style={{
-                        backgroundImage: 'linear-gradient(180deg, #FFF2CC 0%, #D4AF37 40%, #AA7C11 85%, #DFBA6B 100%)',
-                        filter: 'drop-shadow(0 4px 10px rgba(212,175,55,0.25))',
-                        lineHeight: '1'
-                      }}
-                    >
-                      6
-                    </span>
-                  </div>
-
-                  {/* Campaign footer info in Poster */}
-                  <div className="space-y-1 mt-2">
-                    <h4 className="text-white text-[10px] md:text-xs font-bold tracking-[0.25em] uppercase">
-                      FIFA WORLD CUP 2026
-                    </h4>
-                    <span className="text-[8px] font-mono tracking-[0.2em] text-[#dfba6b] uppercase block">
-                      AskinStudios.com
-                    </span>
+                  <div className="text-[6px] tracking-[0.25em] text-paper/30 font-mono uppercase">
+                    © 2026 STUDIO ASKIN RECORDINGS • ALL RIGHTS RESERVED
                   </div>
                 </div>
               </motion.div>
@@ -551,11 +495,11 @@ const Anthem = () => {
             <div className="lg:col-span-4 space-y-8">
               
               {/* Project Meta Card */}
-              <div className="bg-white/5 border border-white/10 p-8 rounded-sm space-y-6">
-                <h4 className="text-gold uppercase tracking-widest text-xs font-semibold border-b border-white/10 pb-3">
+              <div className="bg-white/5 border border-white/10 p-6 rounded-sm space-y-4">
+                <h4 className="text-gold uppercase tracking-widest text-[11px] font-semibold border-b border-white/10 pb-2.5">
                   {lang === 'TR' ? 'Proje Künyesi' : 'Project Credits'}
                 </h4>
-                <ul className="space-y-4 text-sm font-light text-paper/80">
+                <ul className="space-y-3 text-xs font-light text-paper/80">
                   <li className="flex justify-between border-b border-white/5 pb-2">
                     <span className="text-paper/40">{lang === 'TR' ? 'Yapımcı' : 'Produced By'}</span>
                     <strong className="text-white font-medium">Studio Askin</strong>
@@ -572,35 +516,64 @@ const Anthem = () => {
                     <span className="text-paper/40">{lang === 'TR' ? 'Tarz' : 'Genre'}</span>
                     <strong className="text-white font-medium">Epic, Cinematic Fusion</strong>
                   </li>
-                  <li className="flex justify-between items-center pb-1">
+                  <li className="flex justify-between items-center">
                     <span className="text-paper/40">{lang === 'TR' ? 'Mevcut Durum' : 'Status'}</span>
-                    <span className="px-2 py-0.5 rounded-sm bg-green-500/10 border border-green-500/20 text-green-400 text-[10px] uppercase tracking-wider">
+                    <span className="px-2 py-0.5 rounded-sm bg-green-500/10 border border-green-500/20 text-green-400 text-[10px] uppercase tracking-wider font-semibold">
                       {lang === 'TR' ? 'Viral Büyüme' : 'Viral Sensation'}
                     </span>
                   </li>
                 </ul>
               </div>
 
-              {/* Dynamic Stats Banner */}
-              <div className="p-8 bg-gradient-to-b from-[#111a2e]/90 to-[#060a12]/95 border-2 border-[#dfba6b] rounded-md flex flex-col items-center justify-center text-center shadow-[0_0_35px_rgba(223,186,107,0.2)]">
-                <span className="text-[#dfba6b] font-serif text-5xl md:text-6xl font-black tracking-tight mb-2 drop-shadow-[0_2px_10px_rgba(0,0,0,0.6)] animate-fade-in">
-                  {formatViews(liveViews)}+
-                </span>
-                <span className="text-xs text-white uppercase tracking-[0.25em] font-extrabold animate-pulse">
-                  {lang === 'TR' ? `İlk ${elapsedDays} Günde İzlenme` : `Views in the First ${elapsedDays} Days`}
-                </span>
+              {/* Dynamic Stats Banner with Consolidated Expanded Insights */}
+              <div className="bg-gradient-to-b from-[#111a2e]/90 to-[#060a12]/95 border border-[#dfba6b]/40 rounded-sm p-6 text-center space-y-4 shadow-[0_15px_40px_rgba(0,0,0,0.4)]">
+                <div>
+                  <span className="text-[#dfba6b] font-serif text-4xl md:text-5xl font-black tracking-tight mb-1 block drop-shadow-[0_2px_10px_rgba(0,0,0,0.6)] animate-fade-in">
+                    {formatViews(liveViews)}+
+                  </span>
+                  <span className="text-[10px] text-white/50 uppercase tracking-[0.2em] font-bold block">
+                    {lang === 'TR' ? `İLK ${elapsedDays} GÜN GENEL İZLENME` : `WATCH METRICS IN FIRST ${elapsedDays} DAYS`}
+                  </span>
+                </div>
+                
+                <div className="border-t border-white/5 pt-4 space-y-2 text-xs font-light text-paper/70">
+                  <div className="flex justify-between">
+                    <span>{lang === 'TR' ? 'Beğeni Oranı' : 'Like Ratio'}</span>
+                    <strong className="text-white font-medium">{lang === 'TR' ? '%94.4' : '94.4%'}</strong>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>{lang === 'TR' ? 'İzleme Süresi' : 'Watch Time'}</span>
+                    <strong className="text-white font-medium">{lang === 'TR' ? '2.200+ Saat' : '2,200+ Hrs'}</strong>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>{lang === 'TR' ? 'Cihaz Dağılımı' : 'Device Split'}</span>
+                    <strong className="text-white font-medium">{lang === 'TR' ? '%64 SMART TV' : '64% Smart TV'}</strong>
+                  </div>
+                  <div className="flex justify-between border-t border-white/5 pt-2">
+                    <span className="text-[#dfba6b] font-medium">{lang === 'TR' ? 'Kilit Bölgeler' : 'Top Geographies'}</span>
+                    <strong className="text-white font-medium text-right max-w-[150px] leading-tight">
+                      {lang === 'TR' ? 'TR, AZ, USA, DE' : 'TR, AZ, US, DE'}
+                    </strong>
+                  </div>
+                </div>
               </div>
 
-              {/* Lyrics Block */}
-              <div className="bg-white/5 border border-white/10 p-8 rounded-sm space-y-6">
-                <h4 className="text-gold uppercase tracking-widest text-xs font-semibold border-b border-white/10 pb-3">
-                  {lang === 'TR' ? 'Marş Sözleri (Tezahürat)' : 'Lyrics (Chant)'}
-                </h4>
-                <div className="space-y-6 font-serif italic text-base text-paper/90 leading-relaxed text-center">
+              {/* Lyrics Block with Scroll Capabilities for Space Optimization */}
+              <div className="bg-white/5 border border-white/10 p-6 md:p-8 rounded-sm space-y-4">
+                <div className="flex justify-between items-center border-b border-white/10 pb-3">
+                  <h4 className="text-gold uppercase tracking-widest text-[#dfba6b] text-xs font-semibold">
+                    {lang === 'TR' ? 'Marş Sözleri & Tezahürat' : 'Lyrics & Chant'}
+                  </h4>
+                  <span className="text-[9px] text-[#dfba6b]/60 tracking-wider uppercase font-mono border border-[#dfba6b]/15 px-2 py-0.5 rounded-sm">
+                    {lang === 'TR' ? 'DİKEY KAYDIR' : 'SCROLL TO READ'}
+                  </span>
+                </div>
+                
+                <div className="max-h-[360px] overflow-y-auto pr-2 space-y-6 font-serif italic text-sm text-paper/90 leading-relaxed text-center scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
                   {lang === 'TR' ? (
                     <>
                       <div>
-                        <span className="block text-[10px] text-paper/40 uppercase tracking-widest mb-1 not-italic font-sans">Giriş / Verse 1</span>
+                        <span className="block text-[9px] text-paper/40 uppercase tracking-widest mb-1.5 not-italic font-sans">Giriş / Verse 1</span>
                         <p>Haydi Kupaya, sahadayız şimdi</p>
                         <p>Ay yıldız uğruna savaşır her milli</p>
                         <p>Tribünde yankılanır tek bir isim <span className="text-gold font-bold font-sans not-italic">(Türkiye!)</span></p>
@@ -608,21 +581,21 @@ const Anthem = () => {
                       </div>
 
                       <div>
-                        <span className="block text-[10px] text-paper/40 uppercase tracking-widest mb-1 not-italic font-sans">Verse 2</span>
+                        <span className="block text-[9px] text-paper/40 uppercase tracking-widest mb-1.5 not-italic font-sans">Verse 2</span>
                         <p>Dalgalanır bayrakla coşar nefesim</p>
                         <p>Doksanda da pes etmez canım milletim</p>
                         <p>Dalgalanır bayrakla coşar nefesim</p>
                       </div>
 
                       <div className="py-2 border-y border-white/5 bg-white/[0.02]">
-                        <span className="block text-[9px] text-red-400 uppercase tracking-widest mb-1 not-italic font-sans font-semibold">[BREAK] [SILENCE, THEN EVERYONE]</span>
-                        <p className="text-gold font-bold text-lg leading-relaxed scale-105 transform transition-all duration-300">
+                        <span className="block text-[8px] text-red-500 uppercase tracking-widest mb-1 not-italic font-sans font-semibold">[BREAK] [SILENCE, THEN EVERYONE]</span>
+                        <p className="text-gold font-bold text-base leading-relaxed">
                           (SHHH!...) Biz Demeden Bitmez!
                         </p>
                       </div>
 
                       <div>
-                        <span className="block text-[10px] text-paper/40 uppercase tracking-widest mb-1 not-italic font-sans">Köprü / Build-Up</span>
+                        <span className="block text-[9px] text-paper/40 uppercase tracking-widest mb-1.5 not-italic font-sans">Köprü / Build-Up</span>
                         <p>Senle gururum sınır tanımaz</p>
                         <p>Son dokunuşun gol olsun duam</p>
                         <p>Sahadaki aslanımızsın kalpten</p>
@@ -630,14 +603,14 @@ const Anthem = () => {
                       </div>
 
                       <div>
-                        <span className="block text-[10px] text-paper/40 uppercase tracking-widest mb-1 not-italic font-sans">Gelişme</span>
+                        <span className="block text-[9px] text-paper/40 uppercase tracking-widest mb-1.5 not-italic font-sans">Gelişme</span>
                         <p>Son dokunuşun gol olsun duam</p>
                         <p>Sahadaki aslanımızsın kalpten</p>
                         <p>Bizim çocuklar yürür kupaya</p>
                       </div>
 
                       <div>
-                        <span className="block text-[10px] text-paper/40 uppercase tracking-widest mb-1 not-italic font-sans font-medium">Koro / Chorus</span>
+                        <span className="block text-[9px] text-paper/40 uppercase tracking-widest mb-1.5 not-italic font-sans font-medium">Koro / Chorus</span>
                         <p>Senle gururum sınır tanımaz</p>
                         <p>Son dokunuşun gol olsun duam</p>
                         <p>Sahadaki aslanımızsın kalpten</p>
@@ -645,23 +618,23 @@ const Anthem = () => {
                       </div>
 
                       <div className="py-2 border-y border-white/5 bg-white/[0.02]">
-                        <span className="block text-[9px] text-red-400 uppercase tracking-widest mb-1 not-italic font-sans font-semibold">(Whole stadium silence and everyone)</span>
-                        <p className="text-gold font-bold text-lg leading-relaxed scale-105 transform transition-all duration-300">
+                        <span className="block text-[8px] text-red-500 uppercase tracking-widest mb-1 not-italic font-sans font-semibold">(Whole stadium silence and everyone)</span>
+                        <p className="text-gold font-bold text-base leading-relaxed">
                           (SHHH!...) Biz Demeden Bitmez!
                         </p>
                       </div>
 
                       <div className="pt-2">
-                        <span className="block text-[10px] text-gold uppercase tracking-widest mb-1 not-italic font-sans">Kapanış / Outro</span>
+                        <span className="block text-[9px] text-gold uppercase tracking-widest mb-1.5 not-italic font-sans font-medium">Kapanış / Outro</span>
                         <p className="text-white font-medium">Kırmızı, Beyaz, Kırmızı, Beyaz,</p>
-                        <p className="text-gold font-bold text-lg font-sans not-italic tracking-wide mt-1">En Büyük Türkiye,</p>
-                        <p className="text-paper/80">Türkiye, Türkiye, Türkiye</p>
+                        <p className="text-gold font-bold text-base font-sans not-italic tracking-wide mt-1">En Büyük Türkiye,</p>
+                        <p className="text-[#bf9d53]">Türkiye, Türkiye, Türkiye</p>
                       </div>
                     </>
                   ) : (
                     <>
                       <div>
-                        <span className="block text-[10px] text-paper/40 uppercase tracking-widest mb-1 not-italic font-sans">Intro / Verse 1</span>
+                        <span className="block text-[9px] text-paper/40 uppercase tracking-widest mb-1.5 not-italic font-sans">Intro / Verse 1</span>
                         <p>Off to the Cup, we're on the pitch now</p>
                         <p>Every national battles for the crescent and star</p>
                         <p>A single name echoes in the stands <span className="text-gold font-bold font-sans not-italic">(Turkey!)</span></p>
@@ -669,21 +642,21 @@ const Anthem = () => {
                       </div>
 
                       <div>
-                        <span className="block text-[10px] text-paper/40 uppercase tracking-widest mb-1 not-italic font-sans">Verse 2</span>
+                        <span className="block text-[9px] text-paper/40 uppercase tracking-widest mb-1.5 not-italic font-sans">Verse 2</span>
                         <p>Our breath overflows as the flag waves</p>
                         <p>My beloved nation never gives up, even in the 90th</p>
                         <p>Our breath overflows as the flag waves</p>
                       </div>
 
                       <div className="py-2 border-y border-white/5 bg-white/[0.02]">
-                        <span className="block text-[9px] text-red-400 uppercase tracking-widest mb-1 not-italic font-sans font-semibold">[BREAK] [SILENCE, THEN EVERYONE]</span>
-                        <p className="text-gold font-bold text-lg leading-relaxed scale-105 transform transition-all duration-300">
+                        <span className="block text-[8px] text-red-500 uppercase tracking-widest mb-1 not-italic font-sans font-semibold">[BREAK] [SILENCE, THEN EVERYONE]</span>
+                        <p className="text-gold font-bold text-base leading-relaxed">
                           (SHHH!...) It's Not Over Till We Say So!
                         </p>
                       </div>
 
                       <div>
-                        <span className="block text-[10px] text-paper/40 uppercase tracking-widest mb-1 not-italic font-sans">Bridge / Build-Up</span>
+                        <span className="block text-[9px] text-paper/40 uppercase tracking-widest mb-1.5 not-italic font-sans">Bridge / Build-Up</span>
                         <p>My pride in you knows no bounds</p>
                         <p>My prayer is that your last touch becomes a goal</p>
                         <p>You are our lion on the field, from the heart</p>
@@ -691,14 +664,14 @@ const Anthem = () => {
                       </div>
 
                       <div>
-                        <span className="block text-[10px] text-paper/40 uppercase tracking-widest mb-1 not-italic font-sans">Development</span>
+                        <span className="block text-[9px] text-paper/40 uppercase tracking-widest mb-1.5 not-italic font-sans">Development</span>
                         <p>My prayer is that your last touch becomes a goal</p>
                         <p>You are our lion on the field, from the heart</p>
                         <p>Our boys march to the cup</p>
                       </div>
 
                       <div>
-                        <span className="block text-[10px] text-paper/40 uppercase tracking-widest mb-1 not-italic font-sans font-medium">Chorus</span>
+                        <span className="block text-[9px] text-paper/40 uppercase tracking-widest mb-1.5 not-italic font-sans font-medium">Chorus</span>
                         <p>My pride in you knows no bounds</p>
                         <p>My prayer is that your last touch becomes a goal</p>
                         <p>You are our lion on the field, from the heart</p>
@@ -706,17 +679,17 @@ const Anthem = () => {
                       </div>
 
                       <div className="py-2 border-y border-white/5 bg-white/[0.02]">
-                        <span className="block text-[9px] text-red-400 uppercase tracking-widest mb-1 not-italic font-sans font-semibold">(Whole stadium silence and everyone)</span>
-                        <p className="text-gold font-bold text-lg leading-relaxed scale-105 transform transition-all duration-300">
+                        <span className="block text-[8px] text-red-500 uppercase tracking-widest mb-1 not-italic font-sans font-semibold">(Whole stadium silence and everyone)</span>
+                        <p className="text-gold font-bold text-base leading-relaxed">
                           (SHHH!...) It's Not Over Till We Say So!
                         </p>
                       </div>
 
                       <div className="pt-2">
-                        <span className="block text-[10px] text-gold uppercase tracking-widest mb-1 not-italic font-sans">Outro</span>
+                        <span className="block text-[9px] text-gold uppercase tracking-widest mb-1.5 not-italic font-sans">Outro</span>
                         <p className="text-white font-medium">Red, White, Red, White,</p>
-                        <p className="text-gold font-bold text-lg font-sans not-italic tracking-wide mt-1">Greatest is Turkey,</p>
-                        <p className="text-paper/80">Turkey, Turkey, Turkey</p>
+                        <p className="text-gold font-bold text-base font-sans not-italic tracking-wide mt-1">Greatest is Turkey,</p>
+                        <p className="text-[#bf9d53]">Turkey, Turkey, Turkey</p>
                       </div>
                     </>
                   )}
@@ -725,235 +698,6 @@ const Anthem = () => {
             </div>
 
           </div>
-        </div>
-      </section>
-
-      {/* Viral Growth & Project Info Section */}
-      <section id="anthem-info" className="py-12 md:py-20 px-4 md:px-8 border-t border-white/5 bg-black/20 backdrop-blur-[2px] relative z-10">
-        <div className="max-w-4xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1 }}
-            className="space-y-8"
-          >
-            <div className="flex items-center gap-3">
-              <div className="p-2.5 rounded-full bg-gold/10 border border-gold/20 text-gold">
-                <TrendingUp size={24} />
-              </div>
-              <h2 className="text-3xl md:text-4xl font-serif italic text-gold">
-                {lang === 'TR' ? 'Viral Büyüme & Proje Özeti' : 'Viral Growth & Project Summary'}
-              </h2>
-            </div>
-
-            <p className="text-paper/80 font-light text-base md:text-lg leading-relaxed text-justify">
-              {lang === 'TR' 
-                ? '“Biz Demeden Bitmez” yayınlandıktan kısa süre sonra on binlerce izlenmeye ulaşarak güçlü bir viral ivme yakaladı. Yüksek izlenme süresi, yüksek beğeni oranı ve uluslararası izleyici kitlesiyle YouTube algoritmasında öne çıkan bir proje haline geldi.'
-                : 'Shortly after its release, "Biz Demeden Bitmez" swept digital spaces, generating tens of thousands of video views and a powerful viral momentum. Its stellar audience retention and overwhelmingly high appreciation rate have made it a standout performance on the YouTube algorithm.'}
-            </p>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
-              <div className="bg-white/5 border border-white/10 p-6 md:p-8 rounded-sm space-y-4">
-                <h4 className="text-gold uppercase tracking-[0.2em] text-[10px] md:text-xs font-semibold">
-                  {lang === 'TR' ? 'Milli İlgi & İzlenim İstatistikleri' : 'National Resonance & Watch Metrics'}
-                </h4>
-                <ul className="space-y-3">
-                  <li className="flex justify-between items-center text-sm border-b border-white/5 pb-2">
-                    <span className="text-paper/60 font-light">{lang === 'TR' ? `İlk ${elapsedDays} Günde` : `First ${elapsedDays} Days`}</span>
-                    <strong className="text-white font-medium">{formatViews(liveViews)}+ {lang === 'TR' ? 'izlenme' : 'Views'}</strong>
-                  </li>
-                  <li className="flex justify-between items-center text-sm border-b border-white/5 pb-2">
-                    <span className="text-paper/60 font-light">{lang === 'TR' ? 'İzlenme Süresi' : 'Watch Time'}</span>
-                    <strong className="text-white font-medium">{lang === 'TR' ? '2.200+ saat' : '2,200+ Hours'}</strong>
-                  </li>
-                  <li className="flex justify-between items-center text-sm">
-                    <span className="text-paper/60 font-light">{lang === 'TR' ? 'Beğeni Oranı' : 'Appreciation Ratio'}</span>
-                    <strong className="text-white font-medium">{lang === 'TR' ? '%94.4' : '94.4% Positive'}</strong>
-                  </li>
-                </ul>
-              </div>
-
-              <div className="bg-white/5 border border-white/10 p-6 md:p-8 rounded-sm space-y-4">
-                <h4 className="text-gold uppercase tracking-[0.2em] text-[10px] md:text-xs font-semibold">
-                  {lang === 'TR' ? 'Kitle & Cihaz Dağılımı' : 'Demographics & Device Metrics'}
-                </h4>
-                <ul className="space-y-3">
-                  <li className="flex justify-between items-center text-sm border-b border-white/5 pb-2">
-                    <span className="text-paper/60 font-light">{lang === 'TR' ? 'Ortalama İzlenme' : 'Average Retention'}</span>
-                    <strong className="text-white font-medium">{lang === 'TR' ? '%57.6 retention (tutundurma)' : '57.6% (Exceptional)'}</strong>
-                  </li>
-                  <li className="flex justify-between text-sm border-b border-white/5 pb-2">
-                    <span className="text-paper/60 font-light">{lang === 'TR' ? 'En Çok İzlenen Ülkeler' : 'Top Geographies'}</span>
-                    <strong className="text-white font-medium text-right text-xs">
-                      {lang === 'TR' ? 'Azerbaycan, Türkiye, ABD, Bosna, Almanya' : 'Azerbaijan, Turkey, USA, Bosnia, Germany'}
-                    </strong>
-                  </li>
-                  <li className="flex justify-between items-center text-sm">
-                    <span className="text-paper/60 font-light">{lang === 'TR' ? 'Cihaz Dağılımı' : 'Device Split'}</span>
-                    <strong className="text-white font-medium">{lang === 'TR' ? '%64 TV izleyicisi (yüksek etkileşim)' : '64% Connected TV (High Engagement)'}</strong>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-            <p className="text-paper/70 font-light text-base leading-relaxed text-justify">
-              {lang === 'TR'
-                ? 'Bu proje, Türkiye’nin birlik ruhunu ve Dünya Kupası heyecanını sinematik bir anlatımla bir araya getirerek geniş bir kitleye ulaşmayı başardı. Studio Askin’in imzasını taşıyan bu marş, uluslararası izleyiciler tarafından da ilgiyle karşılandı.'
-                : 'By blending the unwavering spirit of Turkey’s national team with standard world-class cinematic orchestrations, this unofficial anthem succeeds in gathering a broad demographic under one rhythmic pulse. Released independently under Studio Aşkın, it has captured the attention of dynamic global audiences.'}
-            </p>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Behind the Anthem - Brand Aligned Section */}
-      <section id="behind-anthem" className="py-16 md:py-24 px-4 md:px-8 border-t border-white/5 bg-[#0a0f1c]/40 relative z-10">
-        <div className="max-w-4xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1 }}
-            className="space-y-12"
-          >
-            <div className="flex items-center gap-3">
-              <div className="p-2.5 rounded-full bg-gold/10 border border-gold/20 text-gold bg-[#0a0f1c]">
-                <BookOpen size={24} />
-              </div>
-              <h2 className="text-3xl md:text-4xl font-serif italic text-gold">
-                {lang === 'TR' ? 'Marşın Ardındaki Hikâye' : 'Story Behind the Anthem'}
-              </h2>
-            </div>
-
-            <p className="text-paper/80 font-light text-base md:text-lg leading-relaxed text-justify">
-              {lang === 'TR'
-                ? '“Biz Demeden Bitmez”, Türkiye’nin birlik, güç ve dayanışma ruhunu yansıtmak için sinematik bir yaklaşımla tasarlandı. Bu proje, sadece bir marş değil; milyonların aynı anda hissettiği ortak bir enerji fikri üzerine inşa edildi.'
-                : '"Biz Demeden Bitmez" was envisioned to encapsulate Turkey\'s deep-rooted solidarity, raw power, and passion on the grandest stages. It represents more than a song; it\'s a dynamic acoustic frequency uniting millions under one colossal pulse.'}
-            </p>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4">
-              <div className="space-y-3">
-                <h3 className="text-gold uppercase tracking-[0.2em] text-xs font-semibold">
-                  {lang === 'TR' ? 'Vizyon' : 'The Vision'}
-                </h3>
-                <p className="text-paper/70 font-light text-sm leading-relaxed text-justify">
-                  {lang === 'TR'
-                    ? 'Amaç, modern prodüksiyon tekniklerini geleneksel Türk ritimleriyle birleştirerek uluslararası arenada yankı uyandıracak bir marş yaratmaktı. Büyük davullar, koro katmanları, darbuka dokunuşları ve epik sinematik unsurlar bu vizyonun temelini oluşturdu.'
-                    : 'The primary objective was to align cutting-edge modern pop-orchestral production with authentic Turkish rhythms, achieving a world-class hybrid sound. Massive stadium drums, epic choral walls, responsive darbuka rolls, and brass stabs form the pillars of this release.'}
-                </p>
-              </div>
-
-              <div className="space-y-3">
-                <h3 className="text-gold uppercase tracking-[0.2em] text-xs font-semibold">
-                  {lang === 'TR' ? 'Prodüksiyon Süreci' : 'Production Process'}
-                </h3>
-                <p className="text-paper/70 font-light text-sm leading-relaxed text-justify">
-                  {lang === 'TR'
-                    ? 'Stüdyo aşamasında yüzlerce vokal katmanı, geniş stereo davul kayıtları ve orkestral elementler bir araya getirildi. Her bölüm, stadyum atmosferini hissettirecek şekilde tasarlandı. Sessizlikten sonra gelen toplu “Biz Demeden Bitmez” çıkışı, marşın imza anı olarak planlandı.'
-                    : 'Engineered at Studio Aşkın over extensive tracking sessions, the arrangement weaves together hundreds of backing vocal layers, wide acoustic drum room recordings, and custom orchestral patches. Every dynamic crescendo was curated to echo standard stadium atmospheres.'}
-                </p>
-              </div>
-
-              <div className="space-y-3">
-                <h3 className="text-gold uppercase tracking-[0.2em] text-xs font-semibold">
-                  {lang === 'TR' ? 'Duygusal Çekirdek' : 'Emotional Core'}
-                </h3>
-                <p className="text-paper/70 font-light text-sm leading-relaxed text-justify">
-                  {lang === 'TR'
-                    ? <>Marşın merkezinde tek bir fikir var: <strong className="text-white font-medium">“Birlik olmadan zafer olmaz.”</strong> Bu duygu, hem müzikal yapıda hem de sözlerin ritminde kendini gösteriyor.</>
-                    : <>At the absolute focus is a singular, humble message: <strong className="text-white font-medium font-sans">"Without unity, there can be no victory."</strong> This emotional core is felt in the heavy, breathless pacing of the lyrics and instrumentation.</>}
-                </p>
-              </div>
-
-              <div className="space-y-3">
-                <h3 className="text-gold uppercase tracking-[0.2em] text-xs font-semibold">
-                  {lang === 'TR' ? 'Küresel Etki' : 'Global Reach'}
-                </h3>
-                <p className="text-paper/70 font-light text-sm leading-relaxed text-justify">
-                  {lang === 'TR'
-                    ? 'Yayınlandıktan sonra marş, Türkiye’nin ötesine geçerek Azerbaycan, ABD, Almanya ve Balkan ülkelerinde hızla yayılmaya başladı. Yüksek izlenme süresi ve güçlü izleyici tutma oranı, marşın uluslararası izleyiciler tarafından benimsendiğini gösteriyor.'
-                    : 'Immediately following its debut, the anthem crossed borders and captured listeners across Azerbaijan, the United States, Germany, and the Balkans. High playback rates and dynamic audience retention demonstrate its cross-cultural appeal.'}
-                </p>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* International Reach - Brand Aligned Section */}
-      <section id="international-reach" className="py-16 md:py-24 px-4 md:px-8 border-t border-white/5 bg-black/10 backdrop-blur-[2px] relative z-10">
-        <div className="max-w-4xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1 }}
-            className="space-y-12"
-          >
-            <div className="flex items-center gap-3">
-              <div className="p-2.5 rounded-full bg-gold/10 border border-gold/20 text-gold bg-[#0a0f1c]">
-                <Globe size={24} />
-              </div>
-              <h2 className="text-3xl md:text-4xl font-serif italic text-gold">
-                {lang === 'TR' ? 'Uluslararası Erişim' : 'International Reach'}
-              </h2>
-            </div>
-
-            <p className="text-paper/80 font-light text-base md:text-lg leading-relaxed text-justify">
-              {lang === 'TR'
-                ? '“Biz Demeden Bitmez”, yayınlandıktan kısa süre sonra yalnızca Türkiye’de değil, dünya genelinde de güçlü bir izleyici kitlesine ulaştı. Marş, diaspora toplulukları, spor kültürü ve uluslararası müzik dinleyicileri arasında hızla yayılıyor.'
-                : 'After its release, “Biz Demeden Bitmez” quickly expanded beyond Turkey and began resonating with audiences worldwide. The anthem is spreading rapidly among diaspora communities, sports culture, and international music listeners.'}
-            </p>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
-              <div className="bg-white/5 border border-white/10 p-6 md:p-8 rounded-sm space-y-4">
-                <h4 className="text-gold uppercase tracking-[0.2em] text-[10px] md:text-xs font-semibold">
-                  {lang === 'TR' ? 'Küresel Yayılım' : 'Global Distribution'}
-                </h4>
-                <ul className="space-y-3 font-light text-sm text-paper/80">
-                  <li className="flex justify-between items-start border-b border-white/5 pb-2">
-                    <strong className="text-gold font-medium">{lang === 'TR' ? 'Azerbaycan:' : 'Azerbaijan:'}</strong>
-                    <span className="text-right pl-4">{lang === 'TR' ? 'Güçlü kültürel bağlar ve yüksek izlenme oranı.' : 'Strong cultural ties and high engagement.'}</span>
-                  </li>
-                  <li className="flex justify-between items-start border-b border-white/5 pb-2">
-                    <strong className="text-gold font-medium">{lang === 'TR' ? 'Türkiye:' : 'Turkey:'}</strong>
-                    <span className="text-right pl-4">{lang === 'TR' ? 'Ana izleyici kitlesi ve yoğun etkileşim.' : 'Primary audience with intense interaction.'}</span>
-                  </li>
-                  <li className="flex justify-between items-start border-b border-white/5 pb-2">
-                    <strong className="text-gold font-medium">{lang === 'TR' ? 'Amerika Birleşik Devletleri:' : 'United States:'}</strong>
-                    <span className="text-right pl-4">{lang === 'TR' ? 'Türk diasporası ve spor toplulukları.' : 'Turkish diaspora and sports communities.'}</span>
-                  </li>
-                  <li className="flex justify-between items-start border-b border-white/5 pb-2">
-                    <strong className="text-gold font-medium">{lang === 'TR' ? 'Almanya:' : 'Germany:'}</strong>
-                    <span className="text-right pl-4">{lang === 'TR' ? 'Avrupa’daki en büyük Türk topluluklarından biri.' : 'One of Europe’s largest Turkish populations.'}</span>
-                  </li>
-                  <li className="flex justify-between items-start">
-                    <strong className="text-gold font-medium">{lang === 'TR' ? 'Balkanlar:' : 'The Balkans:'}</strong>
-                    <span className="text-right pl-4">{lang === 'TR' ? 'Ritmik yapı ve kültürel yakınlık nedeniyle güçlü ilgi.' : 'Strong interest due to rhythmic and cultural familiarity.'}</span>
-                  </li>
-                </ul>
-              </div>
-
-              <div className="bg-white/5 border border-white/10 p-6 md:p-8 rounded-sm flex flex-col justify-between">
-                <div className="space-y-4">
-                  <h4 className="text-gold uppercase tracking-[0.2em] text-[10px] md:text-xs font-semibold">
-                    {lang === 'TR' ? 'Küresel Birlik Mesajı' : 'Global Message of Unity'}
-                  </h4>
-                  <p className="text-paper/70 font-light text-sm leading-relaxed text-justify">
-                    {lang === 'TR'
-                      ? 'Bu uluslararası dağılım, marşın yalnızca bir şarkı değil, ortak bir duygu ve birlik çağrısı olarak benimsendiğini gösteriyor. Sınırları aşan melodilerimiz, taraftarları nerede olurlarsa olsunlar tek bir yürek halinde birleştiriyor.'
-                      : 'This global distribution shows that the anthem is embraced not just as a song, but as a shared emotion and a call for unity. Our border-crossing melodies unite fans into a single heartbeat, wherever they may be.'}
-                  </p>
-                </div>
-                <div className="pt-6 border-t border-white/5 flex justify-between items-center text-xs font-medium text-gold">
-                  <span>{lang === 'TR' ? 'Küresel Hedef Kitle' : 'Global Reach Target'}</span>
-                  <span className="px-2 py-0.5 rounded-sm bg-gold/10 border border-gold/20 text-[10px] uppercase tracking-wider">
-                    WORLDWIDE
-                  </span>
-                </div>
-              </div>
-            </div>
-          </motion.div>
         </div>
       </section>
 

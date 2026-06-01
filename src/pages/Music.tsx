@@ -1,7 +1,22 @@
-import React, { useEffect } from 'react';
-import { motion } from 'motion/react';
+import React, { useEffect, useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { Link, useParams } from 'react-router-dom';
-import { Play, ArrowLeft, Youtube, Music as MusicIcon, TrendingUp, Sparkles, Award } from 'lucide-react';
+import { 
+  Play, 
+  ArrowLeft, 
+  Youtube, 
+  Music as MusicIcon, 
+  TrendingUp, 
+  Sparkles, 
+  Award, 
+  X, 
+  Tv, 
+  Clock, 
+  ChevronRight, 
+  Compass, 
+  Award as AwardIcon,
+  RefreshCw
+} from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import Markdown from 'react-markdown';
 import { cn } from '../lib/utils';
@@ -13,14 +28,168 @@ import { useLightbox } from '../context/LightboxContext';
 
 import { CinematicBackground } from '../components/common/CinematicBackground';
 
+// Track to YouTube video mapping
+const trackVideoMap: Record<string, string> = {
+  "Deli Gönül (2026 Version)": "FrDbL6ruWOA",
+  "Fantasy": "FrDbL6ruWOA",
+  "Crazy Heart": "bCYDFfrzbbA",
+  "Dreamy Eyes": "FJnyDZjhse8",
+  "Be Mine Tonight": "1SRls-hyUaY",
+  "Dönmelisin (Intro)": "jFXOAyqXmaI",
+  "Play Your Cymbals": "jFXOAyqXmaI",
+  "You And I": "nB9y-8dDtSU"
+};
+
 const Music = () => {
   const { slug } = useParams();
   const album = slug ? ALBUMS.find(a => a.id === slug) : null;
   const { showImage } = useLightbox();
 
+  // Dialog and Playback states
+  const [activeVideo, setActiveVideo] = useState<string | null>(null);
+  const [selectedTrackVideoId, setSelectedTrackVideoId] = useState<string | null>(null);
+
+  // Live YouTube Fetch states
+  const [youtubeVideos, setYoutubeVideos] = useState<any[]>([]);
+  const [ytLoading, setYtLoading] = useState<boolean>(true);
+  const [activeTab, setActiveTab] = useState<'all' | 'official' | 'live'>('all');
+
+  // Fetch Live RSS from YouTube or load high-impact fallback
+  useEffect(() => {
+    let active = true;
+    const fetchLatestYouTubeVideos = async () => {
+      try {
+        if (!active) return;
+        setYtLoading(true);
+
+        const channelPageUrl = 'https://www.youtube.com/@askinserbetci';
+        const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(channelPageUrl)}`;
+        const response = await fetch(proxyUrl);
+        if (!response.ok) throw new Error('Proxy request failed');
+        const data = await response.json();
+        const html = data?.contents || '';
+
+        const idMatch = html.match(/"channelId"\s*:\s*"([^"]+)"/) || 
+                        html.match(/itemprop="channelId"\s+content="([UC][A-Za-z0-9_-]{21,23})"/) ||
+                        html.match(/"browseId"\s*:\s*"([UC][A-Za-z0-9_-]{21,23})"/) ||
+                        html.match(/channel\/([UC][A-Za-z0-9_-]{21,23})/);
+
+        const channelId = idMatch ? idMatch[1] : 'UCvXN7tK7C4R-A1D8f9T_yqA';
+
+        const feedUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`;
+        const proxyFeedUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(feedUrl)}`;
+        const feedResponse = await fetch(proxyFeedUrl);
+        if (!feedResponse.ok) throw new Error('Feed fetch failed');
+        const feedData = await feedResponse.json();
+        const feedXml = feedData?.contents || '';
+
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(feedXml, 'text/xml');
+        const entries = xmlDoc.getElementsByTagName('entry');
+
+        if (entries.length > 0) {
+          const parsed = Array.from(entries).slice(0, 6).map((entry: any) => {
+            const videoId = entry.getElementsByTagName('yt:videoId')[0]?.textContent || 
+                            entry.getElementsByTagName('videoId')[0]?.textContent ||
+                            entry.textContent?.match(/<yt:videoId>([^<]+)<\/yt:videoId>/)?.[1] || '';
+            const title = entry.getElementsByTagName('title')[0]?.textContent || '';
+            const link = entry.getElementsByTagName('link')[0]?.getAttribute('href') || `https://www.youtube.com/watch?v=${videoId}`;
+            const publishedText = entry.getElementsByTagName('published')[0]?.textContent || '';
+            const publishedDate = publishedText ? new Date(publishedText).toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'short',
+              day: 'numeric'
+            }) : 'Recent Release';
+
+            let category: 'official' | 'live' = 'live';
+            if (title.toLowerCase().includes('official') || title.toLowerCase().includes('single') || title.toLowerCase().includes('müzik') || title.toLowerCase().includes('deli gönül')) {
+              category = 'official';
+            }
+
+            return {
+              videoId,
+              title,
+              publishedDate,
+              link,
+              category,
+              thumbnail: `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`
+            };
+          });
+
+          if (active && parsed.length > 0) {
+            setYoutubeVideos(parsed);
+            setYtLoading(false);
+            return;
+          }
+        }
+      } catch (err) {
+        console.warn('Dynamic YouTube fetch failed, loading bulletproof offline library:', err);
+      }
+
+      // Handcrafted high-impact fallback in case of rate limits or offline mode
+      if (active) {
+        setYoutubeVideos([
+          { 
+            videoId: "BiAViHwWBk4", 
+            title: "Biz Demeden Bitmez - Türkiye Dünya Kupası Marşı (Official Music Video)", 
+            publishedDate: "May 28, 2026", 
+            category: "official",
+            thumbnail: "https://img.youtube.com/vi/BiAViHwWBk4/maxresdefault.jpg" 
+          },
+          { 
+            videoId: "FrDbL6ruWOA", 
+            title: "Mine Geçili - Deli Gönül (2026 Cinematic Version)", 
+            publishedDate: "Feb 10, 2026", 
+            category: "official",
+            thumbnail: "/MINE_GECILI_DELI_GONUL.png" 
+          },
+          { 
+            videoId: "bCYDFfrzbbA", 
+            title: "Crazy Heart (Official World-Fusion Audio Visualizer)", 
+            publishedDate: "Album Track", 
+            category: "official",
+            thumbnail: "https://img.youtube.com/vi/bCYDFfrzbbA/maxresdefault.jpg" 
+          },
+          { 
+            videoId: "1SRls-hyUaY", 
+            title: "Be Mine Tonight - The Meeting of the Legends Session", 
+            publishedDate: "Featured Session", 
+            category: "live",
+            thumbnail: "https://img.youtube.com/vi/1SRls-hyUaY/maxresdefault.jpg" 
+          },
+          { 
+            videoId: "FJnyDZjhse8", 
+            title: "Dreamy Eyes - Live Traditional Improvisation (New York)", 
+            publishedDate: "Live Concert", 
+            category: "live",
+            thumbnail: "https://img.youtube.com/vi/FJnyDZjhse8/maxresdefault.jpg" 
+          },
+          { 
+            videoId: "d_0tpKop3yI", 
+            title: "Omar Faruk Tekbilek & Aşkın Şerbetçi - Live Instrumental Jam", 
+            publishedDate: "Studio Archive", 
+            category: "live",
+            thumbnail: "https://img.youtube.com/vi/d_0tpKop3yI/maxresdefault.jpg" 
+          }
+        ]);
+        setYtLoading(false);
+      }
+    };
+
+    fetchLatestYouTubeVideos();
+    return () => {
+      active = false;
+    };
+  }, []);
+
   // Scroll to top when switching views
   useEffect(() => {
     window.scrollTo(0, 0);
+  }, [slug]);
+
+  // Reset selected track on album change
+  useEffect(() => {
+    setSelectedTrackVideoId(null);
   }, [slug]);
 
   // ---------------------------------------------------------------------------
@@ -208,14 +377,37 @@ const Music = () => {
                       <iframe
                         width="100%"
                         height="100%"
-                        src={album.youtubeEmbedUrl}
+                        src={selectedTrackVideoId 
+                          ? `https://www.youtube.com/embed/${selectedTrackVideoId}?autoplay=1&rel=0` 
+                          : (album.id === 'legends' ? 'https://www.youtube.com/embed/1SRls-hyUaY' : album.youtubeEmbedUrl)}
                         title={`${album.title} – YouTube Player`}
                         frameBorder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowFullScreen
-                        className="absolute inset-0 w-full h-full"
+                        className="absolute inset-0 w-full h-full transition-all duration-500"
                       ></iframe>
                     </div>
+                    {selectedTrackVideoId && (
+                      <motion.div 
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="bg-gold/10 border border-gold/20 px-4 py-3 rounded-sm flex items-center justify-between"
+                      >
+                        <div className="flex items-center gap-3">
+                          <span className="relative flex h-2 w-2">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-gold opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-2 w-2 bg-gold"></span>
+                          </span>
+                          <span className="text-xs text-gold uppercase tracking-widest font-semibold">Now Playing Scene</span>
+                        </div>
+                        <button 
+                          onClick={() => setSelectedTrackVideoId(null)}
+                          className="text-[10px] text-paper/65 hover:text-white uppercase tracking-widest border border-white/10 hover:border-gold/30 bg-midnight/30 px-3 py-1 rounded-sm transition-all"
+                        >
+                          Showcase Video
+                        </button>
+                      </motion.div>
+                    )}
                   </div>
 
                   {/* CUSTOM RICH PRESENTATION FOR THE MEETING OF THE LEGENDS */}
@@ -489,44 +681,69 @@ const Music = () => {
                 {/* Tracklist */}
                 {album.tracklist && album.tracklist.length > 0 && (
                   <section>
-                    <h2 className="text-2xl font-serif italic mb-8 text-gold">Tracklist</h2>
-                    <ol className="space-y-0">
-                        {album.tracklist.map((track, i) => (
-                          track.isSectionHeader ? (
+                    <h2 className="text-2xl font-serif italic mb-8 text-gold flex items-center justify-between">
+                      <span>Tracklist</span>
+                      <span className="text-[10px] font-sans uppercase tracking-[0.2em] text-paper/30 normal-case bg-white/5 px-2.5 py-1 rounded-sm">Click track to play</span>
+                    </h2>
+                    <ol className="space-y-1">
+                        {album.tracklist.map((track, i) => {
+                          const videoId = track.youtubeVideoId || trackVideoMap[track.title] || null;
+                          const isCurrent = selectedTrackVideoId === videoId && videoId !== null;
+                          
+                          return track.isSectionHeader ? (
                             <li key={i} className="pt-8 pb-4">
-                              <span className="text-xs uppercase tracking-[0.2em] text-gold/80 block">{track.title}</span>
+                              <span className="text-xs uppercase tracking-[0.2em] text-gold/80 block border-b border-white/5 pb-2">{track.title}</span>
                             </li>
                           ) : (
                             <li 
                               key={i} 
-                              className="flex justify-between items-center py-4 border-b border-white/5 px-4 -mx-4 rounded-sm group"
+                              onClick={() => {
+                                if (videoId) {
+                                  setSelectedTrackVideoId(videoId);
+                                  window.scrollTo({ top: 380, behavior: 'smooth' });
+                                }
+                              }}
+                              className={cn(
+                                "flex justify-between items-center py-4 px-4 rounded-sm transition-all duration-300 border-b border-white/5 group",
+                                videoId ? "cursor-pointer hover:bg-white/[0.04]" : "opacity-70",
+                                isCurrent ? "bg-gold/10 border-l border-l-gold border-b-gold/20 pl-6" : "border-l border-l-transparent"
+                              )}
                             >
                               <div className="flex items-center gap-4">
-                                <span className="text-paper/30 text-xs w-6 text-center">
-                                  {track.trackNumber || (i + 1)}
+                                <span className="text-paper/30 text-xs w-6 text-center select-none flex items-center justify-center">
+                                  {isCurrent ? (
+                                    <span className="w-1.5 h-1.5 rounded-full bg-gold animate-ping" />
+                                  ) : (
+                                    track.trackNumber || (i + 1)
+                                  )}
                                 </span>
-                                <span className="font-light text-paper/90">
-                                  {track.title}
+                                <span className={cn("font-light", isCurrent ? "text-gold font-medium" : "text-paper/90")}>
+                                  <span className="flex items-center gap-2">
+                                    {track.title}
+                                    {videoId && !isCurrent && (
+                                      <Play size={10} className="opacity-0 group-hover:opacity-100 text-gold transition-opacity" fill="currentColor" />
+                                    )}
+                                  </span>
                                   {track.description && (
                                     <span className="block text-xs text-paper/50 mt-1 font-sans leading-relaxed max-w-xl">
                                       {track.description}
                                     </span>
                                   )}
                                   {track.commentary && (
-                                    <span className="block text-[10px] italic text-gold/40 mt-2 font-serif tracking-wide">
+                                    <span className="block text-[10px] italic text-gold/40 mt-1 font-serif tracking-wide">
                                       “{track.commentary}”
                                     </span>
                                   )}
                                 </span>
                               </div>
                               {track.duration && (
-                                <span className="text-xs font-mono text-gold/60">
+                                <span className={cn("text-xs font-mono", isCurrent ? "text-gold" : "text-gold/60")}>
                                   {track.duration}
                                 </span>
                               )}
                             </li>
-                          )
-                        ))}
+                          );
+                        })}
                       </ol>
                     </section>
                   )}
@@ -642,7 +859,7 @@ const Music = () => {
   // GRID VIEW (MAIN)
   // ---------------------------------------------------------------------------
   return (
-    <div className="music-section min-h-screen text-paper relative pt-32">
+    <div className="music-section min-h-screen text-paper relative pt-16 md:pt-20">
       <CinematicBackground imageSrc="/Turkiye_Grammy_2013.jpg" imageAlt="Music Background" />
       <Helmet>
         <title>{musicPageSEO.title}</title>
@@ -654,28 +871,137 @@ const Music = () => {
       </Helmet>
 
       {/* Hero Section */}
-      <section className="page-hero">
+      <section className="pt-20 pb-10 md:pt-24 md:pb-12 px-6 relative overflow-hidden flex flex-col items-center justify-center text-center">
         <div className="max-w-7xl mx-auto relative z-10 text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
           >
-            <h1 className="text-5xl md:text-8xl font-serif italic mb-6 leading-tight">Music</h1>
-            <span className="text-gold uppercase tracking-[0.3em] text-[10px] md:text-xs mb-10 block leading-relaxed font-medium">
+            <h1 className="text-5xl md:text-8xl font-serif italic mb-4 leading-tight">Music</h1>
+            <span className="text-gold uppercase tracking-[0.3em] text-[10px] md:text-xs mb-6 block leading-relaxed font-semibold">
               Albums • Singles • Collaborations
             </span>
-            <p className="text-paper/80 font-light text-lg md:text-2xl leading-relaxed max-w-3xl mx-auto">
+            <p className="text-paper/80 font-light text-base md:text-xl leading-relaxed max-w-2xl mx-auto">
               A curated collection of Aşkın’s albums, singles, collaborations, and featured works, blending Turkish classical tradition with cinematic world‑fusion and modern production.
             </p>
           </motion.div>
         </div>
       </section>
 
-      {/* Albums & Releases */}
-      <section className="px-6 pb-32">
+      {/* YouTube Live Showcase Section */}
+      <section className="px-6 pb-16 md:pb-24">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-serif italic mb-12 text-white">Albums & Releases</h2>
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-10">
+            <div>
+              <div className="flex items-center gap-2 text-gold text-xs uppercase tracking-[0.2em] mb-2">
+                <Youtube size={16} className="text-red-500" />
+                <span>Live Studio Updates</span>
+              </div>
+              <h2 className="text-3xl md:text-5xl font-serif italic text-white font-medium">YouTube Showcase</h2>
+            </div>
+            
+            {/* Filter Tabs */}
+            <div className="flex flex-wrap gap-2 border-b border-white/10 pb-2 lg:pb-0">
+              {(['all', 'official', 'live'] as const).map((tab) => (
+                <button
+                  key={tab}
+                  onClick={() => setActiveTab(tab)}
+                  className={cn(
+                    "px-4 py-2 text-xs uppercase tracking-widest transition-all duration-300 rounded-sm font-medium",
+                    activeTab === tab 
+                      ? "bg-gold text-ink font-semibold" 
+                      : "text-white/60 hover:text-white hover:bg-white/5"
+                  )}
+                >
+                  {tab === 'all' ? 'All Releases' : tab === 'official' ? 'Official Videos' : 'Studio Sessions'}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {ytLoading ? (
+            <div className="flex flex-col items-center justify-center py-24 border border-white/5 bg-white/[0.01] rounded-sm">
+              <RefreshCw className="text-gold animate-spin mb-4" size={28} />
+              <p className="text-paper/40 font-mono text-xs uppercase tracking-widest animate-pulse">Syncing feed with YouTube...</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {youtubeVideos
+                .filter(video => activeTab === 'all' || video.category === activeTab)
+                .map((video, idx) => (
+                  <motion.div
+                    key={video.videoId || idx}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: idx * 0.1 }}
+                    onClick={() => setActiveVideo(video.videoId)}
+                    className="group relative block overflow-hidden rounded-sm border border-white/10 bg-midnight/40 aspect-video cursor-pointer shadow-lg hover:border-gold/30 hover:shadow-gold/5 transition-all duration-500"
+                  >
+                    <img 
+                      src={video.thumbnail} 
+                      alt={video.title} 
+                      className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
+                      referrerPolicy="no-referrer"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = `https://picsum.photos/seed/yt${idx}/600/350?grayscale`;
+                      }}
+                    />
+
+                    {/* Glassmorphic Live Indicator Badge */}
+                    <div className="absolute top-4 left-4 z-20 flex items-center gap-1.5 bg-black/60 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/10">
+                      <span className="w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse"></span>
+                      <span className="text-[9px] uppercase tracking-wider text-white/90 font-medium">
+                        {video.publishedDate || 'Studio Release'}
+                      </span>
+                    </div>
+
+                    {/* Persistent Play Button Overlay */}
+                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10 transition-transform duration-500 group-hover:scale-105">
+                      <div className="w-12 h-12 rounded-full border border-white/30 flex items-center justify-center bg-black/35 backdrop-blur-sm transition-all duration-500 group-hover:bg-red-600 group-hover:border-red-500 group-hover:shadow-lg group-hover:shadow-red-500/20">
+                        <Play className="text-white fill-white ml-0.5" size={16} />
+                      </div>
+                    </div>
+
+                    <div className="absolute inset-0 bg-gradient-to-t from-midnight via-midnight/35 to-transparent flex flex-col justify-end p-6 z-20">
+                      <h3 className="text-base font-serif italic text-white mb-1 leading-tight group-hover:text-gold transition-colors line-clamp-2 pr-4">{video.title}</h3>
+                      <p className="text-gold/80 text-[10px] uppercase tracking-widest font-mono flex items-center gap-1.5">
+                        <Tv size={10} /> {video.category === 'official' ? 'Official Video' : 'Studio Session'}
+                      </p>
+                    </div>
+                  </motion.div>
+                ))}
+            </div>
+          )}
+          
+          {/* Channel CTA Banner */}
+          <div className="mt-12 bg-gradient-to-r from-red-600/10 to-transparent border border-red-500/20 p-8 rounded-sm flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="flex items-center gap-5">
+              <div className="w-12 h-12 rounded-full bg-red-600/20 flex items-center justify-center text-red-500 border border-red-500/30">
+                <Youtube size={24} />
+              </div>
+              <div className="text-left">
+                <h4 className="text-lg font-serif italic text-white">Subscribe to Aşkın Şerbetçi on YouTube</h4>
+                <p className="text-xs text-paper/60 font-light mt-1">Get instant access to live performances, scoring breakdowns, and early studio leaks.</p>
+              </div>
+            </div>
+            <a 
+              href="https://youtube.com/@askinserbetci" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-semibold uppercase tracking-widest text-xs rounded-sm transition-all flex items-center gap-2 shrink-0 border border-red-500"
+            >
+              Visit Channel <ChevronRight size={14} />
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* Albums & Releases */}
+      <section className="px-6 pb-16 md:pb-24">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-serif italic mb-10 text-white">Albums & Releases</h2>
           <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
             {ALBUMS.map((item, i) => (
               <Link 
@@ -716,45 +1042,8 @@ const Music = () => {
         </div>
       </section>
 
-      {/* Singles & Featured Tracks */}
-      <section className="px-6 pb-32">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-serif italic mb-12 text-white">Singles & Featured Tracks</h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              { title: "Deli Gönül", year: "2026", desc: "Cinematic Single", img: "/MINE_GECILI_DELI_GONUL.png" },
-              { title: "Film Cues", year: "Various", desc: "Original Scoring", img: "/Askin Serbetci 02.jpg" },
-              { title: "Live Sessions", year: "2024", desc: "Performance Recordings", img: "/Askin_Jamming.jpg" }
-            ].map((item, i) => (
-              <div key={i} className="group relative block overflow-hidden rounded-sm border border-white/10 aspect-square cursor-pointer">
-                <img 
-                  src={item.img} 
-                  alt={item.title} 
-                  className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105 md:grayscale md:group-hover:grayscale-0"
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).src = `https://picsum.photos/seed/single${i}/600/600?grayscale`;
-                  }}
-                />
-
-                {/* Persistent Play Button Overlay */}
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
-                  <div className="w-12 h-12 rounded-full border border-white/30 flex items-center justify-center bg-black/20 backdrop-blur-sm transition-all duration-500 group-hover:scale-110 group-hover:bg-black/40 group-hover:border-gold/50">
-                    <Play className="text-white/80 fill-white/80 ml-1 group-hover:text-gold group-hover:fill-gold transition-colors" size={20} />
-                  </div>
-                </div>
-
-                <div className="absolute inset-0 bg-gradient-to-t from-midnight/90 via-midnight/20 to-transparent flex flex-col justify-end p-8 z-20">
-                  <h3 className="text-xl font-serif italic text-white mb-1">{item.title}</h3>
-                  <p className="text-gold text-xs uppercase tracking-widest">{item.desc} • {item.year}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Credits & Collaborators */}
-      <section className="px-6 pb-48">
+      <section className="px-6 pb-20 md:pb-28">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-serif italic mb-12 text-white">Credits & Collaborators</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -792,6 +1081,47 @@ const Music = () => {
           </div>
         </div>
       </section>
+ 
+      {/* Cinematic YouTube Video Modal */}
+      <AnimatePresence>
+        {activeVideo && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 p-4 backdrop-blur-md"
+            onClick={() => setActiveVideo(null)}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 30 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 30 }}
+              transition={{ type: "spring", damping: 25, stiffness: 120 }}
+              className="relative w-full max-w-5xl aspect-video bg-black rounded-lg overflow-hidden border border-white/10 shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                onClick={() => setActiveVideo(null)}
+                className="absolute top-4 right-4 z-50 text-white/70 hover:text-white bg-black/50 hover:bg-black/85 p-2.5 rounded-full transition-colors"
+                aria-label="Close video player"
+              >
+                <X size={20} />
+              </button>
+              
+              <iframe
+                width="100%"
+                height="100%"
+                src={`https://www.youtube.com/embed/${activeVideo}?autoplay=1&rel=0`}
+                title="YouTube Live Video Player"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="absolute inset-0 w-full h-full"
+              ></iframe>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
     </div>
   );
