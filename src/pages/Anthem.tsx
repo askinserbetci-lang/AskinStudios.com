@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Helmet } from 'react-helmet-async';
-import { Download, Youtube, Music, Sparkles, Share2, Check, TrendingUp, BookOpen, Globe, Play } from 'lucide-react';
+import { Download, Youtube, Music, Sparkles, Share2, Check, TrendingUp, BookOpen, Globe, Play, FileText, ExternalLink } from 'lucide-react';
 import { CinematicBackground } from '../components/common/CinematicBackground';
 
 const Anthem = () => {
@@ -923,6 +923,92 @@ const Anthem = () => {
                   <span className="px-2 py-0.5 rounded-sm bg-gold/10 border border-gold/20 text-[10px] uppercase tracking-wider">
                     WORLDWIDE
                   </span>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Official Press Release Section */}
+      <section id="anthem-press-release" className="py-16 md:py-24 px-4 md:px-8 border-t border-white/5 bg-[#0a0f1c]/20 relative z-10 animate-fade-in">
+        <div className="max-w-4xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1 }}
+            className="space-y-12"
+          >
+            <div className="flex items-center gap-3">
+              <div className="p-2.5 rounded-full bg-gold/10 border border-gold/20 text-gold bg-[#0a0f1c]">
+                <FileText size={24} />
+              </div>
+              <h2 className="text-3xl md:text-4xl font-serif italic text-gold">
+                {lang === 'TR' ? 'Resmi Basın Bülteni' : 'Official Press Release'}
+              </h2>
+            </div>
+
+            <p className="text-paper/80 font-light text-base md:text-lg leading-relaxed text-justify">
+              {lang === 'TR'
+                ? '“Biz Demeden Bitmez” marşının resmi basın bültenine hem Türkçe hem de İngilizce olarak doğrudan aşağıdaki bağlantılardan erişebilir, habercilik ve yayıncılık çalışmalarınızda serbestçe kullanabilirsiniz.'
+                : 'Access the official press releases for the anthem "Biz Demeden Bitmez" directly in Turkish or English using the links below for your news, editorial, or media coverage.'}
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
+              {/* Turkish Press Release */}
+              <div className="bg-white/5 border border-white/10 p-6 md:p-8 rounded-sm flex flex-col justify-between">
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <span className="px-2 py-0.5 rounded-sm bg-gold/10 border border-gold/20 text-[9px] uppercase tracking-wider text-gold font-medium">
+                      TÜRKÇE / TURKISH
+                    </span>
+                    <span className="text-[10px] font-mono text-paper/40">EPK-TR-2026</span>
+                  </div>
+                  <h3 className="text-2xl font-serif italic text-white">
+                    Basın Bülteni (TR)
+                  </h3>
+                  <p className="text-paper/60 font-light text-sm leading-relaxed text-justify">
+                    “Biz Demeden Bitmez” marşının çıkış hikayesi, prodüksiyon detayları ve projenin ardındaki milli birlik ruhunu anlatan resmi basın metni.
+                  </p>
+                </div>
+                <div className="pt-6 border-t border-white/5 mt-6">
+                  <a
+                    href="https://drive.google.com/file/d/1sEc3TYm4Duwn5d8HValQaFL2ZaJRF5k0/view?usp=drive_link"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full py-3 bg-gold text-ink font-semibold uppercase tracking-widest text-[10px] hover:bg-white hover:text-ink transition-all duration-300 rounded-sm text-center flex items-center justify-center gap-2"
+                  >
+                    <ExternalLink size={14} /> GÖRÜNTÜLE & İNDİR (GOOGLE DRIVE)
+                  </a>
+                </div>
+              </div>
+
+              {/* English Press Release */}
+              <div className="bg-white/5 border border-white/10 p-6 md:p-8 rounded-sm flex flex-col justify-between">
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <span className="px-2 py-0.5 rounded-sm bg-white/10 border border-white/20 text-[9px] uppercase tracking-wider text-paper/85 font-medium">
+                      İNGİLİZCE / ENGLISH
+                    </span>
+                    <span className="text-[10px] font-mono text-paper/40">EPK-EN-2026</span>
+                  </div>
+                  <h3 className="text-2xl font-serif italic text-white">
+                    Press Release (EN)
+                  </h3>
+                  <p className="text-paper/60 font-light text-sm leading-relaxed text-justify">
+                    The official press release detailing the creation, production background, and global reach of the Turkey National Anthem project.
+                  </p>
+                </div>
+                <div className="pt-6 border-t border-white/5 mt-6">
+                  <a
+                    href="https://drive.google.com/file/d/16mRdO7sbJtnSSKJzwoOpGNRpDLSvk0wJ/view?usp=drive_link"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full py-3 border border-white/10 hover:border-gold/30 hover:bg-gold/5 text-paper hover:text-white font-semibold uppercase tracking-widest text-[10px] transition-all duration-300 rounded-sm text-center flex items-center justify-center gap-2"
+                  >
+                    <ExternalLink size={14} /> VIEW & DOWNLOAD (GOOGLE DRIVE)
+                  </a>
                 </div>
               </div>
             </div>

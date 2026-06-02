@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { Helmet } from 'react-helmet-async';
+import { FileText, ExternalLink } from 'lucide-react';
 import { pressPageSEO } from '../data/seo/pages/press.seo';
 
 import { CinematicBackground } from '../components/common/CinematicBackground';
@@ -112,6 +113,78 @@ const PressKit = () => {
                   </div>
                 </div>
               ))}
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Official Press Releases Section */}
+      <section className="px-6 pb-32">
+        <div className="max-w-6xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+            className="space-y-12"
+          >
+            <div className="flex items-center gap-3">
+              <FileText className="text-gold" size={28} />
+              <h2 className="text-3xl md:text-4xl font-serif italic text-white flex items-center gap-2">Official Press Releases</h2>
+            </div>
+            
+            <p className="text-paper/60 font-light text-base md:text-lg max-w-3xl leading-relaxed">
+              Official press distributions, announcements, and media packages released by Studio Aşkın. Journalists, publishers, and global media platforms are welcome to use these materials freely.
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {/* Anthem Press Release - Turkish */}
+              <div className="bg-white/5 border border-white/10 p-8 rounded-sm hover:border-gold/30 transition-colors duration-500 flex flex-col justify-between">
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <span className="text-xs font-mono text-gold uppercase tracking-widest font-medium">Turkiye World Cup Anthem</span>
+                    <span className="px-2 py-0.5 rounded-sm bg-gold/10 border border-gold/20 text-[9px] text-gold uppercase tracking-wider font-semibold">TÜRKÇE / TR</span>
+                  </div>
+                  <h3 className="text-2xl font-serif italic text-white">“Biz Demeden Bitmez” Basın Bülteni</h3>
+                  <p className="text-paper/50 font-light text-sm leading-relaxed text-justify">
+                    Aşkın Şerbetçi liderliğinde, Studio Aşkın imzasıyla yayınlanan milli takıma destek özel marşının detaylı çıkış hikayesi, prodüksiyon ve kitle analizlerini içeren resmi basın metni.
+                  </p>
+                </div>
+                <div className="pt-6 border-t border-white/5 mt-8">
+                  <a 
+                    href="https://drive.google.com/file/d/1sEc3TYm4Duwn5d8HValQaFL2ZaJRF5k0/view?usp=drive_link"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full py-3 bg-gold text-ink font-semibold uppercase tracking-widest text-[10px] hover:bg-white hover:text-ink transition-all duration-300 rounded-sm text-center flex items-center justify-center gap-2"
+                  >
+                    <ExternalLink size={14} /> Görüntüle & İndir (Google Drive)
+                  </a>
+                </div>
+              </div>
+
+              {/* Anthem Press Release - English */}
+              <div className="bg-white/5 border border-white/10 p-8 rounded-sm hover:border-gold/30 transition-colors duration-500 flex flex-col justify-between">
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <span className="text-xs font-mono text-paper/60 uppercase tracking-widest">Turkiye World Cup Anthem</span>
+                    <span className="px-2 py-0.5 rounded-sm bg-white/10 border border-white/20 text-[9px] text-paper/85 uppercase tracking-wider font-semibold">ENGLISH / EN</span>
+                  </div>
+                  <h3 className="text-2xl font-serif italic text-white">“Biz Demeden Bitmez” Press Release</h3>
+                  <p className="text-paper/50 font-light text-sm leading-relaxed text-justify">
+                    The official press release detailing the creation, cinematic pop-orchestral production process at Studio Aşkın, and global viral reach of the Turkey World Cup Anthem project.
+                  </p>
+                </div>
+                <div className="pt-6 border-t border-white/5 mt-8">
+                  <a 
+                    href="https://drive.google.com/file/d/16mRdO7sbJtnSSKJzwoOpGNRpDLSvk0wJ/view?usp=drive_link"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full py-3 border border-white/10 hover:border-gold/30 hover:bg-gold/5 text-paper hover:text-white font-semibold uppercase tracking-widest text-[10px] transition-all duration-300 rounded-sm text-center flex items-center justify-center gap-2"
+                  >
+                    <ExternalLink size={14} /> View & Download (Google Drive)
+                  </a>
+                </div>
+              </div>
             </div>
           </motion.div>
         </div>
