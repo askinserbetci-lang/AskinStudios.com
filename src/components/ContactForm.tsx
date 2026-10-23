@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { Send, Loader2 } from 'lucide-react';
+import { sendToAiq } from '../lib/aiq';
 
 export const ContactForm = () => {
   const [formData, setFormData] = useState({
@@ -34,9 +35,12 @@ Message:
 ${formData.message}
       `.trim();
 
-      // Open the user's default email client
-      const mailtoLink = `mailto:info@askinstudios.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-      window.location.href = mailtoLink;
+      // Goes to the inbox in AiQ Creator; if that can't be reached, the visitor's own email app opens instead
+      try {
+        await sendToAiq('message', { kind: 'contact', name: formData.name, email: formData.email, message: formData.message });
+      } catch {
+        window.location.href = `mailto:info@askinstudios.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      }
 
       setStatus('success');
       setFormData({

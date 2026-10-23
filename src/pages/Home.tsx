@@ -8,6 +8,7 @@ import { ALBUMS } from '../constants';
 import { homePageSEO } from '../data/seo/pages/home.seo';
 import { useLightbox } from '../context/LightboxContext';
 import { loadYouTube, thumb } from '../lib/youtubeFeed';
+import { FanSignup } from '../components/FanSignup';
 
 import { CinematicBackground } from '../components/common/CinematicBackground';
 
@@ -406,6 +407,9 @@ const Home = () => {
           </div>
         </div>
       </section>
+
+      {/* Become a Fan */}
+      <FanSignup />
 
       {/* 5. About Preview */}
       <section className="py-32 px-6 bg-white/5">

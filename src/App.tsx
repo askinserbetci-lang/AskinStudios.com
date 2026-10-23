@@ -18,6 +18,7 @@ import FestivalEPK from './pages/FestivalEPK';
 import BookingPage from './pages/Booking';
 import CustomCursor from './components/CustomCursor';
 import MobileNavbar from './components/MobileNavbar';
+import { FanSignup } from './components/FanSignup';
 import { LightboxProvider } from './context/LightboxContext';
 import { FeaturedReleasePanel } from './components/FeaturedReleasePanel';
 
@@ -77,6 +78,7 @@ const Navbar = () => {
 const Footer = () => {
   return (
     <footer className="w-full flex flex-col items-center justify-center py-16 mt-40 border-t border-white/5 lg:pl-[420px] transition-all duration-300">
+      {useLocation().pathname !== '/' && <FanSignup compact />}
       <span className="text-white text-2xl md:text-3xl font-semibold tracking-wide">
         Aşkın Şerbetçi
       </span>
