@@ -86,13 +86,13 @@ const Contact = () => {
               <h2 className="text-2xl font-serif italic text-white mb-4">Social Media</h2>
               <p className="text-paper/60 font-light text-sm mb-6">Follow for updates & behind the scenes</p>
               <div className="flex justify-center gap-6">
-                <a href="https://www.youtube.com/@askinserbetci" target="_blank" rel="noopener noreferrer" className="text-gold hover:text-white transition-colors">
+                <a href="https://www.youtube.com/@askinstudios" target="_blank" rel="noopener noreferrer" className="text-gold hover:text-white transition-colors">
                   YouTube
                 </a>
                 <a href="https://www.instagram.com/askinserbetci/" target="_blank" rel="noopener noreferrer" className="text-gold hover:text-white transition-colors">
                   Instagram
                 </a>
-                <a href="https://www.facebook.com/askinstudios" target="_blank" rel="noopener noreferrer" className="text-gold hover:text-white transition-colors">
+                <a href="https://www.facebook.com/studioaskin" target="_blank" rel="noopener noreferrer" className="text-gold hover:text-white transition-colors">
                   Facebook
                 </a>
               </div>

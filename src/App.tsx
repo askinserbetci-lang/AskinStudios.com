@@ -94,13 +94,13 @@ const Footer = () => {
       </div>
 
       <div className="flex gap-6 mt-8 text-paper/40">
-        <a href="https://www.youtube.com/@askinserbetci" target="_blank" rel="noopener noreferrer" className="hover:text-gold transition-colors" aria-label="YouTube">
+        <a href="https://www.youtube.com/@askinstudios" target="_blank" rel="noopener noreferrer" className="hover:text-gold transition-colors" aria-label="YouTube">
           <Youtube size={20} strokeWidth={1.5} />
         </a>
         <a href="https://www.instagram.com/askinserbetci/" target="_blank" rel="noopener noreferrer" className="hover:text-gold transition-colors" aria-label="Instagram">
           <Instagram size={20} strokeWidth={1.5} />
         </a>
-        <a href="https://www.facebook.com/askinstudios" target="_blank" rel="noopener noreferrer" className="hover:text-gold transition-colors" aria-label="Facebook">
+        <a href="https://www.facebook.com/studioaskin" target="_blank" rel="noopener noreferrer" className="hover:text-gold transition-colors" aria-label="Facebook">
           <Facebook size={20} strokeWidth={1.5} />
         </a>
       </div>

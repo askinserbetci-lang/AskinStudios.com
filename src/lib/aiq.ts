@@ -14,8 +14,8 @@ export async function sendToAiq(path: 'fan' | 'message', body: Record<string, un
 }
 
 export const FOLLOW = [
-  { name: 'YouTube', url: 'https://www.youtube.com/@askinserbetci?sub_confirmation=1' },
-  { name: 'Spotify', url: 'https://open.spotify.com/artist/0PLhi5tAE8QcXnuEMui2Oe' },
+  { name: 'YouTube', url: 'https://www.youtube.com/@askinstudios?sub_confirmation=1' },
+  { name: 'Spotify', url: 'https://open.spotify.com/artist/2AhElJSYFBKYBkE7R70hEa' },
   { name: 'Instagram', url: 'https://www.instagram.com/askinserbetci/' },
-  { name: 'Facebook', url: 'https://www.facebook.com/askinstudios' },
+  { name: 'Facebook', url: 'https://www.facebook.com/studioaskin' },
 ];

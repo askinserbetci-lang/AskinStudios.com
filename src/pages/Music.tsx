@@ -941,7 +941,7 @@ const Music = () => {
               </div>
             </div>
             <a 
-              href="https://youtube.com/@askinserbetci" 
+              href="https://youtube.com/@askinstudios" 
               target="_blank" 
               rel="noopener noreferrer" 
               className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-semibold uppercase tracking-widest text-xs rounded-sm transition-all flex items-center gap-2 shrink-0 border border-red-500"

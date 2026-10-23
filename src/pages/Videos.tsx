@@ -225,7 +225,7 @@ const Videos = () => {
             <p className="text-paper/60 font-light mb-8 max-w-xl">
               Subscribe on YouTube for new music videos, live performances and behind-the-scenes footage.
             </p>
-            <a href="https://www.youtube.com/@askinserbetci?sub_confirmation=1" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-3 px-8 py-4 bg-[#E00] hover:bg-[#c00] rounded-sm transition-colors group">
+            <a href="https://www.youtube.com/@askinstudios?sub_confirmation=1" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-3 px-8 py-4 bg-[#E00] hover:bg-[#c00] rounded-sm transition-colors group">
               <Youtube className="text-white" size={18} />
               <span className="text-white text-xs md:text-sm uppercase tracking-[0.2em] font-semibold">Subscribe</span>
               <ArrowRight className="text-white group-hover:translate-x-1 transition-transform" size={16} />
