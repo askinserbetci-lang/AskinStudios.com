@@ -27,14 +27,15 @@ async function feed(param) {
   return parse(await r.text());
 }
 
-// A Short opens at youtube.com/shorts/ID; a normal video gets sent on to /watch
+// Shorts have a tall thumbnail ("oar2.jpg"); full videos don't, and YouTube answers 404 for them
 async function isShort(v) {
+  if (/#shorts?\b/i.test(v.title)) return true;
   try {
-    const r = await fetch(`https://www.youtube.com/shorts/${v.id}`, { method: 'HEAD', redirect: 'manual', signal: AbortSignal.timeout(5000) });
-    if (r.status === 200) return true;
-    if (r.status >= 300 && r.status < 400) return false;
-  } catch {}
-  return /#shorts?\b/i.test(v.title);
+    const r = await fetch(`https://i.ytimg.com/vi/${v.id}/oar2.jpg`, { method: 'HEAD', signal: AbortSignal.timeout(5000) });
+    return r.ok;
+  } catch {
+    return false;
+  }
 }
 
 // Works out the channel ID from the handle, in case it ever changes

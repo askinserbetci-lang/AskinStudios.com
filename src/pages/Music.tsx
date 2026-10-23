@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { Link, useParams } from 'react-router-dom';
 import { 
@@ -1035,8 +1036,8 @@ const Music = () => {
         </div>
       </section>
  
-      {/* Cinematic YouTube Video Modal */}
-      <AnimatePresence>
+      {/* Cinematic YouTube Video Modal (drawn over the whole window so it is always centred) */}
+      {createPortal(<AnimatePresence>
         {activeVideo && (
           <motion.div
             initial={{ opacity: 0 }}
@@ -1074,7 +1075,7 @@ const Music = () => {
             </motion.div>
           </motion.div>
         )}
-      </AnimatePresence>
+      </AnimatePresence>, document.body)}
 
     </div>
   );

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { Helmet } from 'react-helmet-async';
 import { videosPageSEO } from '../data/seo/pages/videos.seo';
@@ -41,12 +42,24 @@ const Meta = ({ v }: { v: YtVideo }) => {
 
 const Videos = () => {
   const [active, setActive] = useState<{ id: string; tall?: boolean } | null>(null);
+  useEffect(() => {
+    if (!active) return;
+    const close = (e: KeyboardEvent) => e.key === 'Escape' && setActive(null);
+    window.addEventListener('keydown', close);
+    return () => window.removeEventListener('keydown', close);
+  }, [active]);
   const [feed, setFeed] = useState<YtFeed | null>(null);
   const [showAll, setShowAll] = useState(false);
 
   useEffect(() => {
     let on = true;
-    loadYouTube().then(d => on && setFeed(d || BACKUP));
+    loadYouTube().then(d => {
+      if (!on) return;
+      if (!d?.videos.length) return setFeed(BACKUP);
+      // Newest from YouTube first, then the older favourites the feed doesn't reach back to
+      const seen = new Set(d.videos.map(v => v.id));
+      setFeed({ videos: [...d.videos, ...BACKUP.videos.filter(v => !seen.has(v.id))], shorts: [] });
+    });
     return () => { on = false; };
   }, []);
 
@@ -66,8 +79,8 @@ const Videos = () => {
 
       <CinematicBackground imageSrc="/Turkiye_Grammy_2013.jpg" imageAlt="Videos Background" />
 
-      {/* Player */}
-      <AnimatePresence>
+      {/* Player: drawn over the whole window, so it's always centred on screen */}
+      {createPortal(<AnimatePresence>
         {active && (
           <motion.div
             initial={{ opacity: 0 }}
@@ -96,7 +109,7 @@ const Videos = () => {
             </div>
           </motion.div>
         )}
-      </AnimatePresence>
+      </AnimatePresence>, document.body)}
 
       {/* Hero */}
       <section className="page-hero">
@@ -105,10 +118,10 @@ const Videos = () => {
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}>
             <h1 className="text-5xl md:text-8xl font-serif italic mb-6 leading-tight">Videos</h1>
             <span className="text-gold uppercase tracking-[0.3em] text-[10px] md:text-xs mb-10 block leading-relaxed font-medium">
-              Fresh from the channel • Music Videos • Shorts
+              Fresh from the channel • Music Videos • Sessions
             </span>
             <p className="text-paper/60 font-light text-lg md:text-2xl leading-relaxed max-w-3xl mx-auto">
-              The newest music videos, sessions and Shorts, straight from YouTube.
+              The newest music videos and sessions, straight from YouTube.
             </p>
           </motion.div>
         </div>
@@ -186,28 +199,6 @@ const Videos = () => {
                 </motion.div>
               )}
 
-              {/* Shorts */}
-              {!!feed.shorts.length && (
-                <motion.div {...reveal}>
-                  <div className="flex items-end justify-between mb-10 gap-4">
-                    <h2 className="text-3xl md:text-4xl font-serif italic text-white">Shorts</h2>
-                    <a href="https://www.youtube.com/@askinserbetci/shorts" target="_blank" rel="noopener noreferrer" className="text-gold text-[10px] uppercase tracking-[0.2em] hover:underline shrink-0">All Shorts →</a>
-                  </div>
-                  <div className="flex gap-5 overflow-x-auto pb-4 -mx-6 px-6 snap-x snap-mandatory [scrollbar-width:thin]">
-                    {feed.shorts.map(s => (
-                      <button key={s.id} type="button" onClick={() => setActive({ id: s.id, tall: true })} className="group snap-start shrink-0 w-[180px] md:w-[210px] text-left cursor-pointer">
-                        <span className="block relative aspect-[9/16] rounded-md overflow-hidden border border-white/10 group-hover:border-gold/40 transition-colors">
-                          <img src={`https://i.ytimg.com/vi/${s.id}/oar2.jpg`} alt={s.title} loading="lazy" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" onError={e => { const img = e.target as HTMLImageElement; img.onerror = null; img.src = thumb(s.id); }} />
-                          <span className="absolute inset-x-0 bottom-0 p-3 pt-10 bg-gradient-to-t from-black/90 to-transparent">
-                            <span className="block text-sm text-white leading-snug line-clamp-2">{s.title}</span>
-                            {s.views > 0 && <span className="block text-[10px] text-gold/80 mt-1">{viewsText(s.views)}</span>}
-                          </span>
-                        </span>
-                      </button>
-                    ))}
-                  </div>
-                </motion.div>
-              )}
             </>
           )}
 
