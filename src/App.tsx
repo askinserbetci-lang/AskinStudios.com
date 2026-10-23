@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Menu, X, Instagram, Youtube, Facebook } from 'lucide-react';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { cn } from './lib/utils';
+import { useFollow } from './lib/aiq';
 import Home from './pages/Home';
 import About from './pages/About';
 import Music from './pages/Music';
@@ -76,6 +77,8 @@ const Navbar = () => {
 };
 
 const Footer = () => {
+  const follow = useFollow();
+  const link = (name: string) => follow.find(f => f.name === name)?.url || '#';
   return (
     <footer className="w-full flex flex-col items-center justify-center py-16 mt-40 border-t border-white/5 lg:pl-[420px] transition-all duration-300">
       {useLocation().pathname !== '/' && <FanSignup compact />}
@@ -94,13 +97,13 @@ const Footer = () => {
       </div>
 
       <div className="flex gap-6 mt-8 text-paper/40">
-        <a href="https://www.youtube.com/@askinstudios" target="_blank" rel="noopener noreferrer" className="hover:text-gold transition-colors" aria-label="YouTube">
+        <a href={link('YouTube')} target="_blank" rel="noopener noreferrer" className="hover:text-gold transition-colors" aria-label="YouTube">
           <Youtube size={20} strokeWidth={1.5} />
         </a>
-        <a href="https://www.instagram.com/askinserbetci/" target="_blank" rel="noopener noreferrer" className="hover:text-gold transition-colors" aria-label="Instagram">
+        <a href={link('Instagram')} target="_blank" rel="noopener noreferrer" className="hover:text-gold transition-colors" aria-label="Instagram">
           <Instagram size={20} strokeWidth={1.5} />
         </a>
-        <a href="https://www.facebook.com/studioaskin" target="_blank" rel="noopener noreferrer" className="hover:text-gold transition-colors" aria-label="Facebook">
+        <a href={link('Facebook')} target="_blank" rel="noopener noreferrer" className="hover:text-gold transition-colors" aria-label="Facebook">
           <Facebook size={20} strokeWidth={1.5} />
         </a>
       </div>

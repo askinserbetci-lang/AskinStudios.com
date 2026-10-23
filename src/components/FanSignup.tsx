@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { Check, Heart, Mail } from 'lucide-react';
-import { FOLLOW, sendToAiq } from '../lib/aiq';
+import { useFollow, sendToAiq } from '../lib/aiq';
 
 // "Become a Fan": an email sign-up that lands in AiQ Creator's fan list.
 // `compact` is the one-line version for the footer.
 export const FanSignup = ({ compact = false }: { compact?: boolean }) => {
+  const FOLLOW = useFollow();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [trap, setTrap] = useState(''); // left empty by people; robots fill it in
