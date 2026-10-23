@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { Link } from 'react-router-dom';
 import { Play, ArrowRight, X } from 'lucide-react';
@@ -6,6 +7,7 @@ import { Helmet } from 'react-helmet-async';
 import { ALBUMS } from '../constants';
 import { homePageSEO } from '../data/seo/pages/home.seo';
 import { useLightbox } from '../context/LightboxContext';
+import { loadYouTube, thumb } from '../lib/youtubeFeed';
 
 import { CinematicBackground } from '../components/common/CinematicBackground';
 
@@ -15,6 +17,19 @@ const Home = () => {
   const [activeVideo, setActiveVideo] = useState<string | null>(null);
   const [elapsedDays, setElapsedDays] = useState<number>(3);
   const [liveViews, setLiveViews] = useState<number>(144000);
+  // The two newest videos from the YouTube channel; these two show until they arrive (or if YouTube can't be reached)
+  const [homeVideos, setHomeVideos] = useState<{ title: string; img: string; type: string; videoId: string }[]>([
+    { title: "Be Mine Tonight: Cinematic World Music Suite (1 Hour)", img: "/BE_MINE_TONIGHT_SUITE.jpg", type: "video", videoId: "7pAdFokQahM" },
+    { title: "Mine Geçili · Deli Gönül (2026 Version)", img: "/MINE_GECILI_DELI_GONUL.jpg", type: "video", videoId: "FrDbL6ruWOA" },
+  ]);
+  useEffect(() => {
+    let on = true;
+    loadYouTube().then(feed => {
+      if (!on || !feed?.videos.length) return;
+      setHomeVideos(feed.videos.slice(0, 2).map(v => ({ title: v.title, img: thumb(v.id, 'max'), type: 'video', videoId: v.id })));
+    });
+    return () => { on = false; };
+  }, []);
 
   useEffect(() => {
     const launch = new Date('2026-05-28T00:00:00');
@@ -69,8 +84,8 @@ const Home = () => {
 
       <CinematicBackground imageSrc="/Turkiye_Grammy_2013.jpg" imageAlt="Türkiye Grammy 2013" />
 
-      {/* Video Modal */}
-      <AnimatePresence>
+      {/* Video Modal (drawn over the whole window so it is always centred) */}
+      {createPortal(<AnimatePresence>
         {activeVideo && (
           <motion.div
             initial={{ opacity: 0 }}
@@ -99,7 +114,7 @@ const Home = () => {
             </div>
           </motion.div>
         )}
-      </AnimatePresence>
+      </AnimatePresence>, document.body)}
 
       {/* 1. Hero Section (Cinematic Centered) */}
       <section className="home-hero relative min-h-screen flex flex-col justify-center items-center px-6 pt-48 pb-32 overflow-hidden">
@@ -354,17 +369,14 @@ const Home = () => {
       <section className="py-32 px-6">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-end mb-16">
-            <h2 className="text-3xl md:text-4xl font-serif italic text-white">Featured Videos</h2>
+            <h2 className="text-3xl md:text-4xl font-serif italic text-white">Latest Videos</h2>
             <Link to="/videos" className="text-gold text-[10px] uppercase tracking-widest hover:text-white transition-colors mt-6 md:mt-0">
               View All Videos <ArrowRight size={12} className="inline ml-1" />
             </Link>
           </div>
 
           <div className="grid md:grid-cols-2 gap-10">
-            {[
-              { title: "Be Mine Tonight: Cinematic World Music Suite (1 Hour)", img: "/BE_MINE_TONIGHT_SUITE.jpg", type: "video", videoId: "7pAdFokQahM" },
-              { title: "Mine Geçili · Deli Gönül (2026 Version)", img: "/MINE_GECILI_DELI_GONUL.jpg", type: "video", videoId: "FrDbL6ruWOA" }
-            ].map((video, i) => (
+            {homeVideos.map((video, i) => (
               video.type === "video" ? (
                 <div 
                   key={i} 
@@ -376,7 +388,8 @@ const Home = () => {
                     alt={video.title} 
                     className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
                     onError={(e) => {
-                      (e.target as HTMLImageElement).src = "/StudioAskin_Black.jpg";
+                      const img = e.target as HTMLImageElement;
+                      img.src = img.src.includes('maxresdefault') ? img.src.replace('maxresdefault', 'hqdefault') : "/StudioAskin_Black.jpg";
                     }}
                   />
                   <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-500 flex items-center justify-center">
