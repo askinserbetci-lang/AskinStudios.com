@@ -52,6 +52,17 @@ async function isShort(v) {
   }
 }
 
+// How long a video runs, read from its YouTube page (0 when it can't be told)
+async function seconds(v) {
+  try {
+    const r = await fetch(`https://www.youtube.com/watch?v=${v.id}`, { signal: AbortSignal.timeout(6000), headers: { 'Accept-Language': 'en' } });
+    const html = await r.text();
+    return Number(pick(html, /"lengthSeconds":"(\d+)"/)) || Number(pick(html, /itemprop="duration" content="PT(\d+)M/)) * 60 || 0;
+  } catch {
+    return 0;
+  }
+}
+
 // Works out the channel ID from the handle, in case it ever changes
 async function channelId() {
   try {
@@ -78,9 +89,11 @@ export default async function handler(req, res) {
         all = await feed(`channel_id=${id}`, 2);
       }
     }
-    // The website shows full videos only, so Shorts are left out
+    // The website shows full videos only, so Shorts and clips under 2 minutes are left out
     const flags = await Promise.all(all.map(isShort));
-    const videos = all.filter((_, i) => !flags[i]);
+    const full = all.filter((_, i) => !flags[i]);
+    const lengths = await Promise.all(full.map(seconds));
+    const videos = full.map((v, i) => ({ ...v, seconds: lengths[i] })).filter(v => !v.seconds || v.seconds >= 120);
     const shorts = all.filter((_, i) => flags[i]);
     res.setHeader('Cache-Control', 'public, s-maxage=1800, stale-while-revalidate=86400');
     res.status(200).json({
