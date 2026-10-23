@@ -21,10 +21,24 @@ function parse(xml) {
     .filter(v => v.id);
 }
 
-async function feed(param) {
-  const r = await fetch(`https://www.youtube.com/feeds/videos.xml?${param}`, { signal: AbortSignal.timeout(8000) });
+async function feedOnce(param) {
+  const r = await fetch(`https://www.youtube.com/feeds/videos.xml?${param}`, { signal: AbortSignal.timeout(6000), headers: { 'User-Agent': 'Mozilla/5.0 (askinstudios.com)' } });
   if (!r.ok) throw new Error(`feed ${r.status}`);
-  return parse(await r.text());
+  const list = parse(await r.text());
+  if (!list.length) throw new Error('feed empty');
+  return list;
+}
+
+// YouTube's feeds sometimes answer "not found" for a moment, so each one gets a few tries
+async function feed(param, tries = 3) {
+  for (let i = 0; ; i++) {
+    try {
+      return await feedOnce(param);
+    } catch (e) {
+      if (i >= tries - 1) throw e;
+      await new Promise(r => setTimeout(r, 400 * (i + 1)));
+    }
+  }
 }
 
 // Shorts have a tall thumbnail ("oar2.jpg"); full videos don't, and YouTube answers 404 for them
@@ -56,25 +70,18 @@ export default async function handler(req, res) {
     try {
       all = await feed(`channel_id=${id}`);
     } catch {
-      id = await channelId();
-      all = await feed(`channel_id=${id}`);
+      // The same uploads, listed as a playlist
+      try {
+        all = await feed(`playlist_id=UU${id.slice(2)}`);
+      } catch {
+        id = await channelId();
+        all = await feed(`channel_id=${id}`, 2);
+      }
     }
-    const tail = id.slice(2);
-    // "UULF" lists only full-length videos and "UUSH" only Shorts; when YouTube doesn't offer those,
-    // each upload is checked one by one
-    const [long, short] = await Promise.all([
-      feed(`playlist_id=UULF${tail}`).catch(() => null),
-      feed(`playlist_id=UUSH${tail}`).catch(() => null),
-    ]);
-    let videos, shorts;
-    if (long && short) {
-      videos = long;
-      shorts = short;
-    } else {
-      const flags = await Promise.all(all.map(isShort));
-      videos = all.filter((_, i) => !flags[i]);
-      shorts = all.filter((_, i) => flags[i]);
-    }
+    // The website shows full videos only, so Shorts are left out
+    const flags = await Promise.all(all.map(isShort));
+    const videos = all.filter((_, i) => !flags[i]);
+    const shorts = all.filter((_, i) => flags[i]);
     res.setHeader('Cache-Control', 'public, s-maxage=1800, stale-while-revalidate=86400');
     res.status(200).json({
       channel: `https://www.youtube.com/@${HANDLE}`,
@@ -82,7 +89,7 @@ export default async function handler(req, res) {
       shorts,
     });
   } catch (e) {
-    res.setHeader('Cache-Control', 'public, s-maxage=60');
+    res.setHeader('Cache-Control', 'no-store');
     res.status(502).json({ error: String(e?.message || e), videos: [], shorts: [] });
   }
 }
