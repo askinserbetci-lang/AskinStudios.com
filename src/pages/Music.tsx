@@ -40,95 +40,8 @@ const trackVideoMap: Record<string, string> = {
   "You And I": "nB9y-8dDtSU"
 };
 
-const Music = () => {
-  const { slug } = useParams();
-  const album = slug ? ALBUMS.find(a => a.id === slug) : null;
-  const { showImage } = useLightbox();
-
-  // Dialog and Playback states
-  const [activeVideo, setActiveVideo] = useState<string | null>(null);
-  const [selectedTrackVideoId, setSelectedTrackVideoId] = useState<string | null>(null);
-
-  // Live YouTube Fetch states
-  const [youtubeVideos, setYoutubeVideos] = useState<any[]>([]);
-  const [ytLoading, setYtLoading] = useState<boolean>(true);
-  const [activeTab, setActiveTab] = useState<'all' | 'official' | 'live'>('all');
-
-  // Fetch Live RSS from YouTube or load high-impact fallback
-  useEffect(() => {
-    let active = true;
-    const fetchLatestYouTubeVideos = async () => {
-      try {
-        if (!active) return;
-        setYtLoading(true);
-
-        const channelPageUrl = 'https://www.youtube.com/@askinserbetci';
-        const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(channelPageUrl)}`;
-        const response = await fetch(proxyUrl);
-        if (!response.ok) throw new Error('Proxy request failed');
-        const data = await response.json();
-        const html = data?.contents || '';
-
-        const idMatch = html.match(/"channelId"\s*:\s*"([^"]+)"/) || 
-                        html.match(/itemprop="channelId"\s+content="([UC][A-Za-z0-9_-]{21,23})"/) ||
-                        html.match(/"browseId"\s*:\s*"([UC][A-Za-z0-9_-]{21,23})"/) ||
-                        html.match(/channel\/([UC][A-Za-z0-9_-]{21,23})/);
-
-        const channelId = idMatch ? idMatch[1] : 'UCvXN7tK7C4R-A1D8f9T_yqA';
-
-        const feedUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`;
-        const proxyFeedUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(feedUrl)}`;
-        const feedResponse = await fetch(proxyFeedUrl);
-        if (!feedResponse.ok) throw new Error('Feed fetch failed');
-        const feedData = await feedResponse.json();
-        const feedXml = feedData?.contents || '';
-
-        const parser = new DOMParser();
-        const xmlDoc = parser.parseFromString(feedXml, 'text/xml');
-        const entries = xmlDoc.getElementsByTagName('entry');
-
-        if (entries.length > 0) {
-          const parsed = Array.from(entries).slice(0, 6).map((entry: any) => {
-            const videoId = entry.getElementsByTagName('yt:videoId')[0]?.textContent || 
-                            entry.getElementsByTagName('videoId')[0]?.textContent ||
-                            entry.textContent?.match(/<yt:videoId>([^<]+)<\/yt:videoId>/)?.[1] || '';
-            const title = entry.getElementsByTagName('title')[0]?.textContent || '';
-            const link = entry.getElementsByTagName('link')[0]?.getAttribute('href') || `https://www.youtube.com/watch?v=${videoId}`;
-            const publishedText = entry.getElementsByTagName('published')[0]?.textContent || '';
-            const publishedDate = publishedText ? new Date(publishedText).toLocaleDateString('en-US', {
-              year: 'numeric',
-              month: 'short',
-              day: 'numeric'
-            }) : 'Recent Release';
-
-            let category: 'official' | 'live' = 'live';
-            if (title.toLowerCase().includes('official') || title.toLowerCase().includes('single') || title.toLowerCase().includes('müzik') || title.toLowerCase().includes('deli gönül')) {
-              category = 'official';
-            }
-
-            return {
-              videoId,
-              title,
-              publishedDate,
-              link,
-              category,
-              thumbnail: `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`
-            };
-          });
-
-          if (active && parsed.length > 0) {
-            setYoutubeVideos(parsed);
-            setYtLoading(false);
-            return;
-          }
-        }
-      } catch (err) {
-        console.warn('Dynamic YouTube fetch failed, loading bulletproof offline library:', err);
-      }
-
-      // Handcrafted high-impact fallback in case of rate limits or offline mode
-      if (active) {
-        setYoutubeVideos([
+// Shown right away, and kept when the live YouTube list cannot be reached
+const FALLBACK_VIDEOS: any[] = [
           { 
             videoId: "7pAdFokQahM", 
             title: "Be Mine Tonight: Cinematic World Music Suite | 9-Language Duets with Ney, Kanun & Oud (1 Hour)", 
@@ -178,9 +91,93 @@ const Music = () => {
             category: "live",
             thumbnail: "https://img.youtube.com/vi/d_0tpKop3yI/maxresdefault.jpg" 
           }
-        ]);
-        setYtLoading(false);
+        ];
+
+const Music = () => {
+  const { slug } = useParams();
+  const album = slug ? ALBUMS.find(a => a.id === slug) : null;
+  const { showImage } = useLightbox();
+
+  // Dialog and Playback states
+  const [activeVideo, setActiveVideo] = useState<string | null>(null);
+  const [selectedTrackVideoId, setSelectedTrackVideoId] = useState<string | null>(null);
+
+  // Live YouTube Fetch states
+  // The videos show straight away; the live YouTube list replaces them if it arrives in time
+  const [youtubeVideos, setYoutubeVideos] = useState<any[]>(FALLBACK_VIDEOS);
+  const [ytLoading, setYtLoading] = useState<boolean>(false);
+  const [activeTab, setActiveTab] = useState<'all' | 'official' | 'live'>('all');
+
+  // Fetch Live RSS from YouTube or load high-impact fallback
+  useEffect(() => {
+    let active = true;
+    const fetchLatestYouTubeVideos = async () => {
+      try {
+        if (!active) return;
+
+        const channelPageUrl = 'https://www.youtube.com/@askinserbetci';
+        const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(channelPageUrl)}`;
+        const response = await fetch(proxyUrl, { signal: AbortSignal.timeout(8000) });
+        if (!response.ok) throw new Error('Proxy request failed');
+        const data = await response.json();
+        const html = data?.contents || '';
+
+        const idMatch = html.match(/"channelId"\s*:\s*"([^"]+)"/) || 
+                        html.match(/itemprop="channelId"\s+content="([UC][A-Za-z0-9_-]{21,23})"/) ||
+                        html.match(/"browseId"\s*:\s*"([UC][A-Za-z0-9_-]{21,23})"/) ||
+                        html.match(/channel\/([UC][A-Za-z0-9_-]{21,23})/);
+
+        const channelId = idMatch ? idMatch[1] : 'UCvXN7tK7C4R-A1D8f9T_yqA';
+
+        const feedUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`;
+        const proxyFeedUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(feedUrl)}`;
+        const feedResponse = await fetch(proxyFeedUrl, { signal: AbortSignal.timeout(8000) });
+        if (!feedResponse.ok) throw new Error('Feed fetch failed');
+        const feedData = await feedResponse.json();
+        const feedXml = feedData?.contents || '';
+
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(feedXml, 'text/xml');
+        const entries = xmlDoc.getElementsByTagName('entry');
+
+        if (entries.length > 0) {
+          const parsed = Array.from(entries).slice(0, 6).map((entry: any) => {
+            const videoId = entry.getElementsByTagName('yt:videoId')[0]?.textContent || 
+                            entry.getElementsByTagName('videoId')[0]?.textContent ||
+                            entry.textContent?.match(/<yt:videoId>([^<]+)<\/yt:videoId>/)?.[1] || '';
+            const title = entry.getElementsByTagName('title')[0]?.textContent || '';
+            const link = entry.getElementsByTagName('link')[0]?.getAttribute('href') || `https://www.youtube.com/watch?v=${videoId}`;
+            const publishedText = entry.getElementsByTagName('published')[0]?.textContent || '';
+            const publishedDate = publishedText ? new Date(publishedText).toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'short',
+              day: 'numeric'
+            }) : 'Recent Release';
+
+            let category: 'official' | 'live' = 'live';
+            if (title.toLowerCase().includes('official') || title.toLowerCase().includes('single') || title.toLowerCase().includes('müzik') || title.toLowerCase().includes('deli gönül')) {
+              category = 'official';
+            }
+
+            return {
+              videoId,
+              title,
+              publishedDate,
+              link,
+              category,
+              thumbnail: `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`
+            };
+          });
+
+          if (active && parsed.length > 0) {
+            setYoutubeVideos(parsed);
+            return;
+          }
+        }
+      } catch (err) {
+        console.warn('Dynamic YouTube fetch failed, loading bulletproof offline library:', err);
       }
+
     };
 
     fetchLatestYouTubeVideos();
