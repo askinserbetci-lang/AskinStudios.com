@@ -302,7 +302,7 @@ const Home = () => {
               <img 
                 src={featuredAlbum.image} 
                 alt={featuredAlbum.title} 
-                className="w-full h-full object-cover md:grayscale md:group-hover:grayscale-0 transition-all duration-1000" 
+                className="w-full h-full object-cover transition-all duration-1000" 
                 onClick={() => showImage(featuredAlbum.image, featuredAlbum.title)}
               />
               <div className="absolute inset-0 bg-midnight/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
@@ -374,7 +374,7 @@ const Home = () => {
                   <img 
                     src={video.img} 
                     alt={video.title} 
-                    className="w-full h-full object-cover md:grayscale md:group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105"
+                    className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
                     onError={(e) => {
                       (e.target as HTMLImageElement).src = "/StudioAskin_Black.jpg";
                     }}
