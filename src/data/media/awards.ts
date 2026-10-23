@@ -44,7 +44,7 @@ export const awards: AwardItem[] = [
     organization: "Türkiye Müzik Ödülleri",
     description:
       "Recognized at the prestigious Turkish Music Awards (Türkiye Müzik Ödülleri) in Istanbul, celebrating excellence in the global music industry.",
-    image: "/VIDEOS_TMA_ASKIN CARPET.png"
+    image: "/VIDEOS_TMA_ASKIN CARPET.jpg"
   },
   {
     id: "mitsubishi-top10-usa",
@@ -71,7 +71,7 @@ export const awards: AwardItem[] = [
     organization: "The Akademia",
     description:
       "Awarded for 'The Meeting of the Legends', recognizing innovative Turkish world‑music fusion.",
-    image: "/AWARDS_Akademia_GALA.png"
+    image: "/AWARDS_Akademia_GALA.jpg"
   },
   {
     id: "akademia-2022",

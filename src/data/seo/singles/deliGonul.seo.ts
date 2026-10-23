@@ -7,5 +7,5 @@ export const deliGonulSEO: SEOConfig = {
   ogTitle: "Deli Gönül (2026 Version) – Aşkın Şerbetçi",
   ogDescription:
     "A modern cinematic reimagining of a Turkish classic, performed with emotional depth and world‑music nuance.",
-  ogImage: "/MINE_GECILI_DELI_GONUL.png"
+  ogImage: "/MINE_GECILI_DELI_GONUL.jpg"
 };

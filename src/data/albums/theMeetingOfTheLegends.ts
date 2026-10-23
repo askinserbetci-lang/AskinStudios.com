@@ -88,12 +88,12 @@ export const theMeetingOfTheLegends: Album = {
   concept: "Cinematic Turkish World Music Fusion",
   story: "A landmark fusion album blending Turkish classical heritage with cinematic world-music storytelling. Winner of the 2016 Akademia Award for Best Instrumental / World Beat Album.",
   image: "/2012 The Meeting of the Legends Cover.jpg",
-  youtubeEmbedUrl: "https://www.youtube.com/embed/videoseries?list=PL_X_x_x", // Placeholder or real if known
-  spotifyUrl: "https://open.spotify.com/album/4aawyAB9vmqN3uQ7FjRGTy",
+  youtubeEmbedUrl: "https://www.youtube.com/embed/1SRls-hyUaY",
+  spotifyUrl: "https://open.spotify.com/album/7LSxM1XEKOHwDXYpjeQkkm",
   appleMusicUrl: "https://music.apple.com/us/album/the-meeting-of-the-legends-vol-1-fantasy/524345658",
-  spotifyEmbedUrl: "https://open.spotify.com/embed/album/4aawyAB9vmqN3uQ7FjRGTy",
+  spotifyEmbedUrl: "https://open.spotify.com/embed/album/7LSxM1XEKOHwDXYpjeQkkm",
   tracklist: [
-    { trackNumber: 1, title: "Fantasy", duration: "4:23", youtubeVideoId: "dQw4w9WgXcQ" },
+    { trackNumber: 1, title: "Fantasy", duration: "4:23", youtubeVideoId: "1SRls-hyUaY" },
     { trackNumber: 2, title: "Crazy Heart", duration: "7:53" },
     { trackNumber: 3, title: "Dreamy Eyes", duration: "4:25" },
     { trackNumber: 4, title: "Be Mine Tonight", duration: "5:42" },

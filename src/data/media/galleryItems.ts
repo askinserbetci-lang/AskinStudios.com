@@ -36,7 +36,7 @@ export const mediaGallery: MediaItem[] = [
     type: "award",
     description:
       "Award ceremony photo for the Akademia Award – Best Instrumental / World Beat Album.",
-    image: "/AWARDS_Akademia_GALA.png",
+    image: "/AWARDS_Akademia_GALA.jpg",
     highlight: true
   },
   {

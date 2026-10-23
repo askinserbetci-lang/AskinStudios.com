@@ -4,7 +4,7 @@ export const AWARDS: Award[] = [
   {
     title: 'Akademia Music Award Winner',
     description: 'Winner of the Akademia Award for Best Instrumental / World Beat Album.',
-    image: '/AWARDS_Akademia_GALA.png'
+    image: '/AWARDS_Akademia_GALA.jpg'
   },
   {
     title: 'Türkiye Müzik Ödülleri',

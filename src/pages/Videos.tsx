@@ -92,7 +92,9 @@ const Videos = () => {
             <h2 className="text-3xl md:text-4xl font-serif italic mb-12 text-white">Official Music Videos</h2>
             <div className="grid md:grid-cols-2 gap-8">
               {[
-                { title: "Mine Gecili Deli Gönül (2026 Version)", duration: "4:32", img: "/MINE_GECILI_DELI_GONUL.png", videoId: "FrDbL6ruWOA" },
+                { title: "Be Mine Tonight: Cinematic World Music Suite", duration: "1:01:00", img: "/BE_MINE_TONIGHT_SUITE.jpg", videoId: "7pAdFokQahM" },
+                { title: "Biz Demeden Bitmez · Türkiye 2026 Anthem", duration: "3:45", img: "https://img.youtube.com/vi/BiAViHwWBk4/maxresdefault.jpg", videoId: "BiAViHwWBk4" },
+                { title: "Mine Geçili · Deli Gönül (2026 Version)", duration: "4:32", img: "/MINE_GECILI_DELI_GONUL.jpg", videoId: "FrDbL6ruWOA" },
                 { title: "Crazy Heart", duration: "5:00", img: "https://img.youtube.com/vi/bCYDFfrzbbA/maxresdefault.jpg", videoId: "bCYDFfrzbbA" }
               ].map((video, i) => (
                 <div 
@@ -105,7 +107,7 @@ const Videos = () => {
                     alt={video.title} 
                     className="w-full h-full object-cover md:grayscale md:group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105"
                     onError={(e) => {
-                      (e.target as HTMLImageElement).src = `https://picsum.photos/seed/video${i}/800/450?grayscale`;
+                      (e.target as HTMLImageElement).src = "/StudioAskin_Black.jpg";
                     }}
                   />
                   <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-500 flex items-center justify-center">
@@ -152,7 +154,7 @@ const Videos = () => {
                     alt={video.title} 
                     className="w-full h-full object-cover md:grayscale md:group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105"
                     onError={(e) => {
-                      (e.target as HTMLImageElement).src = `https://picsum.photos/seed/live${i}/800/450?grayscale`;
+                      (e.target as HTMLImageElement).src = "/StudioAskin_Black.jpg";
                     }}
                   />
                   <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-500 flex items-center justify-center">
@@ -207,7 +209,7 @@ const Videos = () => {
                     alt={video.title} 
                     className="w-full h-full object-cover md:grayscale md:group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105"
                     onError={(e) => {
-                      (e.target as HTMLImageElement).src = `https://picsum.photos/seed/doc${i}/800/450?grayscale`;
+                      (e.target as HTMLImageElement).src = "/StudioAskin_Black.jpg";
                     }}
                   />
                   <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-500 flex items-center justify-center">

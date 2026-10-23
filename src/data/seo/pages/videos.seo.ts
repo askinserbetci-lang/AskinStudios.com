@@ -5,5 +5,5 @@ export const videosPageSEO: SEOConfig = {
   description: "Watch live performances, studio sessions, and cinematic visualizers by Aşkın Şerbetçi.",
   ogTitle: "Aşkın Şerbetçi – Visual Media",
   ogDescription: "Emotion translated into motion. Explore the visual world of Aşkın Şerbetçi.",
-  ogImage: "/Askin Serbetci 01.jpg"
+  ogImage: "/Askin Serbetci 02.jpg"
 };

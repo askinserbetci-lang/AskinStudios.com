@@ -13,6 +13,8 @@ export interface Track extends Partial<BaseTrack> {
   isSectionHeader?: boolean;
   trackNumber?: string | number;
   youtubeVideoId?: string;
+  // Where this track starts inside the video (for a suite that is one long video)
+  startSeconds?: number;
   description?: string;
   commentary?: string;
 }
@@ -24,6 +26,7 @@ export interface Album extends BaseAlbum {
   image?: string;
   collaborators?: string[];
   themes?: string[];
+  highlights?: string[];
   youtubeEmbedUrl?: string;
   spotifyUrl?: string;
   appleMusicUrl?: string;

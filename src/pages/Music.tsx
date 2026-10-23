@@ -130,6 +130,13 @@ const Music = () => {
       if (active) {
         setYoutubeVideos([
           { 
+            videoId: "7pAdFokQahM", 
+            title: "Be Mine Tonight: Cinematic World Music Suite | 9-Language Duets with Ney, Kanun & Oud (1 Hour)", 
+            publishedDate: "Aug 9, 2026", 
+            category: "official",
+            thumbnail: "/BE_MINE_TONIGHT_SUITE.jpg" 
+          },
+          { 
             videoId: "BiAViHwWBk4", 
             title: "Biz Demeden Bitmez - Türkiye Dünya Kupası Marşı (Official Music Video)", 
             publishedDate: "May 28, 2026", 
@@ -141,7 +148,7 @@ const Music = () => {
             title: "Mine Geçili - Deli Gönül (2026 Cinematic Version)", 
             publishedDate: "Feb 10, 2026", 
             category: "official",
-            thumbnail: "/MINE_GECILI_DELI_GONUL.png" 
+            thumbnail: "/MINE_GECILI_DELI_GONUL.jpg" 
           },
           { 
             videoId: "bCYDFfrzbbA", 
@@ -298,7 +305,7 @@ const Music = () => {
                   alt={album.title} 
                   className="w-full h-auto object-contain rounded-sm border border-white/10 shadow-2xl shadow-black/80 group-hover:shadow-gold/20 transition-all duration-500 group-hover:scale-[1.02]"
                   onError={(e) => {
-                    (e.target as HTMLImageElement).src = "https://picsum.photos/seed/album/800/800?grayscale";
+                    (e.target as HTMLImageElement).src = "/StudioAskin_Black.jpg";
                   }}
                 />
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-500 flex items-center justify-center opacity-0 group-hover:opacity-100">
@@ -378,7 +385,7 @@ const Music = () => {
                         width="100%"
                         height="100%"
                         src={selectedTrackVideoId 
-                          ? `https://www.youtube.com/embed/${selectedTrackVideoId}?autoplay=1&rel=0` 
+                          ? `https://www.youtube.com/embed/${selectedTrackVideoId.split('#')[0]}?autoplay=1&rel=0${selectedTrackVideoId.includes('#') ? `&start=${selectedTrackVideoId.split('#')[1]}` : ''}` 
                           : (album.id === 'legends' ? 'https://www.youtube.com/embed/1SRls-hyUaY' : album.youtubeEmbedUrl)}
                         title={`${album.title} – YouTube Player`}
                         frameBorder="0"
@@ -687,7 +694,10 @@ const Music = () => {
                     </h2>
                     <ol className="space-y-1">
                         {album.tracklist.map((track, i) => {
-                          const videoId = track.youtubeVideoId || trackVideoMap[track.title] || null;
+                          // A scene inside one long video is "videoId#startSeconds"
+                          const videoId = track.youtubeVideoId
+                            ? (track.startSeconds !== undefined ? `${track.youtubeVideoId}#${track.startSeconds}` : track.youtubeVideoId)
+                            : trackVideoMap[track.title] || null;
                           const isCurrent = selectedTrackVideoId === videoId && videoId !== null;
                           
                           return track.isSectionHeader ? (
@@ -805,7 +815,7 @@ const Music = () => {
                             alt={`BTS ${i + 1}`} 
                             className="w-full h-full object-cover md:grayscale md:group-hover:grayscale-0 transition-all duration-700 hover:scale-105"
                             onError={(e) => {
-                              (e.target as HTMLImageElement).src = `https://picsum.photos/seed/bts${i}/600/400?grayscale`;
+                              (e.target as HTMLImageElement).src = "/StudioAskin_Black.jpg";
                             }}
                           />
                           <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-500 flex items-center justify-center opacity-0 group-hover:opacity-100">
@@ -823,7 +833,7 @@ const Music = () => {
                           alt="Behind the scenes" 
                           className="w-full h-full object-cover md:grayscale md:group-hover:grayscale-0 transition-all duration-700 hover:scale-105"
                           onError={(e) => {
-                            (e.target as HTMLImageElement).src = "https://picsum.photos/seed/bts/1200/500?grayscale";
+                            (e.target as HTMLImageElement).src = "/StudioAskin_Black.jpg";
                           }}
                         />
                         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-500 flex items-center justify-center opacity-0 group-hover:opacity-100">
@@ -945,7 +955,7 @@ const Music = () => {
                       className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
                       referrerPolicy="no-referrer"
                       onError={(e) => {
-                        (e.target as HTMLImageElement).src = `https://picsum.photos/seed/yt${idx}/600/350?grayscale`;
+                        (e.target as HTMLImageElement).src = "/StudioAskin_Black.jpg";
                       }}
                     />
 
@@ -1014,7 +1024,7 @@ const Music = () => {
                   alt={item.title} 
                   className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105 md:grayscale md:group-hover:grayscale-0"
                   onError={(e) => {
-                    (e.target as HTMLImageElement).src = `https://picsum.photos/seed/album${i}/800/600?grayscale`;
+                    (e.target as HTMLImageElement).src = "/StudioAskin_Black.jpg";
                   }}
                 />
                 
@@ -1059,7 +1069,7 @@ const Music = () => {
                     alt={collab.name} 
                     className="w-full h-full object-cover md:grayscale md:group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105"
                     onError={(e) => {
-                      (e.target as HTMLImageElement).src = `https://picsum.photos/seed/collab${i}/800/600?grayscale`;
+                      (e.target as HTMLImageElement).src = "/StudioAskin_Black.jpg";
                     }}
                   />
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-500 flex items-center justify-center opacity-0 group-hover:opacity-100">

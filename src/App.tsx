@@ -19,7 +19,7 @@ import BookingPage from './pages/Booking';
 import CustomCursor from './components/CustomCursor';
 import MobileNavbar from './components/MobileNavbar';
 import { LightboxProvider } from './context/LightboxContext';
-import { WorldCupCampaignPanel } from './components/WorldCupCampaignPanel';
+import { FeaturedReleasePanel } from './components/FeaturedReleasePanel';
 
 const Navbar = () => {
   const location = useLocation();
@@ -40,8 +40,8 @@ const Navbar = () => {
 
   return (
     <header className="fixed top-0 left-0 lg:left-[420px] lg:w-[calc(100%-420px)] z-50 w-full flex items-center justify-between px-8 py-7 bg-transparent transition-all duration-300">
-      <div className="flex flex-col leading-tight opacity-100 transition-opacity">
-        <span className="text-white text-sm md:text-base font-bold tracking-widest uppercase">
+      <div className="flex flex-col leading-tight opacity-100 transition-opacity shrink-0 mr-8">
+        <span className="text-white text-sm md:text-base font-bold tracking-widest uppercase whitespace-nowrap">
           Aşkın Şerbetçi
         </span>
         <span className="text-[#F2D37D] text-[9px] md:text-[10px] tracking-[0.2em] uppercase mt-0.5 font-medium">
@@ -49,13 +49,13 @@ const Navbar = () => {
         </span>
       </div>
 
-      <nav className="hidden md:flex items-center space-x-10 text-white">
+      <nav className="hidden md:flex items-center flex-wrap justify-end gap-x-5 xl:gap-x-8 gap-y-1 text-white">
         {navLinks.map((link) => (
           <Link
             key={link.name}
             to={link.href}
             className={cn(
-              "text-[10px] uppercase tracking-[0.3em] hover:text-gold transition-all duration-500 relative py-2",
+              "text-[10px] uppercase tracking-[0.25em] xl:tracking-[0.3em] hover:text-gold transition-all duration-500 relative py-2 whitespace-nowrap",
               location.pathname === link.href ? "text-gold" : "text-white"
             )}
           >
@@ -156,7 +156,7 @@ function App() {
     <Router>
       <LightboxProvider>
         <div className="min-h-screen bg-transparent text-paper font-sans selection:bg-gold/30 selection:text-gold relative">
-          <WorldCupCampaignPanel />
+          <FeaturedReleasePanel />
           <CustomCursor />
           <Navbar />
           <MobileNavbar />

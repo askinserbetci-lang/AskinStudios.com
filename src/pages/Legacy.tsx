@@ -40,7 +40,7 @@ export default function LegacyPage() {
               alt="Aşkın Şerbetçi Legacy Poster" 
               className="w-full h-full object-cover grayscale mix-blend-luminosity"
               onError={(e) => {
-                (e.target as HTMLImageElement).src = "https://picsum.photos/seed/legacy-poster/1920/1080?grayscale";
+                (e.target as HTMLImageElement).src = "/StudioAskin_Black.jpg";
               }}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-[#05070d] via-[#05070d]/40 to-transparent" />
@@ -107,7 +107,7 @@ export default function LegacyPage() {
               alt="Legacy in Motion" 
               className="w-full h-full object-cover opacity-40 grayscale"
               onError={(e) => {
-                (e.target as HTMLImageElement).src = "https://picsum.photos/seed/legacy-closing/1920/1080?grayscale";
+                (e.target as HTMLImageElement).src = "/StudioAskin_Black.jpg";
               }}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-[#05070d] via-transparent to-[#05070d]/40" />

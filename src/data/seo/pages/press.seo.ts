@@ -7,5 +7,5 @@ export const pressPageSEO: SEOConfig = {
   ogTitle: "Press & Media – Aşkın Şerbetçi",
   ogDescription:
     "A curated archive of awards, interviews, and media features.",
-  ogImage: "/images/og/press-page.jpg"
+  ogImage: "/Hero_01.jpg"
 };

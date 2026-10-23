@@ -7,7 +7,7 @@ export const meetingOfTheLegendsRemix: Album = {
   year: '2026',
   concept: 'Remix Album',
   story: 'A warm, heartfelt, and uplifting composition that blends Turkish melodic tradition with cinematic world‑music textures. Built on gentle rhythmic motion, expressive strings, and the soulful breath of the nay, the piece carries a message of devotion and emotional clarity — intimate, timeless, and deeply human. Music that is food for your soul — a journey into the unknown.',
-  image: '/The_Meeting_of_The_Legends_Vol_2_Remix_2026.png',
+  image: '/The_Meeting_of_The_Legends_Vol_2_Remix_2026.jpg',
   tracklist: [],
   detailedCredits: [
     { role: "Artist", name: "Aşkın Şerbetçi" },
@@ -22,6 +22,6 @@ export const journeyToUnknown: Album = {
   year: '2026',
   concept: 'New Album',
   story: 'An upcoming journey into uncharted musical territories.',
-  image: '/StudioAskin_Black.png',
+  image: '/StudioAskin_Black.jpg',
   tracklist: []
 };

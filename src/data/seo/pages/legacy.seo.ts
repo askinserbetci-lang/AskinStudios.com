@@ -7,5 +7,5 @@ export const legacyPageSEO: SEOConfig = {
   ogTitle: "Aşkın Şerbetçi – Legacy",
   ogDescription:
     "A life of entrepreneurship, innovation, and world‑music artistry.",
-  ogImage: "/images/og/legacy-page.jpg"
+  ogImage: "/LINEAGE_01.jpg"
 };

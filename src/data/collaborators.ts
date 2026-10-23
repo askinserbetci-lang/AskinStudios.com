@@ -56,7 +56,7 @@ export const COLLABORATORS: Collaborator[] = [
     role: 'Master Percussionist', 
     description: 'A foundational figure in the belly-dance music community, bringing deep rhythmic knowledge and global experience.',
     story: 'Ibrahim Turmen, known worldwide as EEBO, is a master percussionist whose career spans decades of performance, recording, and rhythm education. A foundational figure in the belly-dance music community, he has performed at major festivals, world-music series, and iconic venues including Madison Square Garden and Lincoln Center. As co-founder of The Sultans Mid-Eastern Band, EEBO brings deep rhythmic knowledge and global experience to every collaboration.',
-    image: '/COLLAB_EEBO.jpg',
+    image: '/StudioAskin_Black.jpg',
     isLegacy: true
   },
   { 

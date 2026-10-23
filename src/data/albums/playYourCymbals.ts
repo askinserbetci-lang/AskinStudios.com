@@ -7,10 +7,7 @@ export const playYourCymbals: Album = {
   year: '2008',
   concept: 'A dance-driven, rhythm-forward world-music album that entered the U.S. belly dance and ethnic dance communities.',
   story: 'A rhythmic journey rooted in belly-dance tradition and modern performance energy.',
-  image: '/ALBUM_CYMBALS.png',
-  spotifyUrl: 'https://open.spotify.com',
-  appleMusicUrl: 'https://music.apple.com',
-  spotifyEmbedUrl: 'https://open.spotify.com/embed/album/4aawyAB9vmqN3uQ7FjRGTy?utm_source=generator',
+  image: '/ALBUM_CYMBALS.jpg',
   youtubeEmbedUrl: 'https://www.youtube.com/embed/jFXOAyqXmaI?si=8CWaB4uV91OuGTFc',
   tracklist: [
     { title: 'Belly Dance Routine', isSectionHeader: true },

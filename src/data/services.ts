@@ -17,7 +17,7 @@ export const SERVICE_TIERS: ServiceTier[] = [
     id: 'composition',
     name: 'Arranging & Composition',
     description: 'Emotional storytelling through melody, orchestration, and Turkish makams.',
-    image: '/Askin Serbetci 04.jpg',
+    image: '/Askin_Performing.jpg',
     features: [
       'Custom composition',
       'Orchestration',
@@ -29,7 +29,7 @@ export const SERVICE_TIERS: ServiceTier[] = [
     id: 'recording',
     name: 'Studio Recording',
     description: 'Professional vocal and instrumental capture in a world-class environment.',
-    image: '/Askin Serbetci 01.jpg',
+    image: '/Askin Serbetci 02.jpg',
     features: [
       'Vocal recording',
       'Session work',

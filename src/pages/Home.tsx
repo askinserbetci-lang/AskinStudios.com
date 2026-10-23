@@ -316,15 +316,15 @@ const Home = () => {
               <span className="text-gold uppercase tracking-[0.3em] text-xs">Latest Release</span>
               <h3 className="text-4xl md:text-5xl font-serif italic text-white">{featuredAlbum.title}</h3>
               <p className="text-paper/60 font-light text-lg leading-relaxed">
-                {featuredAlbum.story.substring(0, 150)}...
+                {featuredAlbum.story.substring(0, 220)}…
               </p>
               
               <div className="space-y-4 pt-4">
-                {[
+                {((featuredAlbum as any).highlights || [
                   "Signature world‑fusion tracks",
                   "Film and documentary cues",
                   "Collaborative works"
-                ].map((item, i) => (
+                ]).map((item: string, i: number) => (
                   <div key={i} className="flex items-center gap-4 border-b border-white/5 pb-4">
                     <Play size={12} className="text-gold fill-gold" />
                     <span className="text-paper/80 font-light text-sm">{item}</span>
@@ -332,9 +332,19 @@ const Home = () => {
                 ))}
               </div>
 
-              <Link to="/music" className="inline-block mt-8 px-8 py-3 border border-white/10 hover:bg-white hover:text-ink transition-all duration-300 text-[10px] uppercase tracking-widest rounded-sm">
-                Explore Music
-              </Link>
+              <div className="flex flex-wrap gap-4 mt-8">
+                <Link to={`/music/${featuredAlbum.id}`} className="inline-block px-8 py-3 bg-gold text-ink font-semibold hover:bg-white transition-all duration-300 text-[10px] uppercase tracking-widest rounded-sm">
+                  Listen Now
+                </Link>
+                {(featuredAlbum as any).spotifyUrl && (
+                  <a href={(featuredAlbum as any).spotifyUrl} target="_blank" rel="noopener noreferrer" className="inline-block px-8 py-3 border border-white/10 hover:bg-white hover:text-ink transition-all duration-300 text-[10px] uppercase tracking-widest rounded-sm">
+                    Spotify
+                  </a>
+                )}
+                <Link to="/music" className="inline-block px-8 py-3 border border-white/10 hover:bg-white hover:text-ink transition-all duration-300 text-[10px] uppercase tracking-widest rounded-sm">
+                  Explore Music
+                </Link>
+              </div>
             </div>
           </div>
         </div>
@@ -352,8 +362,8 @@ const Home = () => {
 
           <div className="grid md:grid-cols-2 gap-10">
             {[
-              { title: "Mine Gecili Deli Gönül (2026 Version)", img: "/MINE_GECILI_DELI_GONUL.png", type: "video", videoId: "FrDbL6ruWOA" },
-              { title: "Fantacy", img: "/2012 The Meeting of the Legends Cover.jpg", type: "video", videoId: "1SRls-hyUaY" }
+              { title: "Be Mine Tonight: Cinematic World Music Suite (1 Hour)", img: "/BE_MINE_TONIGHT_SUITE.jpg", type: "video", videoId: "7pAdFokQahM" },
+              { title: "Mine Geçili · Deli Gönül (2026 Version)", img: "/MINE_GECILI_DELI_GONUL.jpg", type: "video", videoId: "FrDbL6ruWOA" }
             ].map((video, i) => (
               video.type === "video" ? (
                 <div 
@@ -366,7 +376,7 @@ const Home = () => {
                     alt={video.title} 
                     className="w-full h-full object-cover md:grayscale md:group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105"
                     onError={(e) => {
-                      (e.target as HTMLImageElement).src = `https://picsum.photos/seed/video${i}/800/450?grayscale`;
+                      (e.target as HTMLImageElement).src = "/StudioAskin_Black.jpg";
                     }}
                   />
                   <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-500 flex items-center justify-center">

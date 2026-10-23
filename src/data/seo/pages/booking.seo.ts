@@ -7,5 +7,5 @@ export const bookingPageSEO: SEOConfig = {
   ogTitle: "Booking – Aşkın Şerbetçi",
   ogDescription:
     "Live performances, studio work, and artistic collaborations.",
-  ogImage: "/images/og/booking-page.jpg"
+  ogImage: "/Askin_Performing.jpg"
 };

@@ -5,5 +5,5 @@ export const contactPageSEO: SEOConfig = {
   description: "Get in touch with Aşkın Şerbetçi for music production, composition, or live performance inquiries.",
   ogTitle: "Contact Aşkın Şerbetçi",
   ogDescription: "Connect for professional music services and collaborations.",
-  ogImage: "/Askin Serbetci 04.jpg"
+  ogImage: "/Askin_Performing.jpg"
 };
