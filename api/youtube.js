@@ -27,6 +27,16 @@ async function feed(param) {
   return parse(await r.text());
 }
 
+// A Short opens at youtube.com/shorts/ID; a normal video gets sent on to /watch
+async function isShort(v) {
+  try {
+    const r = await fetch(`https://www.youtube.com/shorts/${v.id}`, { method: 'HEAD', redirect: 'manual', signal: AbortSignal.timeout(5000) });
+    if (r.status === 200) return true;
+    if (r.status >= 300 && r.status < 400) return false;
+  } catch {}
+  return /#shorts?\b/i.test(v.title);
+}
+
 // Works out the channel ID from the handle, in case it ever changes
 async function channelId() {
   try {
@@ -49,16 +59,25 @@ export default async function handler(req, res) {
       all = await feed(`channel_id=${id}`);
     }
     const tail = id.slice(2);
-    // "UULF" lists only full-length videos and "UUSH" only Shorts; if either is unavailable, use the full list
-    const [videos, shorts] = await Promise.all([
-      feed(`playlist_id=UULF${tail}`).catch(() => all),
-      feed(`playlist_id=UUSH${tail}`).catch(() => []),
+    // "UULF" lists only full-length videos and "UUSH" only Shorts; when YouTube doesn't offer those,
+    // each upload is checked one by one
+    const [long, short] = await Promise.all([
+      feed(`playlist_id=UULF${tail}`).catch(() => null),
+      feed(`playlist_id=UUSH${tail}`).catch(() => null),
     ]);
-    const shortIds = new Set(shorts.map(s => s.id));
+    let videos, shorts;
+    if (long && short) {
+      videos = long;
+      shorts = short;
+    } else {
+      const flags = await Promise.all(all.map(isShort));
+      videos = all.filter((_, i) => !flags[i]);
+      shorts = all.filter((_, i) => flags[i]);
+    }
     res.setHeader('Cache-Control', 'public, s-maxage=1800, stale-while-revalidate=86400');
     res.status(200).json({
       channel: `https://www.youtube.com/@${HANDLE}`,
-      videos: videos.filter(v => !shortIds.has(v.id)),
+      videos,
       shorts,
     });
   } catch (e) {
