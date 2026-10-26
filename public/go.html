@@ -35,7 +35,7 @@
   // Seconds into each duet where its hook (chorus) starts: the teaser here plays the hook;
   // the YouTube app still opens at the start of the duet
   var HOOK = { en: 0, tr: 0, ar: 0, ru: 0, es: 0, it: 0, el: 0, az: 0, fr: 0 };
-  var q = new URLSearchParams(location.search), l = C[q.get('lang')] ? q.get('lang') : 'en';
+  var q = new URLSearchParams(location.search), lq = String(q.get('lang') || '').trim().toLowerCase().slice(0, 2), l = C[lq] ? lq : 'en';
   var t = Number(q.get('t')) || C[l], V = '7pAdFokQahM', ua = navigator.userAgent;
   var path = 'www.youtube.com/watch?v=' + V + '&t=' + t + 's';
   var listen = location.origin + '/listen?lang=' + l + '&t=' + t;

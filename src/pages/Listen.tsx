@@ -30,7 +30,7 @@ const appLink = (t: number) => {
 
 export default function Listen() {
   const lang = useMemo(() => {
-    const q = new URLSearchParams(window.location.search).get('lang') || '';
+    const q = (new URLSearchParams(window.location.search).get('lang') || '').trim().toLowerCase().slice(0, 2);
     return CHAPTERS[q] ? q : 'en';
   }, []);
   const c = CHAPTERS[lang];
