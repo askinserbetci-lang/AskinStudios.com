@@ -19,7 +19,7 @@ import FestivalEPK from './pages/FestivalEPK';
 import BookingPage from './pages/Booking';
 import CustomCursor from './components/CustomCursor';
 import MobileNavbar from './components/MobileNavbar';
-import { FanSignup } from './components/FanSignup';
+import { FanSignup, FanPopup } from './components/FanSignup';
 import { LightboxProvider } from './context/LightboxContext';
 import { FeaturedReleasePanel } from './components/FeaturedReleasePanel';
 
@@ -169,6 +169,7 @@ function App() {
             <AnimatedRoutes />
           </main>
           <Footer />
+          <FanPopup />
         </div>
       </LightboxProvider>
     </Router>
