@@ -17,6 +17,7 @@ import EPK from './pages/EPK';
 import DownloadEPK from './pages/DownloadEPK';
 import FestivalEPK from './pages/FestivalEPK';
 import BookingPage from './pages/Booking';
+import Listen from './pages/Listen';
 import CustomCursor from './components/CustomCursor';
 import MobileNavbar from './components/MobileNavbar';
 import { FanSignup, FanPopup } from './components/FanSignup';
@@ -156,9 +157,17 @@ const AnimatedRoutes = () => {
   );
 };
 
+// The ad landing page stands alone: no side panel or menu between the viewer and the music
+const Shell: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const location = useLocation();
+  if (location.pathname.startsWith('/listen')) return <Listen />;
+  return <>{children}</>;
+};
+
 function App() {
   return (
     <Router>
+      <Shell>
       <LightboxProvider>
         <div className="min-h-screen bg-transparent text-paper font-sans selection:bg-gold/30 selection:text-gold relative">
           <FeaturedReleasePanel />
@@ -172,6 +181,7 @@ function App() {
           <FanPopup />
         </div>
       </LightboxProvider>
+      </Shell>
     </Router>
   );
 }

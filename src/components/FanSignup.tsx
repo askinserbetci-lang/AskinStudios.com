@@ -24,7 +24,7 @@ export const FanSignup = ({ compact = false, popup = false, onClose }: { compact
     setState('sending');
     setError('');
     try {
-      await sendToAiq('fan', { email: email.trim(), name: name.trim(), website: trap, language: navigator.language, source: popup ? 'popup' : compact ? 'footer' : 'home' });
+      await sendToAiq('fan', { email: email.trim(), name: name.trim(), website: trap, language: navigator.language, source: window.location.pathname.startsWith('/listen') ? `listen${window.location.search}`.slice(0, 40) : popup ? 'popup' : compact ? 'footer' : 'home' });
       store.set(JOINED, '1');
       setState('done');
     } catch (err: any) {
@@ -141,7 +141,8 @@ export const FanSignup = ({ compact = false, popup = false, onClose }: { compact
 export const FanPopup = () => {
   const [open, setOpen] = useState(false);
   useEffect(() => {
-    if (store.get(JOINED)) return;
+    // The ad landing page has its own sign-up right under the video
+    if (store.get(JOINED) || window.location.pathname.startsWith('/listen')) return;
     const direct = /#fans|[?&]fans\b/.test(window.location.hash + window.location.search);
     const later = Number(store.get(LATER) || 0);
     if (!direct && later && Date.now() - later < 14 * 86_400_000) return;
