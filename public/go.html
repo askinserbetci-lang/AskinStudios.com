@@ -18,23 +18,27 @@
 <div>
   <p>Aşkın Şerbetçi · Be Mine Tonight</p>
   <a id="open" href="#">▶ YouTube</a>
+  <div><a id="here" href="#" style="background:none;color:#ffffff99;font-weight:400;font-size:14px;padding:8px"></a></div>
 </div>
 <script>
 // The ad's "Watch more" button: opens the suite in the YouTube app (signed in, so like and
-// subscribe are one tap) at the viewer's language; falls back to the player on /listen.
+// subscribe are one tap) at the viewer's language. No music plays on this page, so the only
+// way to hear the song is in YouTube; the in-page player is a small link for those without the app.
 (function () {
   var C = { en: 1614, tr: 1837, ar: 2114, ru: 2312, es: 2530, it: 2744, el: 2950, az: 3160, fr: 3364 };
+  var HERE = { en: 'No YouTube app? Listen here', tr: 'YouTube uygulaması yok mu? Burada dinle', ar: 'لا يوجد تطبيق يوتيوب؟ استمع هنا', ru: 'Нет приложения YouTube? Слушайте здесь', es: '¿Sin la app de YouTube? Escucha aquí', it: 'Niente app YouTube? Ascolta qui', el: 'Δεν έχεις την εφαρμογή YouTube; Άκου εδώ', az: 'YouTube tətbiqi yoxdur? Burada dinləyin', fr: "Pas d'app YouTube ? Écoute ici" };
   var q = new URLSearchParams(location.search), l = C[q.get('lang')] ? q.get('lang') : 'en';
   var t = Number(q.get('t')) || C[l], V = '7pAdFokQahM', ua = navigator.userAgent;
   var path = 'www.youtube.com/watch?v=' + V + '&t=' + t + 's';
   var listen = location.origin + '/listen?lang=' + l + '&t=' + t;
   var app = /Android/i.test(ua)
-    ? 'intent://' + path + '#Intent;scheme=https;package=com.google.android.youtube;S.browser_fallback_url=' + encodeURIComponent(listen) + ';end'
+    ? 'intent://' + path + '#Intent;scheme=https;package=com.google.android.youtube;S.browser_fallback_url=' + encodeURIComponent('https://' + path) + ';end'
     : /iPhone|iPad|iPod/i.test(ua) ? 'youtube://' + path : 'https://' + path;
   document.getElementById('open').href = app;
+  var here = document.getElementById('here'); here.href = listen; here.textContent = HERE[l];
+  if (l === 'ar') document.documentElement.dir = 'rtl';
   if (!/Android|iPhone|iPad|iPod/i.test(ua)) { location.replace(app); return; }
   location.href = app;
-  setTimeout(function () { location.replace(listen); }, 2500);
 })();
 </script>
 </body>
