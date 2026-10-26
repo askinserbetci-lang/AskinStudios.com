@@ -18,6 +18,16 @@ const CHAPTERS: Record<string, { start: number; dir?: 'rtl'; title: string; line
   fr: { start: 3364, title: 'Sois à moi ce soir', line: 'Duo en français, en live avec ney, kanun et oud.', play: 'Appuie sur play : ça commence dans ta langue', open: 'Ouvrir dans YouTube', join: 'Écoute mes nouvelles chansons avant tout le monde' },
 };
 
+// Into the YouTube app itself (signed in, so like and subscribe are one tap), not YouTube inside
+// Facebook's browser
+const appLink = (t: number) => {
+  const path = `www.youtube.com/watch?v=${VIDEO}&t=${t}s`;
+  const ua = navigator.userAgent;
+  if (/Android/i.test(ua)) return `intent://${path}#Intent;scheme=https;package=com.google.android.youtube;S.browser_fallback_url=${encodeURIComponent('https://' + path)};end`;
+  if (/iPhone|iPad|iPod/i.test(ua)) return `youtube://${path}`;
+  return `https://${path}`;
+};
+
 export default function Listen() {
   const lang = useMemo(() => {
     const q = new URLSearchParams(window.location.search).get('lang') || '';
@@ -40,7 +50,7 @@ export default function Listen() {
           />
         </div>
         <p className="text-center text-xs text-white/45">{c.play}</p>
-        <a href={`https://www.youtube.com/watch?v=${VIDEO}&t=${t}s`} className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-[#ff0033] hover:bg-[#e0002c] text-white text-sm font-semibold uppercase tracking-[0.15em] rounded-sm">
+        <a href={appLink(t)} className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-[#ff0033] hover:bg-[#e0002c] text-white text-sm font-semibold uppercase tracking-[0.15em] rounded-sm">
           <Youtube size={18} /> {c.open}
         </a>
         <div className="pt-2 border-t border-white/10">
