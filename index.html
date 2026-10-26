@@ -1,6 +1,25 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <script>
+      // /go?lang=ar : the ad's "Watch more" button. Opens the suite in the YouTube app (signed in,
+      // so like and subscribe are one tap), at the viewer's language. Falls back to /listen.
+      (function () {
+        if (location.pathname.replace(/\/$/, '') !== '/go') return;
+        var C = { en: 1614, tr: 1837, ar: 2114, ru: 2312, es: 2530, it: 2744, el: 2950, az: 3160, fr: 3364 };
+        var q = new URLSearchParams(location.search), l = C[q.get('lang')] ? q.get('lang') : 'en';
+        var t = Number(q.get('t')) || C[l], V = '7pAdFokQahM', ua = navigator.userAgent;
+        var path = 'www.youtube.com/watch?v=' + V + '&t=' + t + 's';
+        var listen = location.origin + '/listen?lang=' + l + '&t=' + t;
+        if (/Android/i.test(ua)) {
+          location.href = 'intent://' + path + '#Intent;scheme=https;package=com.google.android.youtube;S.browser_fallback_url=' + encodeURIComponent(listen) + ';end';
+          setTimeout(function () { location.replace(listen); }, 2500);
+        } else if (/iPhone|iPad|iPod/i.test(ua)) {
+          location.href = 'youtube://' + path;
+          setTimeout(function () { location.replace(listen); }, 1500);
+        } else location.replace('https://' + path);
+      })();
+    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AŞKIN ŞERBETÇI | Cinematic Turkish World Music</title>

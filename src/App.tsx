@@ -160,7 +160,7 @@ const AnimatedRoutes = () => {
 // The ad landing page stands alone: no side panel or menu between the viewer and the music
 const Shell: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const location = useLocation();
-  if (location.pathname.startsWith('/listen')) return <Listen />;
+  if (location.pathname.startsWith('/listen') || location.pathname.startsWith('/go')) return <Listen />;
   return <>{children}</>;
 };
 
