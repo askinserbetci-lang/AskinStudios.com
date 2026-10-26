@@ -57,17 +57,17 @@
   here.textContent = '♡ ' + ({ en: 'Join the fan list', tr: 'Hayran listesine katıl', ar: 'انضم إلى قائمة المعجبين', ru: 'Список поклонников', es: 'Únete a la lista de fans', it: 'Entra nella lista dei fan', el: 'Λίστα θαυμαστών', az: 'Fan siyahısına qoşulun', fr: 'Rejoins la liste des fans' })[l];
   if (l === 'ar') document.documentElement.dir = 'rtl';
   if (!/Android|iPhone|iPad|iPod/i.test(ua)) { location.replace(app); return; }
-  // Music first: the YouTube app is offered once the song is actually playing here (or after 4s
+  // A teaser: the song plays here for 12 seconds, then the YouTube app is offered (after 4s
   // if the phone won't autoplay), so Facebook's "leaving" box comes up over the music, not before it
   var asked = false;
   function offer() { if (!asked) { asked = true; location.href = app; } }
-  setTimeout(offer, 4000);
+  var noMusic = setTimeout(offer, 4000);
   window.onYouTubeIframeAPIReady = function () {
     new YT.Player('player', {
       videoId: V, playerVars: { start: t, autoplay: 1, playsinline: 1, rel: 0 },
       events: {
         onReady: function (e) { e.target.playVideo(); },
-        onStateChange: function (e) { if (e.data === 1) setTimeout(offer, 1200); }
+        onStateChange: function (e) { if (e.data === 1) { clearTimeout(noMusic); setTimeout(offer, 12000); } }
       }
     });
   };
