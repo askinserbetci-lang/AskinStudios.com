@@ -1,8 +1,18 @@
 {
   "rewrites": [
-    { "source": "/((?!api/).*)", "destination": "/index.html" }
+    {
+      "source": "/go",
+      "destination": "/go.html"
+    },
+    {
+      "source": "/((?!api/).*)",
+      "destination": "/index.html"
+    }
   ],
   "crons": [
-    { "path": "/api/fan-mail-tick", "schedule": "5 14 * * *" }
+    {
+      "path": "/api/fan-mail-tick",
+      "schedule": "5 14 * * *"
+    }
   ]
 }

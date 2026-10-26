@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Be Mine Tonight · Aşkın Şerbetçi</title>
+<meta property="og:title" content="Be Mine Tonight · 9-language duets with ney, kanun & oud" />
+<meta property="og:description" content="Listen on YouTube, starting at your language." />
+<meta property="og:image" content="https://i.ytimg.com/vi/7pAdFokQahM/maxresdefault.jpg" />
+<meta name="robots" content="noindex" />
+<style>
+  body { margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center; background: #07060a; color: #fff; font-family: system-ui, sans-serif; text-align: center; padding: 16px; box-sizing: border-box; }
+  a { display: inline-block; margin-top: 18px; padding: 16px 28px; background: #ff0033; color: #fff; text-decoration: none; font-weight: 600; border-radius: 4px; }
+  p { color: #dfba6b; letter-spacing: .2em; font-size: 11px; text-transform: uppercase; }
+</style>
+</head>
+<body>
+<div>
+  <p>Aşkın Şerbetçi · Be Mine Tonight</p>
+  <a id="open" href="#">▶ YouTube</a>
+</div>
+<script>
+// The ad's "Watch more" button: opens the suite in the YouTube app (signed in, so like and
+// subscribe are one tap) at the viewer's language; falls back to the player on /listen.
+(function () {
+  var C = { en: 1614, tr: 1837, ar: 2114, ru: 2312, es: 2530, it: 2744, el: 2950, az: 3160, fr: 3364 };
+  var q = new URLSearchParams(location.search), l = C[q.get('lang')] ? q.get('lang') : 'en';
+  var t = Number(q.get('t')) || C[l], V = '7pAdFokQahM', ua = navigator.userAgent;
+  var path = 'www.youtube.com/watch?v=' + V + '&t=' + t + 's';
+  var listen = location.origin + '/listen?lang=' + l + '&t=' + t;
+  var app = /Android/i.test(ua)
+    ? 'intent://' + path + '#Intent;scheme=https;package=com.google.android.youtube;S.browser_fallback_url=' + encodeURIComponent(listen) + ';end'
+    : /iPhone|iPad|iPod/i.test(ua) ? 'youtube://' + path : 'https://' + path;
+  document.getElementById('open').href = app;
+  if (!/Android|iPhone|iPad|iPod/i.test(ua)) { location.replace(app); return; }
+  location.href = app;
+  setTimeout(function () { location.replace(listen); }, 2500);
+})();
+</script>
+</body>
+</html>
