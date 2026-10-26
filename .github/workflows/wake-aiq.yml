@@ -1,0 +1,13 @@
+# Every 15 minutes: wakes AiQ Creator so it reads new comments (ads included), thanks fans and
+# invites them to the fan list, sends phone alerts and fan email batches, even when no one has it open
+name: Wake AiQ Creator
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+jobs:
+  wake:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - run: curl -fsS -m 290 -X POST https://aiqcreator.com/api/public/wake || true
