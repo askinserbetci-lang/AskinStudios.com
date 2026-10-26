@@ -55,22 +55,33 @@
   };
   document.getElementById('title').textContent = T[l][0];
   document.getElementById('line').textContent = T[l][1];
+  var dev = /Android/i.test(ua) ? 'android' : /iPhone|iPad|iPod/i.test(ua) ? 'ios' : 'other';
+  // Step counter (a tiny image request to the app, nothing personal), to see where people drop off
+  function step(ev) { try { new Image().src = 'https://aiqcreator.com/api/public/door?ev=' + ev + '&l=' + l + '&d=' + dev + '&r=' + Math.random(); } catch (e) {} }
+  var asked = false;
+  step('arrive');
+  var left = false;
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden && asked && !left) { left = true; step('away'); }
+    else if (!document.hidden && left) { step('back'); }
+  });
+  document.getElementById('open').addEventListener('click', function () { asked = true; step('tap'); });
   document.getElementById('open').href = app;
-  var here = document.getElementById('here'); here.href = listen;
+  var here = document.getElementById('here'); here.href = listen; here.addEventListener('click', function () { step('fan'); });
   here.textContent = '♡ ' + ({ en: 'Join the fan list', tr: 'Hayran listesine katıl', ar: 'انضم إلى قائمة المعجبين', ru: 'Список поклонников', es: 'Únete a la lista de fans', it: 'Entra nella lista dei fan', el: 'Λίστα θαυμαστών', az: 'Fan siyahısına qoşulun', fr: 'Rejoins la liste des fans' })[l];
   if (l === 'ar') document.documentElement.dir = 'rtl';
   if (!/Android|iPhone|iPad|iPod/i.test(ua)) { location.replace(app); return; }
   // A teaser: the song plays here for 30 seconds, then the YouTube app is offered (after 4s
   // if the phone won't autoplay), so Facebook's "leaving" box comes up over the music, not before it
-  var asked = false;
-  function offer() { if (!asked) { asked = true; location.href = app; } }
+  var played = false;
+  function offer() { if (!asked) { asked = true; step('offer'); location.href = app; } }
   var noMusic = setTimeout(offer, 4000);
   window.onYouTubeIframeAPIReady = function () {
     new YT.Player('player', {
       videoId: V, playerVars: { start: t + (HOOK[l] || 0), autoplay: 1, playsinline: 1, rel: 0 },
       events: {
         onReady: function (e) { e.target.playVideo(); },
-        onStateChange: function (e) { if (e.data === 1) { clearTimeout(noMusic); setTimeout(offer, 30000); } }
+        onStateChange: function (e) { if (e.data === 1 && !played) { played = true; step('play'); } if (e.data === 1) { clearTimeout(noMusic); setTimeout(offer, 30000); } }
       }
     });
   };
