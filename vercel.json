@@ -2,6 +2,105 @@
   "rewrites": [
     {
       "source": "/go",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "en.*"
+        }
+      ],
+      "destination": "/go-en.html"
+    },
+    {
+      "source": "/go",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "tr.*"
+        }
+      ],
+      "destination": "/go-tr.html"
+    },
+    {
+      "source": "/go",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "ar.*"
+        }
+      ],
+      "destination": "/go-ar.html"
+    },
+    {
+      "source": "/go",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "ru.*"
+        }
+      ],
+      "destination": "/go-ru.html"
+    },
+    {
+      "source": "/go",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "es.*"
+        }
+      ],
+      "destination": "/go-es.html"
+    },
+    {
+      "source": "/go",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "it.*"
+        }
+      ],
+      "destination": "/go-it.html"
+    },
+    {
+      "source": "/go",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "el.*"
+        }
+      ],
+      "destination": "/go-el.html"
+    },
+    {
+      "source": "/go",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "az.*"
+        }
+      ],
+      "destination": "/go-az.html"
+    },
+    {
+      "source": "/go",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "fr.*"
+        }
+      ],
+      "destination": "/go-fr.html"
+    },
+    {
+      "source": "/go",
       "destination": "/go.html"
     },
     {
