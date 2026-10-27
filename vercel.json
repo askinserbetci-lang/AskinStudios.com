@@ -115,6 +115,10 @@
       "destination": "/go.html"
     },
     {
+      "source": "/sheets",
+      "destination": "/sheets.html"
+    },
+    {
       "source": "/((?!api/).*)",
       "destination": "/index.html"
     }

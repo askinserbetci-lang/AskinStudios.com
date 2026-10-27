@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Free Sheet Music · Aşkın Şerbetçi</title>
+<meta name="description" content="Free lead sheets (melody and chords) for Deli Gönül and Anla Beni (Be Mine Tonight), written by Aşkın Şerbetçi." />
+<meta property="og:title" content="Free sheet music · Deli Gönül & Anla Beni (Be Mine Tonight)" />
+<meta property="og:description" content="Melody and chords, written by Aşkın Şerbetçi. Download free, then play along with the video." />
+<meta property="og:image" content="https://askinstudios.com/sheets/deli-gonul-preview.jpg" />
+<style>
+  :root { --gold: #dfba6b; --bg: #07060a; --ink: #fff; --dim: #ffffffa8; --card: #121017; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: system-ui, -apple-system, sans-serif; padding: 32px 16px 48px; }
+  .wrap { max-width: 920px; margin: 0 auto; text-align: center; }
+  .kick { color: var(--gold); letter-spacing: .2em; font-size: 11px; text-transform: uppercase; margin: 0; }
+  h1 { font-family: Georgia, serif; font-style: italic; font-weight: 400; font-size: clamp(30px, 6vw, 44px); margin: 8px 0 6px; }
+  .lead { color: var(--dim); font-size: 15px; margin: 0 auto 28px; max-width: 560px; line-height: 1.5; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; text-align: left; }
+  .card { background: var(--card); border: 1px solid #dfba6b33; border-radius: 6px; overflow: hidden; display: flex; flex-direction: column; }
+  .sheet { background: #fff; aspect-ratio: 4/3; overflow: hidden; }
+  .sheet img { width: 100%; display: block; }
+  .body { padding: 18px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+  h2 { font-family: Georgia, serif; font-weight: 400; font-size: 24px; margin: 0; }
+  .sub { color: var(--dim); font-size: 14px; margin: 0 0 10px; line-height: 1.45; }
+  .btn { display: block; text-align: center; padding: 13px 16px; border-radius: 4px; text-decoration: none; font-weight: 600; font-size: 15px; }
+  .dl { background: var(--gold); color: #120d02; }
+  .yt { background: #ff0033; color: #fff; }
+  .alt { color: var(--dim); font-size: 13px; text-decoration: none; text-align: center; padding: 6px; }
+  .fan { margin-top: 32px; color: var(--dim); font-size: 14px; line-height: 1.6; }
+  .fan a { color: var(--gold); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="kick">Aşkın Şerbetçi · Studio Askin</p>
+  <h1>Free sheet music</h1>
+  <p class="lead">Melody and chords for two of my songs, in my own hand. Download them free, then play along with the video. Ücretsiz nota · نوتة مجانية</p>
+
+  <div class="grid">
+    <div class="card">
+      <div class="sheet"><img src="/sheets/deli-gonul-preview.jpg" alt="First page of the Deli Gönül lead sheet" /></div>
+      <div class="body">
+        <h2>Deli Gönül</h2>
+        <p class="sub">My Crazy Heart · قلبي المجنون. B minor, 4/4.</p>
+        <a class="btn dl" href="/sheets/deli-gonul-askin-serbetci.pdf" download data-s="dg">⬇ Download PDF</a>
+        <a class="btn yt" href="https://youtu.be/N_atlm3kzK8">🎧 Play along on YouTube</a>
+        <a class="alt" href="https://youtu.be/W9IQFPJgq84">Arabic version · قلبي المجنون ▸</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="sheet"><img src="/sheets/anla-beni-preview.jpg" alt="First page of the Anla Beni (Be Mine Tonight) lead sheet" /></div>
+      <div class="body">
+        <h2>Anla Beni</h2>
+        <p class="sub">Be Mine Tonight. A minor, 4/4.</p>
+        <a class="btn dl" href="/sheets/anla-beni-be-mine-tonight-askin-serbetci.pdf" download data-s="ab">⬇ Download PDF</a>
+        <a class="btn yt" href="https://youtu.be/LP4gAE86Qkc">🎧 Play along on YouTube</a>
+        <a class="alt" href="https://youtu.be/7pAdFokQahM">The full 9-language suite ▸</a>
+      </div>
+    </div>
+  </div>
+
+  <p class="fan">Want new songs before anyone else? <a href="https://askinstudios.com/">Join my fan list</a> and I'll send them to you first.<br />© Aşkın Şerbetçi. Free for personal playing and learning.</p>
+</div>
+<script>
+  // Count downloads alongside the doorway steps
+  document.querySelectorAll('[data-s]').forEach(function (a) {
+    a.addEventListener('click', function () {
+      try { new Image().src = 'https://aiqcreator.com/api/public/door?ev=sheet&l=' + a.dataset.s + '&d=' + (/android/i.test(navigator.userAgent) ? 'android' : /iphone|ipad/i.test(navigator.userAgent) ? 'ios' : 'other'); } catch (e) {}
+    });
+  });
+</script>
+</body>
+</html>
