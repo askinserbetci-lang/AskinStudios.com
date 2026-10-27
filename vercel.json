@@ -5,6 +5,17 @@
       "has": [
         {
           "type": "query",
+          "key": "song",
+          "value": "ch"
+        }
+      ],
+      "destination": "/go-ch.html"
+    },
+    {
+      "source": "/go",
+      "has": [
+        {
+          "type": "query",
           "key": "lang",
           "value": "en.*"
         }

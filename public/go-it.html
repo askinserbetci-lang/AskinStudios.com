@@ -37,8 +37,12 @@
   var HOOK = { en: 0, tr: 0, ar: 0, ru: 0, es: 0, it: 0, el: 0, az: 0, fr: 0 };
   var q = new URLSearchParams(location.search), lq = String(q.get('lang') || '').trim().toLowerCase().slice(0, 2), l = C[lq] ? lq : 'en';
   var t = Number(q.get('t')) || C[l], V = '7pAdFokQahM', ua = navigator.userAgent;
+  // Other songs through the same doorway: ?song=ch is My Crazy Heart (Arabic official video).
+  // The teaser plays its chorus here; the YouTube app opens at the start of the song.
+  var SONG = String(q.get('song') || '').toLowerCase(), teaser = t + (HOOK[l] || 0);
+  if (SONG === 'ch') { V = 'W9IQFPJgq84'; t = 0; teaser = 80; }
   var path = 'www.youtube.com/watch?v=' + V + '&t=' + t + 's';
-  var listen = location.origin + '/listen?lang=' + l + '&t=' + t;
+  var listen = SONG === 'ch' ? 'https://www.youtube.com/watch?v=' + V : location.origin + '/listen?lang=' + l + '&t=' + t;
   var app = /Android/i.test(ua)
     ? 'intent://' + path + '#Intent;scheme=https;package=com.google.android.youtube;S.browser_fallback_url=' + encodeURIComponent(listen) + ';end'
     : /iPhone|iPad|iPod/i.test(ua) ? 'youtube://' + path : 'https://' + path;
@@ -55,9 +59,13 @@
   };
   document.getElementById('title').textContent = T[l][0];
   document.getElementById('line').textContent = T[l][1];
+  if (SONG === 'ch') {
+    document.getElementById('title').textContent = l === 'ar' ? 'قلبي المجنون' : 'My Crazy Heart';
+    document.getElementById('line').textContent = l === 'ar' ? 'أغنية آشكن شربتجي الجديدة · My Crazy Heart' : 'Aşkın Şerbetçi · قلبي المجنون';
+  }
   var dev = /Android/i.test(ua) ? 'android' : /iPhone|iPad|iPod/i.test(ua) ? 'ios' : 'other';
   // Step counter (a tiny image request to the app, nothing personal), to see where people drop off
-  function step(ev) { try { new Image().src = 'https://aiqcreator.com/api/public/door?ev=' + ev + '&l=' + l + '&d=' + dev + '&r=' + Math.random(); } catch (e) {} }
+  function step(ev) { try { new Image().src = 'https://aiqcreator.com/api/public/door?ev=' + ev + '&l=' + l + '&d=' + dev + '&s=' + (SONG || 'bmt') + '&r=' + Math.random(); } catch (e) {} }
   var asked = false;
   step('arrive');
   var left = false;
@@ -67,7 +75,7 @@
   });
   document.getElementById('open').addEventListener('click', function () { asked = true; step('tap'); });
   document.getElementById('open').href = app;
-  var here = document.getElementById('here'); here.href = listen; here.addEventListener('click', function () { step('fan'); });
+  var here = document.getElementById('here'); here.href = SONG ? location.origin + '/#fans' : listen; here.addEventListener('click', function () { step('fan'); });
   here.textContent = '♡ ' + ({ en: 'Join the fan list', tr: 'Hayran listesine katıl', ar: 'انضم إلى قائمة المعجبين', ru: 'Список поклонников', es: 'Únete a la lista de fans', it: 'Entra nella lista dei fan', el: 'Λίστα θαυμαστών', az: 'Fan siyahısına qoşulun', fr: 'Rejoins la liste des fans' })[l];
   if (l === 'ar') document.documentElement.dir = 'rtl';
   if (!/Android|iPhone|iPad|iPod/i.test(ua)) { location.replace(app); return; }
@@ -78,7 +86,7 @@
   var noMusic = setTimeout(offer, 4000);
   window.onYouTubeIframeAPIReady = function () {
     new YT.Player('player', {
-      videoId: V, playerVars: { start: t + (HOOK[l] || 0), autoplay: 1, playsinline: 1, rel: 0 },
+      videoId: V, playerVars: { start: teaser, autoplay: 1, playsinline: 1, rel: 0 },
       events: {
         onReady: function (e) { e.target.playVideo(); },
         onStateChange: function (e) { if (e.data === 1 && !played) { played = true; step('play'); } if (e.data === 1) { clearTimeout(noMusic); setTimeout(offer, 30000); } }

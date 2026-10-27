@@ -16,3 +16,10 @@ for k, (t, line) in T.items():
     s = re.sub(r'<meta property="og:title" content="[^"]*" />', f'<meta property="og:title" content="{html.escape(t)} · Aşkın Şerbetçi" />', s)
     s = re.sub(r'<meta property="og:description" content="[^"]*" />', f'<meta property="og:description" content="{html.escape(line)}" />', s)
     open(f'public/go-{k}.html', 'w', encoding='utf-8').write(s)
+
+# My Crazy Heart (Arabic) through the same doorway: /go?song=ch
+c = re.sub(r'<title>.*?</title>', '<title>قلبي المجنون · Aşkın Şerbetçi</title>', src)
+c = re.sub(r'<meta property="og:title" content="[^"]*" />', '<meta property="og:title" content="قلبي المجنون · My Crazy Heart · Aşkın Şerbetçi" />', c)
+c = re.sub(r'<meta property="og:description" content="[^"]*" />', '<meta property="og:description" content="وينك الآن؟ أغنية آشكن شربتجي الجديدة" />', c)
+c = c.replace('https://i.ytimg.com/vi/7pAdFokQahM/maxresdefault.jpg', 'https://i.ytimg.com/vi/W9IQFPJgq84/maxresdefault.jpg')
+open('public/go-ch.html', 'w', encoding='utf-8').write(c)
