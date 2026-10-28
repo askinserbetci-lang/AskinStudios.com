@@ -205,6 +205,142 @@ class PitchProcessor extends AudioWorkletProcessor {
   }
 }
 
+
+/**
+ * Vocal pitch correction (auto-tune). Detects the sung pitch (YIN on a decimated copy),
+ * snaps it to the nearest note of the chosen scale — makam quarter-tones included — and
+ * re-pitches the voice with the WSOLA shifter above.
+ *  speedMs 0 = hard "robot" snap, 20–60 = natural studio tune, 100+ = gentle.
+ */
+class TuneProcessor extends PitchProcessor {
+  constructor() {
+    super({ processorOptions: { voices: 1, windowMs: 18, dry: 0 } });
+    this.v[0].gain = this.v[0].tgain = 1;
+    this.on = false;
+    this.tonic = 220;
+    this.scale = [0, 200, 400, 500, 700, 900, 1100];
+    this.speedMs = 30;
+    this.amount = 1;
+    this.D = sampleRate > 60000 ? 4 : 2;
+    this.r = sampleRate / this.D;
+    this.dec = new Float32Array(4096);
+    this.dw = 0;
+    this.acc = 0;
+    this.accN = 0;
+    this.hop = Math.round(0.01 * this.r);
+    this.sinceHop = 0;
+    this.W = Math.round(0.02 * this.r);
+    this.maxLag = Math.round(this.r / 75);
+    this.minLag = Math.round(this.r / 1100);
+    this.d = new Float32Array(this.maxLag + 2);
+    this.corr = 0;
+    this.curIdx = -1;
+    this.lastHz = 0;
+    this.reportN = 0;
+    const base = this.port.onmessage;
+    this.port.onmessage = (e) => {
+      const m = e.data || {};
+      if (m.on !== undefined) this.on = !!m.on;
+      if (m.tonicHz > 0) this.tonic = m.tonicHz;
+      if (Array.isArray(m.scale) && m.scale.length) { this.scale = m.scale.slice().sort((a, b) => a - b); this.curIdx = -1; }
+      if (m.speedMs !== undefined) this.speedMs = Math.max(0, m.speedMs);
+      if (m.amount !== undefined) this.amount = Math.max(0, Math.min(1, m.amount));
+      if (base) base(e);
+    };
+  }
+
+  detect() {
+    const W = this.W, maxLag = this.maxLag, d = this.d, buf = this.dec;
+    const start = this.dw - W - maxLag;
+    let energy = 0;
+    for (let i = 0; i < W; i++) { const x = buf[(start + i) & 4095]; energy += x * x; }
+    if (energy / W < 1e-5) return 0; // silence / breath
+    d[0] = 1;
+    let run = 0;
+    let tau = -1;
+    for (let t = 1; t <= maxLag; t++) {
+      let sum = 0;
+      for (let i = 0; i < W; i++) {
+        const diff = buf[(start + i) & 4095] - buf[(start + i + t) & 4095];
+        sum += diff * diff;
+      }
+      run += sum;
+      d[t] = run > 0 ? (sum * t) / run : 1;
+      if (tau < 0 && t > this.minLag && d[t] < 0.15 && t > 2 && d[t - 1] < d[t - 2] && d[t - 1] <= d[t]) tau = t - 1;
+    }
+    if (tau < 0) return 0; // unvoiced (s, sh, t...)
+    const a = d[tau - 1], b = d[tau], c = d[tau + 1];
+    const den = a - 2 * b + c;
+    const shift = den !== 0 ? (0.5 * (a - c)) / den : 0;
+    return this.r / (tau + Math.max(-1, Math.min(1, shift)));
+  }
+
+  analyse() {
+    const hz = this.detect();
+    const hopSec = this.hop / this.r;
+    let target = 0;
+    if (hz > 70 && hz < 1200) {
+      const cents = 1200 * Math.log2(hz / this.tonic);
+      const pos = ((cents % 1200) + 1200) % 1200;
+      const sc = this.scale;
+      const dist = (i) => {
+        const v = sc[(i + sc.length) % sc.length] + (i < 0 ? -1200 : i >= sc.length ? 1200 : 0);
+        return v - pos;
+      };
+      let best = 0, bestAbs = Infinity;
+      for (let i = -1; i <= sc.length; i++) { const x = Math.abs(dist(i)); if (x < bestAbs) { bestAbs = x; best = i; } }
+      // stay on the current note unless the singer clearly moved (no flip-flopping between two notes)
+      if (this.curIdx !== -1 && this.curIdx !== (best + sc.length) % sc.length) {
+        let keep = this.curIdx, keepAbs = Infinity;
+        for (const k of [this.curIdx - sc.length, this.curIdx, this.curIdx + sc.length]) {
+          const x = Math.abs(dist(k));
+          if (x < keepAbs) { keepAbs = x; keep = k; }
+        }
+        if (keepAbs < bestAbs + 25) best = keep;
+      }
+      this.curIdx = (best + sc.length) % sc.length;
+      target = Math.max(-250, Math.min(250, dist(best))) * this.amount;
+      this.lastHz = hz;
+      const k = this.speedMs <= 1 ? 1 : 1 - Math.exp(-hopSec / (this.speedMs / 1000));
+      this.corr += (target - this.corr) * k;
+    } else {
+      this.lastHz = 0;
+      this.corr *= Math.exp(-hopSec / 0.03); // let go between notes
+    }
+    this.v[0].target = Math.pow(2, this.corr / 1200);
+    if (++this.reportN >= 6) {
+      this.reportN = 0;
+      this.port.postMessage({ hz: this.lastHz, idx: this.lastHz ? this.curIdx : -1, corr: this.corr });
+    }
+  }
+
+  process(inputs, outputs) {
+    const output = outputs[0];
+    if (!output || !output.length) return true;
+    const inCh = inputs[0] && inputs[0].length ? inputs[0][0] : null;
+    const n = output[0].length;
+    if (!this.on) {
+      for (let ch = 0; ch < output.length; ch++) for (let i = 0; i < n; i++) output[ch][i] = inCh ? inCh[i] : 0;
+      this.corr = 0;
+      this.v[0].ratio = this.v[0].target = 1;
+      return true;
+    }
+    if (inCh) {
+      for (let i = 0; i < n; i++) {
+        this.acc += inCh[i];
+        if (++this.accN === this.D) {
+          this.dec[this.dw & 4095] = this.acc / this.D;
+          this.dw++;
+          this.acc = 0;
+          this.accN = 0;
+          if (++this.sinceHop >= this.hop) { this.sinceHop = 0; if (this.dw > this.W + this.maxLag + 2) this.analyse(); }
+        }
+      }
+    }
+    return super.process(inputs, outputs);
+  }
+}
+
 class WahProcessor extends AudioWorkletProcessor {
   constructor() {
     super();
@@ -273,3 +409,4 @@ class WahProcessor extends AudioWorkletProcessor {
 registerProcessor('kdsp-gate', GateProcessor);
 registerProcessor('kdsp-pitch', PitchProcessor);
 registerProcessor('kdsp-wah', WahProcessor);
+registerProcessor('kdsp-tune', TuneProcessor);
