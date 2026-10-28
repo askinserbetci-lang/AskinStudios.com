@@ -119,16 +119,19 @@
       "destination": "/sheets.html"
     },
     {
-      "source": "/kanun",
-      "destination": "/kanun/index.html"
-    },
-    {
       "source": "/kanun/",
       "destination": "/kanun/index.html"
     },
     {
       "source": "/((?!api/).*)",
       "destination": "/index.html"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/kanun",
+      "destination": "/kanun/",
+      "permanent": false
     }
   ],
   "crons": [
