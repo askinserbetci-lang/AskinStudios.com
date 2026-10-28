@@ -207,46 +207,101 @@ class PitchProcessor extends AudioWorkletProcessor {
 
 
 /**
- * Vocal pitch correction (auto-tune). Detects the sung pitch (YIN on a decimated copy),
- * snaps it to the nearest note of the chosen scale — makam quarter-tones included — and
- * re-pitches the voice with the WSOLA shifter above.
- *  speedMs 0 = hard "robot" snap, 20–60 = natural studio tune, 100+ = gentle.
+ * Vocal pitch correction (auto-tune), TD-PSOLA engine — formant-preserving.
+ *  1. YIN pitch detection (decimated copy, 8 ms hop, octave-jump guard)
+ *  2. pitch marks one period apart, each refined by cross-correlation with the previous one
+ *     (marks sit on the same point of every vocal cycle)
+ *  3. each output cycle is a Hann-windowed 2-period grain taken from the nearest mark and laid
+ *     down at the corrected period → pitch moves, the throat/mouth resonances (formants) stay put,
+ *     so the voice never sounds "chipmunk" or "giant"
+ *  4. optional formant shift (grain resampling) for voice character, independent of pitch
+ *  5. consonants / breaths (unvoiced) pass through untouched, cross-faded
+ * Musical controls: retune speed, amount, humanize (sustained notes get gentler correction),
+ * flex (ornaments / slides far from a note are left alone), scale incl. makam quarter-tones.
+ * Fixed latency ≈ 22 ms.
  */
-class TuneProcessor extends PitchProcessor {
-  constructor() {
-    super({ processorOptions: { voices: 1, windowMs: 18, dry: 0 } });
-    this.v[0].gain = this.v[0].tgain = 1;
+class TuneProcessor extends AudioWorkletProcessor {
+  constructor(options) {
+    super();
+    const sr = sampleRate;
+    this.N = 1 << 16;
+    this.M = this.N - 1;
+    this.buf = new Float32Array(this.N);
+    this.ola = new Float32Array(this.N);
+    this.ws = new Float32Array(this.N);
+    this.w = 0;
+    this.pMin = Math.round(sr / 1100);
+    this.pMax = Math.round(sr / 105);
+    this.fMax = 1.35;
+    this.L = Math.ceil(this.pMax * (1 + this.fMax)) + 8;
+    this.P = Math.round(sr / 200);
+    this.marks = [];
+    this.lastMark = -Infinity;
+    this.nextSyn = -1;
+    this.ratio = 1;
+    this.tRatio = 1;
+    this.voiced = 0;
+    this.vmix = 0;
+    // detection (decimated)
+    this.D = sr > 60000 ? 4 : 2;
+    this.r = sr / this.D;
+    this.dec = new Float32Array(4096);
+    this.dw = 0;
+    this.acc = 0;
+    this.accN = 0;
+    this.hop = Math.round(0.008 * this.r);
+    this.sinceHop = 0;
+    this.W = Math.round(0.02 * this.r);
+    this.maxLag = Math.round(this.r / 95);
+    this.minLag = Math.round(this.r / 1100);
+    this.d = new Float32Array(this.maxLag + 2);
+    this.lastHz = 0;
+    this.lastVoicedAt = -1e9;
+    // correction
+    this.corr = 0;
+    this.curIdx = -1;
+    this.held = 0;
+    this.reportN = 0;
+    // params
     this.on = false;
     this.tonic = 220;
     this.scale = [0, 200, 400, 500, 700, 900, 1100];
     this.speedMs = 30;
     this.amount = 1;
-    this.D = sampleRate > 60000 ? 4 : 2;
-    this.r = sampleRate / this.D;
-    this.dec = new Float32Array(4096);
-    this.dw = 0;
-    this.acc = 0;
-    this.accN = 0;
-    this.hop = Math.round(0.01 * this.r);
-    this.sinceHop = 0;
-    this.W = Math.round(0.02 * this.r);
-    this.maxLag = Math.round(this.r / 75);
-    this.minLag = Math.round(this.r / 1100);
-    this.d = new Float32Array(this.maxLag + 2);
-    this.corr = 0;
-    this.curIdx = -1;
-    this.lastHz = 0;
-    this.reportN = 0;
-    const base = this.port.onmessage;
+    this.formant = 1;
+    this.humanize = 0;
+    this.flex = 0;
     this.port.onmessage = (e) => {
       const m = e.data || {};
-      if (m.on !== undefined) this.on = !!m.on;
+      if (m.on !== undefined && !!m.on !== this.on) { this.on = !!m.on; this.reset(); }
       if (m.tonicHz > 0) this.tonic = m.tonicHz;
       if (Array.isArray(m.scale) && m.scale.length) { this.scale = m.scale.slice().sort((a, b) => a - b); this.curIdx = -1; }
       if (m.speedMs !== undefined) this.speedMs = Math.max(0, m.speedMs);
       if (m.amount !== undefined) this.amount = Math.max(0, Math.min(1, m.amount));
-      if (base) base(e);
+      if (m.formantSt !== undefined) this.formant = Math.min(this.fMax, Math.max(1 / this.fMax, Math.pow(2, m.formantSt / 12)));
+      if (m.humanize !== undefined) this.humanize = Math.max(0, Math.min(1, m.humanize));
+      if (m.flex !== undefined) this.flex = Math.max(0, Math.min(1, m.flex));
     };
+    const init = options && options.processorOptions;
+    if (init) this.port.onmessage({ data: init });
+  }
+
+  reset() {
+    this.ola.fill(0);
+    this.ws.fill(0);
+    this.marks = [];
+    this.lastMark = -Infinity;
+    this.nextSyn = -1;
+    this.corr = 0;
+    this.ratio = this.tRatio = 1;
+    this.vmix = 0;
+  }
+
+  // Catmull-Rom read of the input ring (clean highs when resampling grains)
+  at(pos) {
+    const i = Math.floor(pos), t = pos - i, b = this.buf, M = this.M;
+    const y0 = b[(i - 1) & M], y1 = b[i & M], y2 = b[(i + 1) & M], y3 = b[(i + 2) & M];
+    return y1 + 0.5 * t * (y2 - y0 + t * (2 * y0 - 5 * y1 + 4 * y2 - y3 + t * (3 * (y1 - y2) + y3 - y0)));
   }
 
   detect() {
@@ -254,10 +309,9 @@ class TuneProcessor extends PitchProcessor {
     const start = this.dw - W - maxLag;
     let energy = 0;
     for (let i = 0; i < W; i++) { const x = buf[(start + i) & 4095]; energy += x * x; }
-    if (energy / W < 1e-5) return 0; // silence / breath
+    if (energy / W < 2e-6) return 0;
     d[0] = 1;
-    let run = 0;
-    let tau = -1;
+    let run = 0, tau = -1;
     for (let t = 1; t <= maxLag; t++) {
       let sum = 0;
       for (let i = 0; i < W; i++) {
@@ -266,51 +320,118 @@ class TuneProcessor extends PitchProcessor {
       }
       run += sum;
       d[t] = run > 0 ? (sum * t) / run : 1;
-      if (tau < 0 && t > this.minLag && d[t] < 0.15 && t > 2 && d[t - 1] < d[t - 2] && d[t - 1] <= d[t]) tau = t - 1;
+      if (tau < 0 && t > this.minLag + 1 && d[t - 1] < 0.2 && d[t - 1] < d[t - 2] && d[t - 1] <= d[t]) tau = t - 1;
     }
-    if (tau < 0) return 0; // unvoiced (s, sh, t...)
+    if (tau < 0) return 0;
     const a = d[tau - 1], b = d[tau], c = d[tau + 1];
     const den = a - 2 * b + c;
-    const shift = den !== 0 ? (0.5 * (a - c)) / den : 0;
-    return this.r / (tau + Math.max(-1, Math.min(1, shift)));
+    const sh = den !== 0 ? (0.5 * (a - c)) / den : 0;
+    return this.r / (tau + Math.max(-1, Math.min(1, sh)));
   }
 
   analyse() {
-    const hz = this.detect();
+    let hz = this.detect();
     const hopSec = this.hop / this.r;
-    let target = 0;
-    if (hz > 70 && hz < 1200) {
+    const now = this.w;
+    // octave-jump guard: a sudden ×2 / ×½ right after a voiced frame is a detection slip
+    if (hz && this.lastHz && now - this.lastVoicedAt < 0.06 * sampleRate) {
+      const q = hz / this.lastHz;
+      if (Math.abs(q - 2) < 0.12) hz /= 2;
+      else if (Math.abs(q - 0.5) < 0.03) hz *= 2;
+    }
+    if (hz >= 105 && hz <= 1100) {
+      this.voiced = 1;
+      this.P = sampleRate / hz;
+      this.lastVoicedAt = now;
       const cents = 1200 * Math.log2(hz / this.tonic);
       const pos = ((cents % 1200) + 1200) % 1200;
-      const sc = this.scale;
-      const dist = (i) => {
-        const v = sc[(i + sc.length) % sc.length] + (i < 0 ? -1200 : i >= sc.length ? 1200 : 0);
-        return v - pos;
-      };
+      const sc = this.scale, n = sc.length;
+      const dist = (i) => sc[((i % n) + n) % n] + 1200 * Math.floor(i / n) - pos;
       let best = 0, bestAbs = Infinity;
-      for (let i = -1; i <= sc.length; i++) { const x = Math.abs(dist(i)); if (x < bestAbs) { bestAbs = x; best = i; } }
-      // stay on the current note unless the singer clearly moved (no flip-flopping between two notes)
-      if (this.curIdx !== -1 && this.curIdx !== (best + sc.length) % sc.length) {
-        let keep = this.curIdx, keepAbs = Infinity;
-        for (const k of [this.curIdx - sc.length, this.curIdx, this.curIdx + sc.length]) {
-          const x = Math.abs(dist(k));
-          if (x < keepAbs) { keepAbs = x; keep = k; }
-        }
-        if (keepAbs < bestAbs + 25) best = keep;
+      for (let i = -1; i <= n; i++) { const x = Math.abs(dist(i)); if (x < bestAbs) { bestAbs = x; best = i; } }
+      if (this.curIdx !== -1 && this.curIdx !== ((best % n) + n) % n) {
+        let keep = best, keepAbs = Infinity;
+        for (const k of [this.curIdx - n, this.curIdx, this.curIdx + n]) { const x = Math.abs(dist(k)); if (x < keepAbs) { keepAbs = x; keep = k; } }
+        if (keepAbs < bestAbs + 25) { best = keep; bestAbs = keepAbs; }
       }
-      this.curIdx = (best + sc.length) % sc.length;
-      target = Math.max(-250, Math.min(250, dist(best))) * this.amount;
-      this.lastHz = hz;
-      const k = this.speedMs <= 1 ? 1 : 1 - Math.exp(-hopSec / (this.speedMs / 1000));
+      const idx = ((best % n) + n) % n;
+      this.held = idx === this.curIdx ? this.held + hopSec : 0;
+      this.curIdx = idx;
+      let target = Math.max(-300, Math.min(300, dist(best)));
+      // flex: ornaments, slides and bends far from the note are left alone
+      if (this.flex > 0) {
+        const wnd = 100 - 80 * this.flex;
+        if (bestAbs > wnd) target *= Math.max(0, 1 - (bestAbs - wnd) / 30);
+      }
+      target *= this.amount;
+      // humanize: once a note is sustained, correct it more gently so it stays alive
+      let ms = this.speedMs;
+      if (this.humanize > 0 && this.held > 0.15) ms += this.humanize * 250 * Math.min(1, (this.held - 0.15) / 0.3);
+      const k = ms <= 1 ? 1 : 1 - Math.exp(-hopSec / (ms / 1000));
       this.corr += (target - this.corr) * k;
+      this.lastHz = hz;
     } else {
+      this.voiced = 0;
       this.lastHz = 0;
-      this.corr *= Math.exp(-hopSec / 0.03); // let go between notes
+      this.held = 0;
+      this.corr *= Math.exp(-hopSec / 0.04);
     }
-    this.v[0].target = Math.pow(2, this.corr / 1200);
-    if (++this.reportN >= 6) {
+    this.tRatio = Math.pow(2, this.corr / 1200);
+    if (++this.reportN >= 8) {
       this.reportN = 0;
       this.port.postMessage({ hz: this.lastHz, idx: this.lastHz ? this.curIdx : -1, corr: this.corr });
+    }
+  }
+
+  /** next pitch mark: one period on, nudged to where the waveform best matches the last cycle */
+  addMarks() {
+    const b = this.buf, M = this.M;
+    for (;;) {
+      const P = Math.max(this.pMin, Math.min(this.pMax, this.P));
+      let cand = this.lastMark < this.w - 4 * this.pMax ? this.w - this.L : this.lastMark + P;
+      if (cand + P * this.fMax + 3 > this.w) return;
+      if (this.voiced && cand - this.lastMark < 2 * this.pMax) {
+        // fractional refinement: correlation peak + parabolic interpolation (no ±1-sample jitter)
+        const span = Math.max(2, Math.round(P * 0.15)), half = Math.round(P * 0.5), lm = this.lastMark, c0 = Math.round(cand);
+        const corrAt = (r) => {
+          let s = 0;
+          for (let k = -half; k <= half; k += 2) s += this.at(c0 + r + k) * this.at(lm + k);
+          return s;
+        };
+        let bestR = 0, bestS = -Infinity, sm = 0, sp = 0;
+        for (let r = -span; r <= span; r++) { const v = corrAt(r); if (v > bestS) { bestS = v; bestR = r; } }
+        sm = corrAt(bestR - 1); sp = corrAt(bestR + 1);
+        const den = sm - 2 * bestS + sp;
+        const frac = den < 0 ? Math.max(-0.5, Math.min(0.5, (0.5 * (sm - sp)) / den)) : 0;
+        cand = c0 + bestR + frac;
+      }
+      const per = isFinite(this.lastMark) ? Math.max(this.pMin, Math.min(this.pMax, cand - this.lastMark)) : P;
+      this.marks.push(cand, per);
+      this.lastMark = cand;
+    }
+  }
+
+  /** lay down output grains at the corrected period */
+  synth(upTo) {
+    const mk = this.marks;
+    if (this.nextSyn < 0) this.nextSyn = upTo;
+    while (this.nextSyn <= upTo) {
+      const ts = this.nextSyn;
+      // nearest analysis mark
+      while (mk.length >= 4 && Math.abs(mk[2] - ts) <= Math.abs(mk[0] - ts)) mk.splice(0, 2);
+      let ta = ts, per = Math.max(this.pMin, Math.min(this.pMax, this.P));
+      if (mk.length >= 2) { ta = mk[0]; per = mk[1]; }
+      const H = per, F = this.formant, M = this.M;
+      const j0 = Math.ceil(ts - H), j1 = Math.floor(ts + H);
+      for (let jj = j0; jj <= j1; jj++) {
+        const k = jj - ts;
+        const win = 0.5 + 0.5 * Math.cos((Math.PI * k) / H);
+        const j = jj & M;
+        this.ola[j] += this.at(ta + k * F) * win;
+        this.ws[j] += win;
+      }
+      this.ratio += (this.tRatio - this.ratio) * 0.5;
+      this.nextSyn += per / this.ratio;
     }
   }
 
@@ -321,23 +442,35 @@ class TuneProcessor extends PitchProcessor {
     const n = output[0].length;
     if (!this.on) {
       for (let ch = 0; ch < output.length; ch++) for (let i = 0; i < n; i++) output[ch][i] = inCh ? inCh[i] : 0;
-      this.corr = 0;
-      this.v[0].ratio = this.v[0].target = 1;
       return true;
     }
-    if (inCh) {
-      for (let i = 0; i < n; i++) {
-        this.acc += inCh[i];
-        if (++this.accN === this.D) {
-          this.dec[this.dw & 4095] = this.acc / this.D;
-          this.dw++;
-          this.acc = 0;
-          this.accN = 0;
-          if (++this.sinceHop >= this.hop) { this.sinceHop = 0; if (this.dw > this.W + this.maxLag + 2) this.analyse(); }
-        }
+    const M = this.M, vk = 1 - Math.exp(-1 / (0.012 * sampleRate));
+    const out = output[0];
+    for (let i = 0; i < n; i++) {
+      const x = inCh ? inCh[i] : 0;
+      this.buf[this.w & M] = x;
+      this.w++;
+      this.acc += x;
+      if (++this.accN === this.D) {
+        this.dec[this.dw & 4095] = this.acc / this.D;
+        this.dw++;
+        this.acc = 0;
+        this.accN = 0;
+        if (++this.sinceHop >= this.hop) { this.sinceHop = 0; if (this.dw > this.W + this.maxLag + 2) this.analyse(); }
       }
+      this.addMarks();
+      const o = this.w - this.L;
+      this.synth(o + this.pMax);
+      const j = o & M;
+      const wsum = this.ws[j];
+      const tuned = wsum > 1e-3 ? this.ola[j] / Math.max(wsum, 0.35) : 0;
+      this.ola[j] = 0;
+      this.ws[j] = 0;
+      this.vmix += (this.voiced - this.vmix) * vk;
+      out[i] = o >= 0 ? this.vmix * tuned + (1 - this.vmix) * this.buf[j] : 0;
     }
-    return super.process(inputs, outputs);
+    for (let ch = 1; ch < output.length; ch++) output[ch].set(out);
+    return true;
   }
 }
 
