@@ -1,6 +1,6 @@
 {
-  "name": "KanunDSP — Askin Studios stage rig",
-  "short_name": "KanunDSP",
+  "name": "MakamStage — Askin Studios",
+  "short_name": "MakamStage",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
@@ -21,7 +21,7 @@
     }
   ],
   "id": "./",
-  "description": "Kanun stage rig: effects, makam tuner, arranger, cinematic strings and live mixer.",
+  "description": "Live rig for makam music: oud, kanun, bağlama, violin, guitar and voice.",
   "categories": [
     "music",
     "entertainment"

@@ -132,6 +132,21 @@
       "source": "/kanun",
       "destination": "/kanun/",
       "permanent": false
+    },
+    {
+      "source": "/makamstage",
+      "destination": "/kanun/",
+      "permanent": false
+    },
+    {
+      "source": "/makamstage/",
+      "destination": "/kanun/",
+      "permanent": false
+    },
+    {
+      "source": "/MakamStage",
+      "destination": "/kanun/",
+      "permanent": false
     }
   ],
   "crons": [
