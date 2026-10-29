@@ -68,6 +68,9 @@
   function step(ev) { try { new Image().src = 'https://aiqcreator.com/api/public/door?ev=' + ev + '&l=' + l + '&d=' + dev + '&s=' + (SONG || 'bmt') + '&r=' + Math.random(); } catch (e) {} }
   var asked = false;
   step('arrive');
+  // Crazy Heart (test from Oct 29): straight to YouTube, no teaser, the same way a direct ad link
+  // works (those reached YouTube about 3x more often per dollar than the teaser page)
+  if (SONG === 'ch') { step('away'); setTimeout(function () { location.replace('https://youtu.be/' + V); }, 150); return; }
   var left = false;
   document.addEventListener('visibilitychange', function () {
     if (document.hidden && asked && !left) { left = true; step('away'); }
