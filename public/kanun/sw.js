@@ -1,5 +1,5 @@
 /* KanunDSP offline cache: after one visit online, the app opens with no internet (venues!). */
-const CACHE = 'makamstage-v23';
+const CACHE = 'makamstage-v24';
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(['./', './index.html', './manifest.webmanifest', './icons/icon-192.png', './icons/icon-512.png'])).then(() => self.skipWaiting()));
 });
