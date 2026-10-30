@@ -154,5 +154,16 @@
       "path": "/api/fan-mail-tick",
       "schedule": "5 14 * * *"
     }
+  ],
+  "headers": [
+    {
+      "source": "/thumbs/(.*)",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        }
+      ]
+    }
   ]
 }
