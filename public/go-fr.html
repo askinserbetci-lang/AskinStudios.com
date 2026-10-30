@@ -70,7 +70,19 @@
   step('arrive');
   // Crazy Heart (test from Oct 29): straight to YouTube, no teaser, the same way a direct ad link
   // works (those reached YouTube about 3x more often per dollar than the teaser page)
-  if (SONG === 'ch') { step('away'); setTimeout(function () { location.replace('https://youtu.be/' + V); }, 150); return; }
+  if (SONG === 'ch') {
+    var web = 'https://youtu.be/' + V;
+    // Android (most ad taps): open the YouTube app, where people are signed in and can like and subscribe.
+    // Instagram/Facebook's in-app browser otherwise shows a muted, signed-out page full of pop-ups.
+    if (dev === 'android') {
+      step('away');
+      var gone = false; document.addEventListener('visibilitychange', function () { if (document.hidden) gone = true; });
+      setTimeout(function () { location.href = 'intent://www.youtube.com/watch?v=' + V + '#Intent;scheme=https;package=com.google.android.youtube;S.browser_fallback_url=' + encodeURIComponent(web) + ';end'; }, 150);
+      setTimeout(function () { if (!gone) location.replace(web); }, 2600);
+      return;
+    }
+    step('away'); setTimeout(function () { location.replace(web); }, 150); return;
+  }
   var left = false;
   document.addEventListener('visibilitychange', function () {
     if (document.hidden && asked && !left) { left = true; step('away'); }
