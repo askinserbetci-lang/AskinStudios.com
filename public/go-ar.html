@@ -41,6 +41,9 @@
   // The teaser plays its chorus here; the YouTube app opens at the start of the song.
   var SONG = String(q.get('song') || '').toLowerCase(), teaser = t + (HOOK[l] || 0);
   if (SONG === 'ch') { V = 'W9IQFPJgq84'; t = 0; teaser = 80; }
+  // Any video: ?v=<YouTube id>[&t=seconds] goes straight to that video in the YouTube app
+  var VQ = String(q.get('v') || ''), DIRECT = SONG === 'ch';
+  if (/^[\w-]{11}$/.test(VQ)) { V = VQ; t = Number(q.get('t')) || 0; DIRECT = true; }
   var path = 'www.youtube.com/watch?v=' + V + '&t=' + t + 's';
   var listen = SONG === 'ch' ? 'https://www.youtube.com/watch?v=' + V : location.origin + '/listen?lang=' + l + '&t=' + t;
   var app = /Android/i.test(ua)
@@ -65,19 +68,19 @@
   }
   var dev = /Android/i.test(ua) ? 'android' : /iPhone|iPad|iPod/i.test(ua) ? 'ios' : 'other';
   // Step counter (a tiny image request to the app, nothing personal), to see where people drop off
-  function step(ev) { try { new Image().src = 'https://aiqcreator.com/api/public/door?ev=' + ev + '&l=' + l + '&d=' + dev + '&s=' + (SONG || 'bmt') + '&r=' + Math.random(); } catch (e) {} }
+  function step(ev) { try { new Image().src = 'https://aiqcreator.com/api/public/door?ev=' + ev + '&l=' + l + '&d=' + dev + '&s=' + (VQ && DIRECT && SONG !== 'ch' ? 'v' : (SONG || 'bmt')) + '&r=' + Math.random(); } catch (e) {} }
   var asked = false;
   step('arrive');
   // Crazy Heart (test from Oct 29): straight to YouTube, no teaser, the same way a direct ad link
   // works (those reached YouTube about 3x more often per dollar than the teaser page)
-  if (SONG === 'ch') {
-    var web = 'https://youtu.be/' + V;
+  if (DIRECT) {
+    var web = 'https://youtu.be/' + V + (t ? '?t=' + t : '');
     // Android (most ad taps): open the YouTube app, where people are signed in and can like and subscribe.
     // Instagram/Facebook's in-app browser otherwise shows a muted, signed-out page full of pop-ups.
     if (dev === 'android') {
       step('away');
       var gone = false; document.addEventListener('visibilitychange', function () { if (document.hidden) gone = true; });
-      setTimeout(function () { location.href = 'intent://www.youtube.com/watch?v=' + V + '#Intent;scheme=https;package=com.google.android.youtube;S.browser_fallback_url=' + encodeURIComponent(web) + ';end'; }, 150);
+      setTimeout(function () { location.href = 'intent://www.youtube.com/watch?v=' + V + (t ? '&t=' + t + 's' : '') + '#Intent;scheme=https;package=com.google.android.youtube;S.browser_fallback_url=' + encodeURIComponent(web) + ';end'; }, 150);
       setTimeout(function () { if (!gone) location.replace(web); }, 2600);
       return;
     }
