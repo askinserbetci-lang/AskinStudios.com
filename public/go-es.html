@@ -45,7 +45,7 @@
   var VQ = String(q.get('v') || ''), DIRECT = SONG === 'ch';
   if (/^[\w-]{11}$/.test(VQ)) { V = VQ; t = Number(q.get('t')) || 0; DIRECT = true; }
   // Languages released as their own single: the language link opens that single from the start
-  var SINGLE = { ar: 'ynQ-ok-lPjc' };
+  var SINGLE = { ar: 'ynQ-ok-lPjc', az: 'Uakbt3prPsY' };
   if (!SONG && !DIRECT && SINGLE[l] && lq === l) { V = SINGLE[l]; t = 0; DIRECT = true; }
   var path = 'www.youtube.com/watch?v=' + V + '&t=' + t + 's';
   var listen = SONG === 'ch' ? 'https://www.youtube.com/watch?v=' + V : location.origin + '/listen?lang=' + l + '&t=' + t;
