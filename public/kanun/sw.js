@@ -1,5 +1,5 @@
 /* KanunDSP offline cache: after one visit online, the app opens with no internet (venues!). */
-const CACHE = 'makamstage-v38';
+const CACHE = 'makamstage-v39';
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(['./', './index.html', './manifest.webmanifest', './icons/icon-192.png', './icons/icon-512.png'])).then(() => self.skipWaiting()));
 });
@@ -13,6 +13,8 @@ self.addEventListener('fetch', (e) => {
   const sameApp = url.origin === location.origin && url.pathname.startsWith(new URL('./', self.registration.scope).pathname);
   const fonts = /fonts\.(googleapis|gstatic)\.com$/.test(url.hostname);
   if (!sameApp && !fonts) return;
+  // the update check must always ask the website, never the offline copy
+  if (url.pathname.endsWith('/version.json')) return;
   if (req.mode === 'navigate') {
     // network first for the page itself (gets updates), cache when offline
     e.respondWith(fetch(req).then((r) => { const copy = r.clone(); caches.open(CACHE).then((c) => c.put('./index.html', copy)); return r; }).catch(() => caches.match('./index.html')));
