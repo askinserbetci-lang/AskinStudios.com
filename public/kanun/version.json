@@ -1,1 +1,1 @@
-{"id":"mw61sfh2","notes":"Import a whole loops folder at once: each style folder becomes a style named after it, using only its MIX files. Stems-only folders are listed and skipped."}
+{"id":"mw636bhg","notes":"Import a whole loops folder at once: each folder becomes a style named after it, using its MIX files, or its Intro / Var 1–4 / Fill / Ending parts recorded from a Korg. Stems-only folders are listed and skipped."}
