@@ -1,0 +1,102 @@
+[
+  {
+    "name": "2-4 Alaturka",
+    "bpm": 108,
+    "folder": "108_2-4 Alaturka",
+    "slots": {
+      "fill": "styles/108_2-4 Alaturka/fill1.mp3",
+      "v1": "styles/108_2-4 Alaturka/var1.mp3",
+      "v2": "styles/108_2-4 Alaturka/var2.mp3",
+      "v3": "styles/108_2-4 Alaturka/var3.mp3",
+      "v4": "styles/108_2-4 Alaturka/var4.mp3"
+    }
+  },
+  {
+    "name": "Ilahi 3",
+    "bpm": 111,
+    "folder": "111_Ilahi 3",
+    "slots": {
+      "v1": "styles/111_Ilahi 3/var1.mp3",
+      "v2": "styles/111_Ilahi 3/var2.mp3",
+      "v3": "styles/111_Ilahi 3/var3.mp3",
+      "v4": "styles/111_Ilahi 3/var4.mp3"
+    }
+  },
+  {
+    "name": "Ilahi 1",
+    "bpm": 112,
+    "folder": "112_Ilahi 1",
+    "slots": {
+      "v1": "styles/112_Ilahi 1/var1.mp3",
+      "v2": "styles/112_Ilahi 1/var2.mp3",
+      "v3": "styles/112_Ilahi 1/var3.mp3",
+      "v4": "styles/112_Ilahi 1/var4.mp3"
+    }
+  },
+  {
+    "name": "Oriental",
+    "bpm": 112,
+    "folder": "112_Oriental",
+    "slots": {
+      "v1": "styles/112_Oriental/var1.mp3",
+      "v2": "styles/112_Oriental/var2.mp3",
+      "v3": "styles/112_Oriental/var3.mp3",
+      "v4": "styles/112_Oriental/var4.mp3"
+    }
+  },
+  {
+    "name": "Ilahi 2",
+    "bpm": 116,
+    "folder": "116_Ilahi 2",
+    "slots": {
+      "fill": "styles/116_Ilahi 2/fill1.mp3",
+      "v1": "styles/116_Ilahi 2/var1.mp3",
+      "v2": "styles/116_Ilahi 2/var2.mp3",
+      "v3": "styles/116_Ilahi 2/var3.mp3",
+      "v4": "styles/116_Ilahi 2/var4.mp3"
+    }
+  },
+  {
+    "name": "Duble",
+    "bpm": 142,
+    "folder": "142_Duble",
+    "slots": {
+      "fill": "styles/142_Duble/fill1.mp3",
+      "v1": "styles/142_Duble/var1.mp3",
+      "v2": "styles/142_Duble/var2.mp3",
+      "v3": "styles/142_Duble/var3.mp3",
+      "v4": "styles/142_Duble/var4.mp3"
+    }
+  },
+  {
+    "name": "Keder",
+    "bpm": 69,
+    "folder": "69_Keder",
+    "slots": {
+      "fill": "styles/69_Keder/fill1.mp3",
+      "v1": "styles/69_Keder/var1.mp3",
+      "v2": "styles/69_Keder/var2.mp3",
+      "v3": "styles/69_Keder/var3.mp3"
+    }
+  },
+  {
+    "name": "Rhumba",
+    "bpm": 71,
+    "folder": "71_Rhumba",
+    "slots": {
+      "fill": "styles/71_Rhumba/fill1.mp3",
+      "v1": "styles/71_Rhumba/var1.mp3",
+      "v2": "styles/71_Rhumba/var2.mp3"
+    }
+  },
+  {
+    "name": "Kadeh",
+    "bpm": 72,
+    "folder": "72_Kadeh",
+    "slots": {
+      "v1": "styles/72_Kadeh/var1.mp3",
+      "v2": "styles/72_Kadeh/var2.mp3",
+      "v3": "styles/72_Kadeh/var3.mp3"
+    }
+  }
+]
