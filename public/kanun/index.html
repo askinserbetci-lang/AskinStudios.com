@@ -2,6 +2,10 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <script>
+      // opened as /kanun (no trailing slash)? Go to /kanun/ first, so every relative file path points inside the app's folder
+      (function () { var p = location.pathname; if (p.length > 1 && p.slice(-1) !== '/' && p.split('/').pop().indexOf('.') < 0) location.replace(p + '/' + location.search + location.hash); })();
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#07090e" />
     <link rel="manifest" href="manifest.webmanifest" />
@@ -16,8 +20,8 @@
     <meta property="og:description" content="Your whole band. Every quarter-tone. Effects, makam tuner, arranger, cinematic strings, vocal tune and live mixer — in your browser, on iPad or Mac." />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
-    <script type="module" crossorigin src="/kanun/assets/index-vJnn-HZE.js"></script>
-    <link rel="stylesheet" crossorigin href="/kanun/assets/index-BGSzpqpL.css">
+    <script type="module" crossorigin src="./assets/index-CDlTOIJh.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-DiWzvAA6.css">
   </head>
   <body>
     <div id="root"></div>
