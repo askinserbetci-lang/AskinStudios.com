@@ -4,14 +4,18 @@
     "bpm": 108,
     "folder": "108_2-4 Alaturka",
     "slots": {
-      "fill": "styles/108_2-4 Alaturka/fill1.mp3",
       "v1": "styles/108_2-4 Alaturka/var1.mp3",
       "v2": "styles/108_2-4 Alaturka/var2.mp3",
       "v3": "styles/108_2-4 Alaturka/var3.mp3",
-      "v4": "styles/108_2-4 Alaturka/var4.mp3"
+      "v4": "styles/108_2-4 Alaturka/var4.mp3",
+      "fill": "styles/108_2-4 Alaturka/fill1.mp3",
+      "fill2": "styles/108_2-4 Alaturka/fill2.mp3",
+      "fill3": "styles/108_2-4 Alaturka/fill3.mp3",
+      "fill4": "styles/108_2-4 Alaturka/fill4.mp3"
     },
     "content": "percussion",
-    "contentScore": 0.01
+    "contentScore": 0.01,
+    "beatsPerBar": 4
   },
   {
     "name": "Ilahi 3",
@@ -20,15 +24,16 @@
     "slots": {
       "v1": "styles/111_Ilahi 3/var1.mp3",
       "v2": "styles/111_Ilahi 3/var2.mp3",
-      "v3": "styles/111_Ilahi 3/var3.mp3",
       "v4": "styles/111_Ilahi 3/var4.mp3"
     },
     "content": "percussion",
-    "contentScore": 0.0
+    "contentScore": 0.0,
+    "note": "var3.mp3 is silent (the recording captured nothing) — re-record Var 3",
+    "beatsPerBar": 4
   },
   {
     "name": "Ilahi 1",
-    "bpm": 112,
+    "bpm": 117,
     "folder": "112_Ilahi 1",
     "slots": {
       "v1": "styles/112_Ilahi 1/var1.mp3",
@@ -37,7 +42,9 @@
       "v4": "styles/112_Ilahi 1/var4.mp3"
     },
     "content": "percussion",
-    "contentScore": 0.0
+    "contentScore": 0.0,
+    "note": "measured 117 BPM (the label said 112)",
+    "beatsPerBar": 4
   },
   {
     "name": "Oriental",
@@ -50,60 +57,71 @@
       "v4": "styles/112_Oriental/var4.mp3"
     },
     "content": "percussion",
-    "contentScore": 0.0
+    "contentScore": 0.0,
+    "beatsPerBar": 4
   },
   {
     "name": "Ilahi 2",
     "bpm": 116,
     "folder": "116_Ilahi 2",
     "slots": {
-      "fill": "styles/116_Ilahi 2/fill1.mp3",
       "v1": "styles/116_Ilahi 2/var1.mp3",
       "v2": "styles/116_Ilahi 2/var2.mp3",
       "v3": "styles/116_Ilahi 2/var3.mp3",
-      "v4": "styles/116_Ilahi 2/var4.mp3"
+      "v4": "styles/116_Ilahi 2/var4.mp3",
+      "fill": "styles/116_Ilahi 2/fill1.mp3",
+      "fill2": "styles/116_Ilahi 2/fill2.mp3"
     },
     "content": "percussion",
-    "contentScore": 0.01
+    "contentScore": 0.01,
+    "beatsPerBar": 4
   },
   {
     "name": "Duble",
     "bpm": 142,
     "folder": "142_Duble",
     "slots": {
-      "fill": "styles/142_Duble/fill1.mp3",
       "v1": "styles/142_Duble/var1.mp3",
       "v2": "styles/142_Duble/var2.mp3",
       "v3": "styles/142_Duble/var3.mp3",
-      "v4": "styles/142_Duble/var4.mp3"
+      "v4": "styles/142_Duble/var4.mp3",
+      "fill": "styles/142_Duble/fill1.mp3",
+      "fill2": "styles/142_Duble/fill2.mp3",
+      "fill3": "styles/142_Duble/fill3.mp3",
+      "fill4": "styles/142_Duble/fill4.mp3"
     },
     "content": "percussion",
-    "contentScore": 0.0
+    "contentScore": 0.0,
+    "beatsPerBar": 4
   },
   {
     "name": "Keder",
     "bpm": 69,
     "folder": "69_Keder",
     "slots": {
-      "fill": "styles/69_Keder/fill1.mp3",
       "v1": "styles/69_Keder/var1.mp3",
       "v2": "styles/69_Keder/var2.mp3",
-      "v3": "styles/69_Keder/var3.mp3"
+      "v3": "styles/69_Keder/var3.mp3",
+      "fill": "styles/69_Keder/fill1.mp3"
     },
     "content": "percussion",
-    "contentScore": 0.02
+    "contentScore": 0.02,
+    "beatsPerBar": 4
   },
   {
     "name": "Rhumba",
     "bpm": 71,
     "folder": "71_Rhumba",
     "slots": {
-      "fill": "styles/71_Rhumba/fill1.mp3",
       "v1": "styles/71_Rhumba/var1.mp3",
-      "v2": "styles/71_Rhumba/var2.mp3"
+      "v2": "styles/71_Rhumba/var2.mp3",
+      "fill": "styles/71_Rhumba/fill1.mp3",
+      "fill2": "styles/71_Rhumba/fill2.mp3",
+      "fill3": "styles/71_Rhumba/fill3.mp3"
     },
     "content": "percussion",
-    "contentScore": 0.04
+    "contentScore": 0.04,
+    "beatsPerBar": 4
   },
   {
     "name": "Kadeh",
@@ -115,6 +133,73 @@
       "v3": "styles/72_Kadeh/var3.mp3"
     },
     "content": "percussion",
-    "contentScore": 0.03
+    "contentScore": 0.03,
+    "beatsPerBar": 4
+  },
+  {
+    "name": "Maksum",
+    "bpm": 114.0,
+    "folder": "114_Maksum",
+    "slots": {
+      "v1": "styles/114_Maksum/var1.flac"
+    },
+    "content": "percussion",
+    "beatsPerBar": 4,
+    "note": "from Other Styles WAV (exact whole bars)"
+  },
+  {
+    "name": "Fantasy Vahde",
+    "bpm": 62.08,
+    "folder": "62_Fantasy Vahde",
+    "slots": {
+      "v1": "styles/62_Fantasy Vahde/var1.flac"
+    },
+    "content": "percussion",
+    "beatsPerBar": 4,
+    "note": "from Other Styles WAV (exact whole bars)"
+  },
+  {
+    "name": "Melfuf",
+    "bpm": 69.05,
+    "folder": "69_Melfuf",
+    "slots": {
+      "v1": "styles/69_Melfuf/var1.flac"
+    },
+    "content": "percussion",
+    "beatsPerBar": 2,
+    "note": "from Other Styles WAV (exact whole bars)"
+  },
+  {
+    "name": "Vahde",
+    "bpm": 75,
+    "folder": "75_Vahde",
+    "slots": {
+      "v1": "styles/75_Vahde/var1.flac"
+    },
+    "content": "percussion",
+    "beatsPerBar": 4,
+    "note": "from Other Styles WAV (exact whole bars)"
+  },
+  {
+    "name": "Çiftetelli Oriental",
+    "bpm": 90.02,
+    "folder": "90_Ciftetelli Oriental",
+    "slots": {
+      "v1": "styles/90_Ciftetelli Oriental/var1.flac"
+    },
+    "content": "percussion",
+    "beatsPerBar": 4,
+    "note": "from Other Styles WAV (exact whole bars)"
+  },
+  {
+    "name": "Oriental Begüne",
+    "bpm": 92.0,
+    "folder": "92_Oriental Begune",
+    "slots": {
+      "v1": "styles/92_Oriental Begune/var1.flac"
+    },
+    "content": "percussion",
+    "beatsPerBar": 4,
+    "note": "from Other Styles WAV (exact whole bars)"
   }
 ]
