@@ -103,6 +103,14 @@ class PitchProcessor extends AudioWorkletProcessor {
     this.voices = Math.max(1, opts.voices || 1);
     this.buf = new Float32Array(BUF_SIZE);
     this.w = 0;
+    this.searchMs = opts.searchMs || 12.5;
+    // stereo (songs): the right channel is spliced at exactly the left channel's positions, so the image stays stereo
+    this.stereo = !!opts.stereo;
+    if (this.stereo) this.buf2 = new Float32Array(BUF_SIZE);
+    // onset snap (octave pedal behaviour): on a new pluck, downward voices jump straight to the newest sound,
+    // so the octave below starts with the note instead of after the current splice
+    this.onsetSnap = !!opts.onsetSnap;
+    this.envF = 0; this.envS = 0; this.snapHold = 0;
     this.setWindow(opts.windowMs || 40);
     this.v = [];
     for (let i = 0; i < this.voices; i++) {
@@ -122,10 +130,19 @@ class PitchProcessor extends AudioWorkletProcessor {
   setWindow(ms) {
     this.jump = Math.round((ms / 1000) * sampleRate); // splice distance
     this.corrLen = Math.round(0.006 * sampleRate); // compare 6 ms of waveform
-    this.search = Math.round(0.0125 * sampleRate); // ±12.5 ms → aligns notes down to ~80 Hz
+    this.search = Math.round((this.searchMs / 1000) * sampleRate); // ±12.5 ms → aligns notes down to ~80 Hz
     this.fadeLen = Math.round(0.008 * sampleRate);
     this.dMin = this.corrLen + 8;
-    this.dMax = this.dMin + this.jump + this.search * 2;
+    // the read head may trail the input by at most one splice + one search + one fade: the splice landing can never
+    // cross dMin, and a lower note never waits longer than it must (was + 2 searches: ~20 ms of extra delay)
+    this.dMax = this.dMin + this.jump + this.search + this.fadeLen + 2;
+  }
+
+  sample2(pos) {
+    const i0 = Math.floor(pos);
+    const f = pos - i0;
+    const a = this.buf2[i0 & BUF_MASK];
+    return a + (this.buf2[(i0 + 1) & BUF_MASK] - a) * f;
   }
 
   sample(pos) {
@@ -159,10 +176,21 @@ class PitchProcessor extends AudioWorkletProcessor {
     if (!output || output.length === 0) return true;
     const n = output[0].length;
     const inCh = input && input.length ? input[0] : null;
+    const inCh2 = this.stereo && input && input.length > 1 ? input[1] : inCh;
     const smooth = 0.0015;
     for (let i = 0; i < n; i++) {
       const x = inCh ? inCh[i] : 0;
       this.buf[this.w & BUF_MASK] = x;
+      let y2 = 0;
+      if (this.stereo) { const x2 = inCh2 ? inCh2[i] : 0; this.buf2[this.w & BUF_MASK] = x2; y2 = x2 * this.dry; }
+      let snap = false;
+      if (this.onsetSnap) {
+        const ax = Math.abs(x);
+        this.envF += (ax - this.envF) * 0.02;   // ~1 ms
+        this.envS += (ax - this.envS) * 0.0007; // ~30 ms
+        if (this.snapHold > 0) this.snapHold--;
+        else if (this.envF > this.envS * 2.2 + 0.004) { snap = true; this.snapHold = Math.round(0.06 * sampleRate); }
+      }
       this.dry += (this.targetDry - this.dry) * smooth;
       let y = x * this.dry;
       for (let k = 0; k < this.voices; k++) {
@@ -173,6 +201,11 @@ class PitchProcessor extends AudioWorkletProcessor {
           v.read = this.w - this.dMin - this.jump * 0.5;
           v.fade = 0;
           continue;
+        }
+        if (snap && v.ratio < 1) {
+          v.old = v.read;
+          v.read = this.w - this.dMin - 1; // newest material: the pluck itself
+          v.fade = this.fadeLen;
         }
         const delay = this.w - v.read;
         if (v.fade === 0) {
@@ -188,17 +221,21 @@ class PitchProcessor extends AudioWorkletProcessor {
           }
         }
         let s = this.sample(v.read);
+        let s2 = this.stereo ? this.sample2(v.read) : 0;
         if (v.fade > 0) {
           const t = v.fade / this.fadeLen; // 1 → 0
           const wOld = 0.5 - 0.5 * Math.cos(Math.PI * t);
           s = s * (1 - wOld) + this.sample(v.old) * wOld;
+          if (this.stereo) s2 = s2 * (1 - wOld) + this.sample2(v.old) * wOld;
           v.old += v.ratio;
           v.fade--;
         }
         v.read += v.ratio;
         y += s * v.gain;
+        if (this.stereo) y2 += s2 * v.gain;
       }
-      for (let ch = 0; ch < output.length; ch++) output[ch][i] = y;
+      if (this.stereo && output.length > 1) { output[0][i] = y; output[1][i] = y2; for (let ch = 2; ch < output.length; ch++) output[ch][i] = y; }
+      else for (let ch = 0; ch < output.length; ch++) output[ch][i] = y;
       this.w++;
     }
     return true;
