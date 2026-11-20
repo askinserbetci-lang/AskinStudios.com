@@ -23,6 +23,8 @@ self.addEventListener('fetch', (e) => {
   if (!sameApp && !fonts) return;
   // the update check must always ask the website, never the offline copy
   if (url.pathname.endsWith('/version.json') || url.pathname.endsWith('/offline-files.json')) return;
+  // editor preview (dev server): source files keep the same name on every change, so never keep copies of them
+  if (/\/(src|node_modules|@vite|@fs|@id|@react-refresh)(\/|$)/.test(url.pathname) || url.pathname.includes('_aistudio')) return;
   if (req.mode === 'navigate') {
     // network first for the page itself (gets updates), cache when offline
     e.respondWith(fetch(req).then((r) => { const copy = r.clone(); if (r.ok) caches.open(CACHE).then((c) => c.put('./index.html', copy)); return r; })
