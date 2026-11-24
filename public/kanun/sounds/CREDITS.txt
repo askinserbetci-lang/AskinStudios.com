@@ -2,3 +2,8 @@ Built-in Stage AiQ sounds (strings, piano, bass) are made from VSCO 2 Community 
 (https://github.com/sgossner/VSCO-2-CE), released under CC0 1.0 Universal (public domain dedication).
 Upright Piano sampled by Simon Dalzell of Ivy Audio. Credit to the original authors and Versilian Studios is encouraged.
 Processing for Stage AiQ: mono, 32 kHz, trimmed; held strings given a crossfaded loop.
+
+Orchestra: the strings above layered with VSCO 2 CE French horn (sustain) and flute (vibrato), CC0.
+Accordion: free-reed recordings of a Hohner Super 64 chromatic harmonica from VCSL, the Versilian Community Sample
+Library (https://github.com/sgossner/VCSL), CC0 1.0; three reeds per note tuned slightly apart (musette).
+Farfisa (combo organ): synthesized for Stage AiQ (no samples), square + narrow pulse at 8' and 4', 6.4 Hz vibrato.
