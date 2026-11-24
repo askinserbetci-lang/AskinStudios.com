@@ -1,0 +1,4 @@
+Built-in Stage AiQ sounds (strings, piano, bass) are made from VSCO 2 Community Edition by Versilian Studios
+(https://github.com/sgossner/VSCO-2-CE), released under CC0 1.0 Universal (public domain dedication).
+Upright Piano sampled by Simon Dalzell of Ivy Audio. Credit to the original authors and Versilian Studios is encouraged.
+Processing for Stage AiQ: mono, 32 kHz, trimmed; held strings given a crossfaded loop.
