@@ -1,0 +1,419 @@
+{
+"version": 1,
+"styles": [
+{
+"id": "keder",
+"name": "Keder",
+"bpm": 69.0,
+"bar": 4,
+"parts": {
+"major": [
+"f1",
+"f2",
+"v1",
+"v2",
+"v3",
+"v4"
+],
+"minor": [
+"f1",
+"f2",
+"v1",
+"v2",
+"v3",
+"v4"
+]
+}
+},
+{
+"id": "rumba-acoustic",
+"name": "Rumba Acoustic",
+"bpm": 94.0,
+"bar": 4,
+"parts": {
+"major": [
+"f1",
+"f2",
+"v1",
+"v2",
+"v3",
+"v4"
+],
+"minor": [
+"f1",
+"f2",
+"v1",
+"v2",
+"v3",
+"v4"
+]
+}
+},
+{
+"id": "2-4-alaturka",
+"name": "2-4 Alaturka",
+"bpm": 108.0,
+"bar": 4,
+"parts": {
+"major": [
+"f1",
+"f2",
+"v1",
+"v2",
+"v3",
+"v4"
+],
+"minor": [
+"f1",
+"f2",
+"v1",
+"v2",
+"v3",
+"v4"
+]
+}
+},
+{
+"id": "4-4-arabesk-ori",
+"name": "4-4 Arabesk Ori",
+"bpm": 112.0,
+"bar": 4,
+"parts": {
+"major": [
+"f1",
+"f2",
+"v1",
+"v2",
+"v3",
+"v4"
+],
+"minor": [
+"f1",
+"f2",
+"v1",
+"v2",
+"v3",
+"v4"
+]
+}
+},
+{
+"id": "slow-kadeh",
+"name": "Slow Kadeh",
+"bpm": 72.0,
+"bar": 4,
+"parts": {
+"major": [
+"f1",
+"f2",
+"v1",
+"v2",
+"v3",
+"v4"
+],
+"minor": [
+"f1",
+"f2",
+"v1",
+"v2",
+"v3",
+"v4"
+]
+}
+},
+{
+"id": "oriental-arabesk",
+"name": "Oriental Arabesk",
+"bpm": 138.0,
+"bar": 4,
+"parts": {
+"major": [
+"f1",
+"f2",
+"v1",
+"v2",
+"v3",
+"v4"
+],
+"minor": [
+"f1",
+"f2",
+"v1",
+"v2",
+"v3",
+"v4"
+]
+}
+},
+{
+"id": "duble",
+"name": "Duble",
+"bpm": 142.0,
+"bar": 4,
+"parts": {
+"major": [
+"f1",
+"f2",
+"v1",
+"v2",
+"v3",
+"v4"
+],
+"minor": [
+"f1",
+"f2",
+"v1",
+"v2",
+"v3",
+"v4"
+]
+}
+},
+{
+"id": "duble-3",
+"name": "Duble 3",
+"bpm": 138.0,
+"bar": 4,
+"parts": {
+"major": [
+"f1",
+"f2",
+"v1",
+"v2",
+"v3",
+"v4"
+],
+"minor": [
+"f1",
+"f2",
+"v1",
+"v2",
+"v3",
+"v4"
+]
+}
+},
+{
+"id": "vahte",
+"name": "Vahte",
+"bpm": 89.0,
+"bar": 4,
+"parts": {
+"major": [
+"f1",
+"f2",
+"v1",
+"v2",
+"v3",
+"v4"
+],
+"minor": [
+"f1",
+"f2",
+"v1",
+"v2",
+"v3",
+"v4"
+]
+}
+},
+{
+"id": "misket",
+"name": "Misket",
+"bpm": 100.0,
+"bar": 4,
+"parts": {
+"major": [
+"f1",
+"f2",
+"v1",
+"v2",
+"v3",
+"v4"
+],
+"minor": [
+"f1",
+"f2",
+"v1",
+"v2",
+"v3",
+"v4"
+]
+}
+},
+{
+"id": "angara",
+"name": "Angara",
+"bpm": 89.0,
+"bar": 4,
+"parts": {
+"major": [
+"f1",
+"f2",
+"v1",
+"v2",
+"v3",
+"v4"
+],
+"minor": [
+"f1",
+"f2",
+"v1",
+"v2",
+"v3",
+"v4"
+]
+}
+},
+{
+"id": "antep-ciftetelli",
+"name": "Antep Ciftetelli",
+"bpm": 89.0,
+"bar": 4,
+"parts": {
+"major": [
+"f1",
+"f2",
+"v1",
+"v2",
+"v3",
+"v4"
+],
+"minor": [
+"f1",
+"f2",
+"v1",
+"v2",
+"v3",
+"v4"
+]
+}
+},
+{
+"id": "saidi-1-mg",
+"name": "Saidi 1 MG",
+"bpm": 100.0,
+"bar": 4,
+"parts": {
+"major": [
+"f1",
+"f2",
+"v1",
+"v2",
+"v3",
+"v4"
+],
+"minor": [
+"f1",
+"f2",
+"v1",
+"v2",
+"v3",
+"v4"
+]
+}
+},
+{
+"id": "12-8-ilahi",
+"name": "12-8 Ilahi",
+"bpm": 89.0,
+"bar": 6,
+"parts": {
+"major": [
+"v1",
+"v2",
+"v3",
+"v4"
+],
+"minor": [
+"v1",
+"v2",
+"v3",
+"v4"
+]
+}
+},
+{
+"id": "2-4-ilahi",
+"name": "2-4 Ilahi",
+"bpm": 117.0,
+"bar": 4,
+"parts": {
+"major": [
+"v1",
+"v2",
+"v3",
+"v4"
+],
+"minor": [
+"f1",
+"f2",
+"v1",
+"v2",
+"v3",
+"v4"
+]
+}
+},
+{
+"id": "2-4-rmv-ilahi",
+"name": "2-4 RMV Ilahi",
+"bpm": 75.0,
+"bar": 4,
+"parts": {
+"major": [
+"v1",
+"v2",
+"v3",
+"v4"
+],
+"minor": [
+"v1",
+"v2",
+"v3",
+"v4"
+]
+}
+},
+{
+"id": "2-4-ilahi-2",
+"name": "2-4 Ilahi 2",
+"bpm": 111.0,
+"bar": 4,
+"parts": {
+"major": [
+"v1",
+"v2",
+"v3",
+"v4"
+],
+"minor": [
+"v1",
+"v2",
+"v3",
+"v4"
+]
+}
+},
+{
+"id": "ilahi-ibrahims",
+"name": "Ilahi IbrahimS",
+"bpm": 116.0,
+"bar": 4,
+"parts": {
+"major": [
+"v1",
+"v2",
+"v3",
+"v4"
+],
+"minor": [
+"v1",
+"v2",
+"v3",
+"v4"
+]
+}
+}
+]
+}
